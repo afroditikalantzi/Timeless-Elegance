@@ -1,0 +1,178 @@
+/* ===== MEDIA QUERIES ===== */
+
+/* Mobile and Tablet Styles */
+@media (max-width: 992px) {
+    /* Navbar styles */
+    .navbar-collapse {
+        background-color: white;
+        padding: 1rem;
+        margin-top: 1rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-link::after {
+        display: none;
+    }
+    
+    .mobile-icons {
+        margin-top: 1rem;
+        justify-content: center;
+    }
+    
+    .navbar-toggler {
+        border: none;
+        padding: 0.25rem 0.75rem;
+    }
+    
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+    
+    /* Dropdown menu styles */
+    .dropdown:hover .dropdown-menu {
+        display: none !important;
+    }
+    
+    /* Fix for dropdown toggle icon */
+    .dropdown:hover .toggle-icon::before {
+        content: "+" !important;
+    }
+    
+    /* Ensure dropdown menu appears when clicked */
+    .dropdown-toggle[aria-expanded="true"] + .dropdown-menu {
+        display: block !important;
+        position: static;
+        transform: none;
+        left: auto;
+        box-shadow: none;
+        margin-top: 0.5rem;
+        width: 85%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Ensure toggle icon changes correctly when clicked */
+    .dropdown-toggle[aria-expanded="true"] .toggle-icon::before {
+        content: "−" !important;
+    }
+    
+    .dropdown .dropdown-menu.show {
+        display: block;
+        position: static;
+        transform: none;
+        left: auto;
+        box-shadow: none;
+        margin-top: 0.5rem;
+        width: 85%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .dropdown-item:hover::after {
+        width: 40%;
+    }
+    
+    .dropdown-divider {
+        margin: 0.3rem auto;
+        width: 70%;
+        border-top: 1px solid var(--secondary-color);
+        opacity: 0.2;
+    }
+    
+    /* Card styles */
+    .card {
+        max-width: 100%;
+    }
+    
+    .card-img {
+        height: 180px;
+    }
+    
+    .card-body {
+        padding: 0.8rem;
+    }
+    
+    .card-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 0.5rem;
+    }
+    
+    /* Filter panel styles */
+    .filter-panel {
+        margin-bottom: 1.5rem;
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 1.2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        z-index: 1030;
+    }
+    
+    .filter-toggle-btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+    
+    .filter-toggle-btn:hover {
+        background-color: var(--secondary-color);
+    }
+    
+    .filter-toggle-btn i {
+        margin-right: 0.5rem;
+    }
+    
+    .filter-panel-mobile {
+        display: none;
+    }
+    
+    .filter-panel-mobile.show {
+        display: block;
+    }
+    
+    .filter-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filter-btn {
+        width: 100%;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 576px) {
+    .section-title {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+    
+    .card-img {
+        height: 160px;
+    }
+    
+    .navbar {
+        padding: 15px 0;
+    }
+    
+    .brand-text {
+        font-size: 1.3rem;
+    }
+    
+    .icon-link {
+        font-size: 1.3rem;
+    }
+}
