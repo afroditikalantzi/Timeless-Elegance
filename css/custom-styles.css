@@ -858,4 +858,38 @@ footer .social-icon:hover {
     box-shadow: none;
 }
 
+/* 2. Let's add a style for the product detail page to ensure the sale tag is positioned correctly:
+
+/* Product detail page sale tag positioning */
+.product-image-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.product-image-container .card-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 5px 12px;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    font-weight: 500;
+    text-transform: uppercase;
+    z-index: 2;
+}
+
+/* Ensure consistent price styling in product details */
+.product-price .original-price {
+    color: #999;
+    text-decoration: line-through;
+    margin-right: 10px;
+}
+
+.product-price .sale-price {
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
 

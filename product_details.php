@@ -30,7 +30,7 @@
                         <div class="product-image-container">
                             <img class="product-detail-img" src="https://placehold.co/600x700?text=<?php echo urlencode($item['productName']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" />
                             <?php if($item['salePrice'] != 0){ ?>
-                                <span class="card-tag product-tag">SALE</span>
+                                <span class="card-tag">SALE</span>
                             <?php } ?>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                             <div class="card-img-container">
                                 <img class="card-img" src="https://placehold.co/400x300?text=<?php echo urlencode($item['productName']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" />
                                 <?php if($item['salePrice'] != 0){ ?>
-                                    <div class="card-badge">SALE</div>
+                                    <span class="card-tag">SALE</span>
                                 <?php } ?>
                             </div>
                             <div class="card-body">
