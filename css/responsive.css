@@ -162,6 +162,47 @@
     .filter-btn {
         width: 100%;
     }
+    
+    /* Product details page styles */
+    .product-title {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+    }
+    
+    .product-price {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .product-description {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .option-title {
+        font-size: 1rem;
+    }
+    
+    .product-image-container {
+        margin-bottom: 1.5rem;
+    }
+    
+    .add-to-cart-btn {
+        padding: 0.7rem 1.5rem;
+    }
+    
+    .quantity-selector {
+        margin-bottom: 1rem;
+    }
+    
+    .product-meta {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+    }
+    
+    .meta-item {
+        font-size: 0.85rem;
+    }
 }
 
 /* Small Mobile Devices */

@@ -806,6 +806,220 @@ footer .social-icon:hover {
 }
 
 
+/* ===== PRODUCT DETAILS PAGE STYLES ===== */
+.product-details-section {
+    padding: 3rem 0;
+}
+
+.product-image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+    background-color: #f5f5f5;
+}
+
+.product-detail-img {
+    width: 100%;
+    height: auto;
+    transition: all 0.5s ease;
+    object-fit: cover;
+}
+
+.product-image-container:hover .product-detail-img {
+    transform: scale(1.02);
+}
+
+.product-image-container .card-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 2;
+}
+
+.product-title {
+    font-family: var(--heading-font);
+    color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.product-price {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.product-price .original-price {
+    color: #999;
+    text-decoration: line-through;
+    margin-right: 15px;
+    font-weight: 300;
+}
+
+.product-price .sale-price {
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+.product-price .regular-price {
+    color: var(--text-color);
+    font-weight: 400;
+}
+
+.product-category {
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.category-label {
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+.category-value {
+    color: var(--secondary-color);
+}
+
+.product-description {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+}
+
+.option-title {
+    font-family: var(--heading-font);
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    color: var(--primary-color);
+}
+
+.color-options, .size-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.btn-size {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-check:checked + .btn-size {
+    background-color: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.btn-size:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.quantity-label {
+    margin-right: 15px;
+    font-weight: 500;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.quantity-btn {
+    background-color: transparent;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quantity-btn:hover {
+    background-color: var(--light-color);
+}
+
+.quantity-input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    height: 40px;
+}
+
+.quantity-input:focus {
+    outline: none;
+}
+
+.add-to-cart-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.add-to-cart-btn:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.product-meta {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.meta-item i {
+    color: var(--secondary-color);
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+/* Related products section styling */
+.relProd {
+    background-color: var(--light-color);
+    padding: 3rem 0;
+}
+
 /* ===== FOCUS STYLES ===== */
 /* Add this section at the end of your CSS file */
 
@@ -856,40 +1070,6 @@ footer .social-icon:hover {
 .navbar-toggler:focus {
     outline: none;
     box-shadow: none;
-}
-
-/* 2. Let's add a style for the product detail page to ensure the sale tag is positioned correctly:
-
-/* Product detail page sale tag positioning */
-.product-image-container {
-    position: relative;
-    overflow: hidden;
-}
-
-.product-image-container .card-tag {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: var(--accent-color);
-    color: white;
-    padding: 5px 12px;
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-    font-weight: 500;
-    text-transform: uppercase;
-    z-index: 2;
-}
-
-/* Ensure consistent price styling in product details */
-.product-price .original-price {
-    color: #999;
-    text-decoration: line-through;
-    margin-right: 10px;
-}
-
-.product-price .sale-price {
-    color: var(--secondary-color);
-    font-weight: 500;
 }
 
 
