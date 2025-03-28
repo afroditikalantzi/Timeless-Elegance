@@ -642,9 +642,9 @@ section.py-5 .container.mt-5 {
 }
 
 .size-btn.active {
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     color: white;
-    border-color: var(--primary-color);
+    border-color: var(--secondary-color);
     transform: translateY(-2px);
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
@@ -805,50 +805,57 @@ footer .social-icon:hover {
     width: 100%;
 }
 
-/* Luxury Button Styles for Under Construction Page */
-.luxury-btn {
-    display: inline-block;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    padding: 0.8rem 2rem;
-    border-radius: 0;
-    font-family: var(--heading-font);
-    text-align: center;
+
+/* ===== FOCUS STYLES ===== */
+/* Add this section at the end of your CSS file */
+
+/* Global focus styles */
+:focus {
+    outline: none;
 }
 
-.luxury-btn-outline {
-    color: var(--primary-color);
-    background-color: transparent;
-    border: 1px solid var(--secondary-color);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
+
+/* Button focus styles */
+.btn:focus, 
+.secondary-btn:focus,
+.main-btn:focus,
+.filter-btn:focus,
+.elegant-btn:focus,
+.size-btn:focus {
+    box-shadow: none;
+    outline: none;
 }
 
-.luxury-btn-outline:hover {
-    color: white;
+/* Form elements focus styles */
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(193, 154, 107, 0.25);
     border-color: var(--secondary-color);
-    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
-    transform: translateY(-3px);
 }
 
-.luxury-btn-outline::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background-color: var(--secondary-color);
-    transition: all 0.5s ease;
-    z-index: -1;
+/* Navigation focus styles */
+.nav-link:focus,
+.dropdown-item:focus,
+.icon-link:focus {
+    outline: none;
 }
 
-.luxury-btn-outline:hover::before {
-    width: 100%;
+/* Card and interactive elements focus */
+.card:focus,
+.card-img-container:focus {
+    outline: none;
 }
+
+/* Price slider handle focus */
+.noUi-handle:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
+
+/* Navbar toggler focus */
+.navbar-toggler:focus {
+    outline: none;
+    box-shadow: none;
+}
+
 
