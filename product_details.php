@@ -167,8 +167,8 @@
                                 <h5 class="card-title"><?php echo htmlspecialchars($item['productName']); ?></h5>
                                 <div class="card-price">
                                     <?php if($item['salePrice'] != 0){ ?>
-                                        <span class="original-price"><?php echo htmlspecialchars($item['price']); ?>€</span>
-                                        <span class="discount-price"><?php echo htmlspecialchars($item['salePrice']); ?>€</span>
+                                        <del class="original-price"><?php echo htmlspecialchars($item['price']); ?>€</del>
+                                        <span class="sale-price"><?php echo htmlspecialchars($item['salePrice']); ?>€</span>
                                     <?php } else { ?>
                                         <span><?php echo htmlspecialchars($item['price']); ?>€</span>
                                     <?php } ?>

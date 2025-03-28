@@ -218,3 +218,47 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// ------------------- Product Details Page ------------------- //
+
+// Initialize quantity controls
+const quantityInput = document.getElementById('inputQuantity');
+if (quantityInput) {
+    // Set initial value
+    quantityInput.value = 1;
+    
+    // Add event listener to prevent manual input of invalid values
+    quantityInput.addEventListener('change', function() {
+        const value = parseInt(this.value);
+        const min = parseInt(this.min);
+        const max = parseInt(this.max);
+        
+        if (value < min) {
+            this.value = min;
+        } else if (value > max) {
+            this.value = max;
+        }
+    });
+}
+
+// Quantity increment function
+function incrementQuantity() {
+    const quantityInput = document.getElementById('inputQuantity');
+    const currentValue = parseInt(quantityInput.value);
+    const maxValue = parseInt(quantityInput.max);
+    
+    if (currentValue < maxValue) {
+        quantityInput.value = currentValue + 1;
+    }
+}
+
+// Quantity decrement function
+function decrementQuantity() {
+    const quantityInput = document.getElementById('inputQuantity');
+    const currentValue = parseInt(quantityInput.value);
+    const minValue = parseInt(quantityInput.min);
+    
+    if (currentValue > minValue) {
+        quantityInput.value = currentValue - 1;
+    }
+}
