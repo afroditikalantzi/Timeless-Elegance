@@ -1,0 +1,900 @@
+:root {
+    --admin-primary: #2c3e50;
+    --admin-secondary: #c19a6b;
+    --admin-accent: #3498db;
+    --admin-light: #f8f5f0;
+    --admin-dark: #1a2530;
+    --admin-gray: #f0f2f5;
+    --admin-text: #333f4d;
+
+    --admin-header-height: 40px;
+    --admin-border: #e0e0e0;
+    --admin-success: #2ecc71;
+    --admin-warning: #f39c12;
+    --admin-danger: #e74c3c;
+    --btn-transition: all 0.3s ease;
+    --btn-border-radius: 5px;
+    --btn-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --btn-hover-transform: translateY(-2px);
+    --btn-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --btn-active-transform: translateY(1px);
+    --btn-active-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== BASE ADMIN STYLES ===== */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+}
+
+body.admin-body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--admin-gray);
+    margin: 0;
+    padding: 0;
+    /* overflow-x: hidden; */ /* Removed to prevent clipping sidebar toggle */
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+
+/* ===== MAIN CONTENT AREA ===== */
+
+        /* Sidebar Styles */
+        .admin-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px; /* Sidebar width */
+            background-color: var(--admin-primary); /* Dark background */
+            color: #f8f9fa; /* Light text */
+            padding-top: 0; /* Remove top padding, header is separate */
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000; /* Above content, below toggle */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-body.sidebar-active .admin-sidebar {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            padding: 15px 20px;
+            text-align: center;
+            /* Removed border, header height matches admin header */
+            height: var(--admin-header-height); /* Match admin header height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .sidebar-brand {
+            color: #fff; /* White color */
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-decoration: none;
+            font-family: 'Cormorant Garamond', serif;
+            pointer-events: none; /* Disable hover effects */
+            cursor: default;
+        }
+
+        .sidebar-nav {
+            display: flex; /* Use flexbox */
+            flex-direction: column; /* Stack items vertically */
+            flex-grow: 1; /* Takes remaining space */
+            overflow-y: auto; /* Scroll if needed */
+            padding-top: 20px;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Ensure the last UL (containing logout) is pushed to the bottom */
+        .sidebar-nav ul:last-child {
+            margin-top: auto;
+            padding-bottom: 20px; /* Add some padding at the very bottom */
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 20px;
+            color: #e9ecef; /* Lighter text */
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease, border-left-color 0.2s ease;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent; /* For active state indication */
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li.active a /* Example active class */ {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-left-color: var(--admin-secondary); /* Active indicator */
+        }
+
+        .sidebar-nav li a i {
+            font-size: 1.1rem;
+            width: 20px; /* Ensure icons align */
+            text-align: center;
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+         .sidebar-nav li a:hover i,
+         .sidebar-nav li.active a i {
+            opacity: 1;
+         }
+
+        /* Sidebar Toggle Button - Arrow Style */
+        #sidebarToggle {
+            position: fixed;
+            top: 0; /* Position at the very top */
+            left: 0; /* Position flush with the edge */
+            z-index: 1100; /* Above sidebar and header */
+            background-color: var(--admin-primary); /* Sidebar background color */
+            color: #fff; /* White arrow color */
+            border: none;
+            padding: 0;
+            width: 30px; /* Adjust width */
+            height: 45px; /* Adjust height */
+            border-radius: 0 8px 8px 0; /* Rounded corners on the right */
+            cursor: pointer;
+            transition: left 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #sidebarToggle::before {
+            content: '';
+            display: inline-block;
+            width: 12px; /* Slightly larger arrow */
+            height: 12px; /* Slightly larger arrow */
+            border-top: 3px solid #fff; /* White arrow, slightly thicker */
+            border-right: 3px solid #fff; /* White arrow, slightly thicker */
+            transform: rotate(45deg); /* Pointing right (closed state) */
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        #sidebarToggle:hover {
+            background-color: var(--admin-dark); /* Darken background on hover */
+            transform: scale(1.05); /* Slightly larger on hover */
+        }
+
+        .admin-body.sidebar-active #sidebarToggle {
+            left: 250px; /* Position next to the open sidebar (width 250px) */
+            background-color: var(--admin-primary);
+        }
+
+        .admin-body.sidebar-active #sidebarToggle::before {
+            transform: rotate(-135deg); /* Pointing left (open state) */
+            border-color: #fff; /* Ensure arrow stays white */
+        }
+.admin-main {
+    transition: margin-left 0.3s ease; /* Transition margin */
+    margin-left: 0; /* Default state */
+    width: calc(100% - 0px); /* Adjust width based on margin */
+    flex: 1 1 auto;
+    position: relative;
+    padding-left: 40px; /* Increased padding */
+    padding-right: 40px; /* Increased padding */
+    padding-top: 10px;
+}
+
+.admin-body.sidebar-active .admin-main {
+    margin-left: 250px; /* Push content when sidebar is open */
+    width: calc(100% - 250px); /* Adjust width when sidebar is open */
+}
+
+
+
+.admin-header {
+    height: var(--admin-header-height);
+    background-color: transparent; /* Transparent background */
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: none; /* Remove shadow if desired, or keep if needed */
+    position: relative; /* Ensure it scrolls with content */
+    z-index: 1000; /* Below sidebar toggle */
+    transition: margin-left 0.3s ease;
+}
+
+.admin-body.sidebar-active .admin-header {
+    left: 250px; /* Shift header when sidebar is open */
+    width: calc(100% - 250px); /* Adjust width when sidebar is open */
+}
+
+.admin-header-title {
+    flex-grow: 1; /* Allow title to take available space */
+    text-align: center; /* Center the text */
+}
+
+.admin-header-title h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--admin-text);
+    font-weight: 600;
+}
+
+.admin-user-menu {
+    display: flex;
+    align-items: center;
+}
+
+.admin-user-menu .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--admin-text);
+}
+
+.admin-user-menu .dropdown-toggle::after {
+    display: none;
+}
+
+.admin-user-menu .dropdown-menu {
+    min-width: 200px;
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.admin-user-menu .dropdown-item {
+    padding: 12px 20px;
+    transition: all 0.2s ease;
+}
+
+.admin-user-menu .dropdown-item:hover {
+    background-color: var(--admin-gray);
+}
+
+.admin-user-menu .dropdown-item i {
+    margin-right: 10px;
+    color: var(--admin-primary);
+}
+
+.admin-user-menu .dropdown-divider {
+    margin: 0;
+}
+
+.admin-user-menu .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--admin-secondary);
+}
+
+/* ===== ADMIN CARD STYLES ===== */
+.admin-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem; /* Consistent bottom margin */
+    padding: 25px; /* Consistent padding */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 20px;
+    height: 100%;
+}
+
+.admin-card-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--admin-primary);
+    margin-bottom: 1.5rem; /* Consistent bottom margin */
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--admin-border);
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--admin-primary);
+    border-bottom: 1px solid var(--admin-border);
+    padding-bottom: 10px;
+}
+
+.admin-card-footer {
+    margin-top: 20px;
+    text-align: right;
+    border-top: 1px solid var(--admin-border);
+    padding-top: 15px;
+}
+
+
+/* Style for Add New buttons */
+.btn-admin-sm.btn-secondary, 
+.btn-admin.btn-secondary {
+    background-color: var(--admin-secondary);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-admin-sm.btn-secondary:hover, 
+.btn-admin.btn-secondary:hover {
+    background-color: #a88559;
+    transform: var(--btn-hover-transform);
+    box-shadow: var(--btn-hover-shadow);
+}
+
+
+
+/* ===== TABLES ===== */
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.admin-table th {
+    background-color: var(--admin-gray);
+    color: var(--admin-text);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 2px solid var(--admin-border);
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px 15px; /* Standardized padding */
+    vertical-align: middle; /* Align content vertically */
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover td {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.admin-table td a:not(:last-child) {
+    margin-right: 8px; /* Add space between action buttons */
+}
+
+/* ===== BUTTONS ===== */
+
+
+/* Button Colors */
+.btn-primary {
+    background-color: var(--admin-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--admin-dark);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--admin-secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #a88559;
+    color: white;
+}
+
+.btn-accent {
+    background-color: var(--admin-accent);
+    color: white;
+}
+
+.btn-accent:hover {
+    background-color: #2980b9;
+    color: white;
+}
+
+.btn-success {
+    background-color: var(--admin-success);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-warning {
+    background-color: var(--admin-warning);
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #e67e22;
+    color: white;
+}
+
+.btn-danger {
+    background-color: var(--admin-danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    color: white;
+}
+
+.btn-light {
+    background-color: var(--admin-light);
+    color: var(--admin-text);
+}
+
+.btn-light:hover {
+    background-color: #e8e8e8;
+    color: var(--admin-text);
+}
+
+.btn-dark {
+    background-color: var(--admin-dark);
+    color: white;
+}
+
+.btn-dark:hover {
+    background-color: #0f1a24;
+    color: white;
+}
+
+/* Action Buttons */
+.btn-edit, .btn-delete, .btn-view {
+    background-color: var(--admin-accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    box-shadow: var(--btn-box-shadow);
+}
+
+.btn-edit:hover {
+    background-color: #2980b9;
+    color: white;
+    transform: var(--btn-hover-transform);
+    box-shadow: var(--btn-hover-shadow);
+}
+
+.btn-delete {
+    background-color: var(--admin-danger);
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+    color: white;
+    transform: var(--btn-hover-transform);
+    box-shadow: var(--btn-hover-shadow);
+}
+
+.btn-view {
+    background-color: var(--admin-success);
+}
+
+.btn-view:hover {
+    background-color: #27ae60;
+    color: white;
+    transform: var(--btn-hover-transform);
+    box-shadow: var(--btn-hover-shadow);
+}
+
+/* ===== FORMS ===== */
+.admin-form-group {
+    margin-bottom: 20px;
+}
+
+.admin-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--admin-text);
+}
+
+.admin-form-control {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--admin-border);
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+}
+
+.admin-form-control:focus {
+    outline: none;
+    border-color: var(--admin-accent);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.admin-form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.admin-form-check-input {
+    margin-right: 10px;
+}
+
+.admin-form-check-label {
+    font-weight: normal;
+}
+
+/* ===== MODAL STYLES ===== */
+.modal-content {
+    border-radius: 8px;
+    border: none;
+}
+
+.modal-header {
+    background-color: var(--admin-primary);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal-header .btn-close {
+    color: white;
+    filter: invert(1) brightness(200%);
+}
+
+/* ===== PRODUCT SPECIFIC STYLES ===== */
+.product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Order View Page Specific Styles */
+.order-view-card .admin-card-title {
+    margin-bottom: 25px; /* More space below title */
+}
+
+.order-status {
+    padding: 5px 12px;
+    border-radius: var(--btn-border-radius);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* Order item styling */
+.order-item {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    margin-bottom: 20px; /* Increased spacing */
+    padding-bottom: 20px; /* Increased spacing */
+    border-bottom: 1px solid var(--admin-border);
+    gap: 15px; /* Add gap between elements */
+}
+
+.order-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.item-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--admin-border);
+    flex-shrink: 0;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-name {
+    font-weight: 600;
+    color: var(--admin-primary);
+    margin-bottom: 5px;
+}
+
+.item-price {
+    color: var(--admin-text);
+    font-size: 0.9rem;
+}
+
+.item-quantity {
+    font-weight: 500;
+    color: var(--admin-secondary);
+    min-width: 40px; /* Ensure alignment */
+    text-align: right;
+}
+
+.item-total {
+    font-weight: 600;
+    color: var(--admin-primary);
+    min-width: 80px; /* Ensure alignment */
+    text-align: right;
+}
+
+/* Order Summary Styling */
+.order-summary {
+    margin-top: 30px;
+    padding-top: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 0.95rem;
+}
+
+.summary-row.total {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--admin-primary);
+    border-top: 1px solid var(--admin-border);
+    margin-top: 10px;
+    padding-top: 15px;
+}
+
+/* Customer Info Styling */
+.customer-info {
+    background-color: var(--admin-light);
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--admin-border);
+}
+
+.customer-info h3 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: var(--admin-primary);
+    border-bottom: 1px solid var(--admin-border);
+    padding-bottom: 10px;
+}
+
+.customer-detail {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.customer-label {
+    font-weight: 600;
+    color: var(--admin-text);
+    width: 80px; /* Fixed width for labels */
+    flex-shrink: 0;
+}
+
+.customer-detail span:last-child {
+    color: var(--admin-primary);
+}
+
+
+/* ===== REPORTS STYLES ===== */
+.report-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 20px;
+    height: 100%;
+    text-align: center;
+}
+
+.report-card-title {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--admin-primary);
+}
+
+.report-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--admin-secondary);
+    margin-bottom: 10px;
+}
+
+.report-label {
+    font-size: 0.9rem;
+    color: var(--admin-text);
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+}
+
+.date-filter {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* ===== SETTINGS STYLES ===== */
+
+.settings-form-label {
+    font-weight: 500;
+}
+
+.settings-form-text {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* ===== LOGIN STYLES ===== */
+body.login-body {
+    background-color: var(--admin-gray);
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 40px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--admin-primary);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.login-subtitle {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.btn-login {
+    background-color: var(--admin-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 15px;
+    font-weight: 500;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+    background-color: var(--admin-dark);
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.login-footer a {
+    color: var(--admin-secondary);
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ===== ORDER SPECIFIC STYLES ===== */
+/* Order status indicators */
+.order-status, .status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 100px;
+}
+
+.status-pending {
+    background-color: #f39c12;
+    color: white;
+}
+
+.status-processing {
+    background-color: #3498db;
+    color: white;
+}
+
+.status-shipped {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.status-delivered {
+    background-color: #27ae60;
+    color: white;
+}
+
+.status-cancelled {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* Order View Page Specific Styles */
+.order-view-card .admin-card-title {
+    margin-bottom: 25px; /* More space below title */
+/* Style for the admin cancel button in modals */
+.btn-cancel-admin {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    color: white;
+    border: 1px solid #6c757d;
+    padding: 8px 15px;
+    border-radius: var(--btn-border-radius);
+    transition: var(--btn-transition);
+    box-shadow: var(--btn-box-shadow);
+}
+
+.btn-cancel-admin:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+    transform: var(--btn-hover-transform);
+    box-shadow: var(--btn-hover-shadow);
+}
+
+.btn-cancel-admin:active {
+    background-color: #545b62;
+    transform: var(--btn-active-transform);
+    box-shadow: var(--btn-active-shadow);
+}

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?php require 'header.php' ?>        
+        <?php require 'includes/header.php' ?>        
     </head>
     <body>
         <!-- Connection to the database -->
-        <?php require_once 'db_connect.php'; ?>
+        <?php require_once 'includes/db_connect.php'; ?>
 
         <!-- Navigation-->
-        <?php require 'navbar.php' ?>
+        <?php require 'includes/navbar.php' ?>
 
         <!-- Product section-->
         <?php
@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
                                 
-                                <button class="add-to-cart-btn" type="button">
+                                <button class="add-to-cart-btn" id="addToCartButton" type="button">
                                     <i class="bi-cart-fill me-1"></i>
                                     Add to Cart
                                 </button>
@@ -186,8 +186,47 @@
         </section>
         
         <!-- Footer-->
-        <?php require 'footer.php' ?>
+        <?php require 'includes/footer.php' ?>
 
+        <!-- Add to Cart Modal -->
+        <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addToCartModalLabel">Item Added to Cart</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Your item has been added to the cart successfully!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
+                        <a href="cart.php" class="btn btn-primary">Go to Cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Include cart.js for product details page functionality -->    
+    <script src="static/js/cart.js"></script>
+    
+    <script>
+    function incrementQuantity() {
+        const input = document.getElementById('inputQuantity');
+        const currentValue = parseInt(input.value);
+        if (currentValue < 10) {
+            input.value = currentValue + 1;
+        }
+    }
+    
+    function decrementQuantity() {
+        const input = document.getElementById('inputQuantity');
+        const currentValue = parseInt(input.value);
+        if (currentValue > 1) {
+            input.value = currentValue - 1;
+        }
+    }
+    </script>
     </body>
 </html>
 

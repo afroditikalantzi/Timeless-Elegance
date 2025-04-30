@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?php require 'header.php' ?>
-        
+        <?php require 'includes/header.php' ?>
     </head>
     <body>
 
         <!-- Connection to the database -->
-        <?php require_once 'db_connect.php'; ?>
+        <?php require_once 'includes/db_connect.php'; ?>
 
         <!-- Navigation-->
-        <?php require 'navbar.php' ?>
+        <?php require 'includes/navbar.php' ?>
 
         <!-- Product Category section-->        
         <?php
@@ -72,7 +71,7 @@
                             <div class="filter-section">
                                 <h4 class="filter-section-title">Price Range</h4>
                                 <div class="price-slider-container">
-                                    <div id="price-range-slider" style="margin: 15px 0;"></div>
+                                    <div id="price-range-slider" class="noUi-target noUi-ltr noUi-horizontal" style="margin: 15px 0;"></div>
                                     <div class="d-flex justify-content-between mt-2">
                                         <span id="minPriceValue"><?php echo $minProductPrice; ?>€</span>
                                         <span id="maxPriceValue"><?php echo $maxProductPrice; ?>€</span>
@@ -135,7 +134,7 @@
                     
                     <!-- Product Grid -->
                     <div class="col-lg-9">
-                        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
+                        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3">
                             
                             <?php foreach($items as $item){ 
                                 $displayPrice = ($item['salePrice'] != 0) ? $item['salePrice'] : $item['price'];
@@ -165,8 +164,8 @@
                                             <p class="card-price"><?php echo htmlspecialchars($item['price'])?>€</p>
                                         <?php } ?>
                                         <div class="card-actions">
-                                            <a href="#" class="btn main-btn">Add to Cart</a>
-                                            <a href="product_details.php?prod=<?php echo htmlspecialchars($item['productName'])?>" class="btn secondary-btn">Details</a>
+                                            <a href="#" class="btn main-btn add-to-cart-category" data-product="<?php echo htmlspecialchars($item['productName']); ?>" data-price="<?php echo htmlspecialchars($displayPrice); ?>">Add to Cart</a>
+                                            <a href="/eshop/public/product_details.php?prod=<?php echo htmlspecialchars($item['productName'])?>" class="btn secondary-btn">Details</a>
                                         </div>
                                     </div>
                                 </div>
@@ -189,16 +188,18 @@
         </section>    
        
     
-        <!-- Footer-->
-        <?php require 'footer.php' ?>
-
+        <!-- NoUI Slider JS (Load before initialization) -->
+        <script src="https://cdn.jsdelivr.net/npm/nouislider@14.6.3/distribute/nouislider.min.js"></script>
         
         <style>
             /* noUiSlider */
             .noUi-target {
-                height: 3px; 
+                height: 8px; 
                 border: none;
                 box-shadow: none;
+                background-color: #f0f0f0;
+                border-radius: 4px;
+                margin: 20px 0;
             }
             
             .noUi-connect {
@@ -206,14 +207,15 @@
             }
             
             .noUi-handle {
-                width: 16px !important;
-                height: 16px !important;
+                width: 20px !important;
+                height: 20px !important;
                 border-radius: 50% !important; 
                 background-color: white;
                 border: 2px solid var(--secondary-color);
                 box-shadow: 0 1px 5px rgba(0,0,0,0.15);
                 cursor: pointer;
-                right: -8px !important; 
+                right: -10px !important; 
+                top: -7px !important;
             }
             
             .noUi-handle:before, 
@@ -224,16 +226,34 @@
             .noUi-handle:hover {
                 border-color: var(--accent-color); 
             }
+            
+            .price-slider-container {
+                padding: 10px 0;
+                margin: 15px 0;
+            }
+            
+            #minPriceValue, #maxPriceValue {
+                font-weight: 500;
+                color: var(--primary-color);
+            }
         </style>
+        
+        <!-- NoUI Slider JS (Load before initialization) -->
+        <script src="https://cdn.jsdelivr.net/npm/nouislider@14.6.3/distribute/nouislider.min.js"></script>
+        
+        <!-- Footer-->
+        <?php require 'includes/footer.php' ?>
         
         <!-- Add slider initialization directly in the page -->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Initialize price range slider
                 const priceSlider = document.getElementById('price-range-slider');
+                console.log('Price slider element:', priceSlider); // Debug log
                 if (priceSlider) {
                     const minPrice = parseInt(document.getElementById('minPrice').value);
                     const maxPrice = parseInt(document.getElementById('maxPrice').value);
+                    console.log('Price range:', minPrice, maxPrice); // Debug log
                     
                     noUiSlider.create(priceSlider, {
                         start: [minPrice, maxPrice],
@@ -399,7 +419,14 @@
             });
         </script>
         
-       
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="static/js/scripts.js"></script>
+        <!-- Cart JS -->
+        <script src="static/js/cart.js"></script>
+        <!-- Product Options Modal JS -->
+        <script src="static/js/product-options-modal.js"></script>
     </body>
 </html>
         

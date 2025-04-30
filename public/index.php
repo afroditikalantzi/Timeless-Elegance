@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?php require 'header.php'?>
+        <?php require 'includes/header.php'?>
     </head>
         
     <body>
         <!-- Connection to the database -->
-        <?php require_once 'db_connect.php'; ?>
+        <?php require_once 'includes/db_connect.php'; ?>
 
         <!-- Navigation-->
-        <?php require 'navbar.php' ?>
+        <?php require 'includes/navbar.php' ?>
 
         
         <header class="bg-carouzel py-5" >
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                <?php require 'carouzel.php'; ?>
+                <?php require 'includes/carouzel.php'; ?>
                 </div>
             </div>
         </header>
         
-        <?php require 'feautured.php';?>
+        <?php require 'includes/featured.php';?>
         
         <!-- Footer-->
-        <?php require 'footer.php' ?>
+        <?php require 'includes/footer.php' ?>
 
     </body>
 </html>
-
