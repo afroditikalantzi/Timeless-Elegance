@@ -8,10 +8,10 @@
                 <div class="col-md-3 mb-3">
                     <h6 class="text-white mb-2">Collections</h6>
                     <ul class="list-unstyled text-white-50 small mb-0">
-                        <li class="mb-1"><a href="/eshop/public/category.php?categ=Shirts" class="text-white-50 text-decoration-none">Designer Shirts</a></li>
-                        <li class="mb-1"><a href="/eshop/public/category.php?categ=Blazers" class="text-white-50 text-decoration-none">Premium Blazers</a></li>
-                        <li class="mb-1"><a href="/eshop/public/category.php?categ=Trousers" class="text-white-50 text-decoration-none">Tailored Trousers</a></li>
-                        <li class="mb-1"><a href="/eshop/public/category.php?categ=Seasonal" class="text-white-50 text-decoration-none">Limited Edition</a></li>
+                        <li class="mb-1"><a href="/Timeless-Elegance/public/category.php?categ=Shirts" class="text-white-50 text-decoration-none">Designer Shirts</a></li>
+                        <li class="mb-1"><a href="/Timeless-Elegance/public/category.php?categ=Blazers" class="text-white-50 text-decoration-none">Premium Blazers</a></li>
+                        <li class="mb-1"><a href="/Timeless-Elegance/public/category.php?categ=Trousers" class="text-white-50 text-decoration-none">Tailored Trousers</a></li>
+                        <li class="mb-1"><a href="/Timeless-Elegance/public/category.php?categ=Seasonal" class="text-white-50 text-decoration-none">Limited Edition</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -51,8 +51,8 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <!-- Custom JS -->
-    <script src="/eshop/public/static/js/main.js"></script>
-    <script src="/eshop/public/static/js/cart.js"></script>
-    <script src="/eshop/public/static/js/checkout.js"></script>
-    <script src="/eshop/public/static/js/form-validation.js"></script>
+    <script src="/Timeless-Elegance/public/static/js/main.js"></script>
+    <script src="/Timeless-Elegance/public/static/js/cart.js"></script>
+    <script src="/Timeless-Elegance/public/static/js/checkout.js"></script>
+    <script src="/Timeless-Elegance/public/static/js/form-validation.js"></script>
 </footer>

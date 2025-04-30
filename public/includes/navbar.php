@@ -20,17 +20,17 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Collections<span class="toggle-icon"></span></a>
                     <ul class="dropdown-menu dropdown-custom" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/eshop/public/category.php?categ=Shirts">Designer Shirts</a></li>
-                        <li><a class="dropdown-item" href="/eshop/public/category.php?categ=Blazers">Premium Blazers</a></li>
-                        <li><a class="dropdown-item" href="/eshop/public/category.php?categ=Trousers">Tailored Trousers</a></li>
+                        <li><a class="dropdown-item" href="/Timeless-Elegance/public/category.php?categ=Shirts">Designer Shirts</a></li>
+                        <li><a class="dropdown-item" href="/Timeless-Elegance/public/category.php?categ=Blazers">Premium Blazers</a></li>
+                        <li><a class="dropdown-item" href="/Timeless-Elegance/public/category.php?categ=Trousers">Tailored Trousers</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/eshop/public/category.php?categ=Seasonal">Limited Edition</a></li>
+                        <li><a class="dropdown-item" href="/Timeless-Elegance/public/category.php?categ=Seasonal">Limited Edition</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="/eshop/public/placeholders.php">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Timeless-Elegance/public/placeholders.php">About Us</a></li>
             </ul>
             <div class="d-flex align-items-center mobile-icons">
-                <a href="/eshop/public/cart.php" class="icon-link position-relative">
+                <a href="/Timeless-Elegance/public/cart.php" class="icon-link position-relative">
                     <i class="bi-cart-fill"></i>
                     <span class="cart-badge badge-circle" id="cartBadge"></span>
                 </a>

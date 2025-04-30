@@ -165,7 +165,7 @@
                                         <?php } ?>
                                         <div class="card-actions">
                                             <a href="#" class="btn main-btn add-to-cart-category" data-product="<?php echo htmlspecialchars($item['productName']); ?>" data-price="<?php echo htmlspecialchars($displayPrice); ?>">Add to Cart</a>
-                                            <a href="/eshop/public/product_details.php?prod=<?php echo htmlspecialchars($item['productName'])?>" class="btn secondary-btn">Details</a>
+                                            <a href="/Timeless-Elegance/public/product_details.php?prod=<?php echo htmlspecialchars($item['productName'])?>" class="btn secondary-btn">Details</a>
                                         </div>
                                     </div>
                                 </div>
