@@ -1,20 +1,18 @@
 # Timeless Elegance - Premium Men's Clothing E-Shop
 
-A sophisticated e-commerce platform for premium men's clothing, featuring an elegant design and responsive user interface.
-
 ## Overview
 
-Timeless Elegance is a web-based e-commerce application built with PHP, MySQL, Bootstrap 5, and JavaScript. The platform offers a luxurious shopping experience with features like product filtering, detailed product views, and a responsive design that works across all devices.
+Timeless Elegance is a sophisticated e-commerce platform for premium men's clothing built with PHP, MySQL, Bootstrap 5, and JavaScript. The application delivers a luxurious shopping experience with an elegant design and responsive user interface.
 
-## Application Screenshots
+## Screenshots
 
 ### Store Frontend
 ![Store Frontend](images/store-page.png)
-*Store frontend showcasing the elegant design and product display (800x450px)*
+*Store frontend showcasing the elegant design and product display*
 
 ### Admin Dashboard
 ![Admin Dashboard](images/admin-page.png)
-*Admin dashboard with product management interface (800x450px)*
+*Admin dashboard with product management interface*
 
 ## Features
 
@@ -69,15 +67,7 @@ Timeless Elegance is a web-based e-commerce application built with PHP, MySQL, B
 - **Libraries**: 
   - Bootstrap Icons
   - NoUI Slider for price range filtering
-  - Google Fonts (Cormorant Garamond, Montserrat)
 
-## Design Features
-
-- Elegant color scheme with deep navy blue and warm bronze accents
-- Luxurious typography with serif headings and sans-serif body text
-- Subtle animations and hover effects
-- Mobile-first responsive design
-- Special styling for sale items
 
 ## Authors
 
