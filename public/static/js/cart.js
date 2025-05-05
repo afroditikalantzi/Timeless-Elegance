@@ -369,7 +369,7 @@ function calculateSubtotal(cart) {
 
 // Update order summary
 function updateOrderSummary(subtotal) {
-    const shipping = subtotal > 0 ? 5.00 : 0;
+    const shipping = 0; // Fixed to 0 instead of conditional 5.00
     const total = subtotal + shipping;
 
     document.getElementById('subtotal').textContent = subtotal.toFixed(2) + '€';

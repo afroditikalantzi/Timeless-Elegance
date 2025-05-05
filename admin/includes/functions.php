@@ -83,11 +83,6 @@ function generate_order_reference() {
     return 'ORD-' . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
 }
 
-// Check if user has admin permissions
-function is_admin() {
-    return isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id']);
-}
-
 // Sanitize input data
 function sanitize_input($conn, $input) {
     return mysqli_real_escape_string($conn, trim($input));

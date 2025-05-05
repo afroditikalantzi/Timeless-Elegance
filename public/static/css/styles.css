@@ -1117,6 +1117,7 @@ section.py-5 {
 .quantity-label {
     margin-right: 15px;
     font-weight: 500;
+    font-size: 1.05rem;
 }
 
 .quantity-controls {
@@ -1125,14 +1126,16 @@ section.py-5 {
     border: 1px solid var(--border-color);
     border-radius: 5px;
     overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .quantity-btn {
     background-color: transparent;
     border: none;
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
@@ -1142,6 +1145,7 @@ section.py-5 {
 
 .quantity-btn:hover {
     background-color: var(--light-color);
+    color: var(--secondary-color);
 }
 
 .quantity-btn:focus {
@@ -1150,12 +1154,14 @@ section.py-5 {
 }
 
 .quantity-input {
-    width: 50px;
+    width: 60px;
     text-align: center;
     border: none;
     border-left: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
-    height: 40px;
+    height: 45px;
+    font-size: 1.1rem;
+    font-weight: 500;
     -moz-appearance: textfield;
 }
 
@@ -1194,19 +1200,27 @@ section.py-5 {
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .meta-item {
     display: flex;
     align-items: center;
-    margin-bottom: 0.8rem;
     font-size: 0.9rem;
+    flex: 1;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    justify-content: center;
 }
 
 .meta-item i {
     color: var(--secondary-color);
     margin-right: 10px;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
 /* Related products section styling */

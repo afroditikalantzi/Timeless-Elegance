@@ -36,7 +36,7 @@
                             <?php } ?>
                             <div class="card-actions">
                                 <a href="#" class="btn main-btn add-to-cart-category" data-product="<?php echo htmlspecialchars($item['productName']); ?>" data-price="<?php echo htmlspecialchars($item['salePrice'] != 0 ? $item['salePrice'] : $item['price']); ?>">Add to Cart</a>
-                                <a href="../product_details.php?prod=<?php echo htmlspecialchars($item['productName'])?>" class="btn secondary-btn">Details</a>
+                                <a href="./product_details.php?prod=<?php echo htmlspecialchars($item['productName'])?>" class="btn secondary-btn">Details</a>
                             </div>
                         </div>
                     </div>

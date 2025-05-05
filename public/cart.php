@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <?php require 'includes/header.php'?>
-    <link href="static/css/cart-styles.css" rel="stylesheet" />
 </head>
 <body>
     <!-- Connection to the database -->
@@ -17,7 +16,6 @@
             <h2 class="mb-4" style="font-family: var(--heading-font); color: var(--primary-color); letter-spacing: 0.5px;">Shopping Cart</h2>
             <div class="row">
                 <div class="col-lg-8">
-                    <!-- Cart items will be dynamically loaded here -->
                     <div id="cartItems" class="cart-items">
                         <!-- Empty cart message -->
                         <div id="emptyCartMessage" class="empty-cart-message" style="display: none; background-color: var(--light-color); border-radius: 5px; padding: 3rem;">
@@ -53,8 +51,5 @@
 
     <!-- Footer-->
     <?php require 'includes/footer.php' ?>
-
-    <script src="static/js/main.js"></script>
-    <script src="static/js/cart.js"></script>
 </body>
 </html>

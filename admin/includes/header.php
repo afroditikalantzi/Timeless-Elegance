@@ -35,9 +35,8 @@ $error_message = '';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom Styles -->
-    <link href="../public/static/css/styles.css" rel="stylesheet" />
-    <!-- Consolidated Admin Styles -->
     <link href="static/css/styles.css" rel="stylesheet" />
+    <link href="static/css/responsive.css" rel="stylesheet" />
     <style>
     /* Animation for flash messages */
     .alert {
@@ -49,7 +48,7 @@ $error_message = '';
     </style>
     <?php if(isset($extra_css)) echo $extra_css; ?>
     <!-- Admin Scripts -->
-    <script src="static/js/main.js" defer></script>
+    
     <script>
     // Auto-dismiss flash messages after 5 seconds
     document.addEventListener('DOMContentLoaded', function() {
@@ -68,12 +67,10 @@ $error_message = '';
         }
     });
     </script>
-    <?php if (isset($extra_css)): echo $extra_css; endif; ?>
 </head>
 <body class="admin-body"> <!-- Add sidebar-active class dynamically -->
     <!-- Sidebar Toggle Button (Styled with CSS) -->
     <button class="sidebar-toggle" id="sidebarToggle">
-        <!-- Icon removed, styled via CSS ::before pseudo-element -->
     </button>
 
     <!-- Sidebar -->
@@ -91,8 +88,9 @@ $error_message = '';
                 <li><a href="reports.php"><i class="bi bi-bar-chart-line"></i> Reports</a></li>
                 <li><a href="settings.php"><i class="bi bi-gear"></i> Settings</a></li>
             </ul>
-            <ul style="margin-top: auto; padding-bottom: 20px;"> <!-- Add margin-top: auto to push to bottom -->
-                 <li><a href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            <ul style="margin-top: auto; padding-bottom: 20px;"> 
+                <li><a href="../public/index.php" target="_blank"><i class="bi bi-shop"></i> Visit Store</a></li>
+                <li><a href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
             </ul>
         </nav>
     </aside>

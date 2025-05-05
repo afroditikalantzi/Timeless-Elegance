@@ -165,7 +165,7 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
     }
 }
 
-// Get all products and categories for display using PDO
+// Get all products and categories for display
 try {
     // Get items per page setting
     $items_per_page = get_items_per_page($conn);
@@ -203,7 +203,6 @@ try {
     $products = []; // Ensure products is an array even on error
     $categories = []; // Ensure categories is an array even on error
 }
-
 ?>
 
 <!-- Content -->
@@ -218,7 +217,7 @@ try {
                 
                 <div class="row">
                     <div class="col-12 mb-4">
-                        <button type="button" class="btn-admin" data-bs-toggle="modal" data-bs-target="#productModal">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
                             <i class="bi bi-plus-circle"></i> Add New Product
                         </button>
                     </div>

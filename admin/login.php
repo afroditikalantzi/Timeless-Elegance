@@ -70,10 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="static/css/styles.css" rel="stylesheet" />
     <!-- Admin Dashboard Styles -->
     <link href="static/css/admin-dashboard.css" rel="stylesheet" />
-    <!-- Login Page Styles -->
-    
 </head>
-<body>
+<body class="login-page">
     <div class="login-container">
         <div class="login-header">
             <span class="login-brand">Timeless Elegance</span>

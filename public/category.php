@@ -39,7 +39,7 @@
             mysqli_free_result($result);
             mysqli_close($conn);
             
-            // Map category names to  collection titles
+            // Map category names to collection titles
             $collection_titles = [
                 'Shirts' => 'Designer Shirts Collection',
                 'Blazers' => 'Premium Blazers Collection',
@@ -145,14 +145,12 @@
                                      data-price="<?php echo htmlspecialchars($item['price']); ?>" 
                                      data-sale-price="<?php echo htmlspecialchars($item['salePrice']); ?>" 
                                      data-display-price="<?php echo htmlspecialchars($displayPrice); ?>">
-                                    <!-- Product image-->
                                     <div class="card-img-container">
                                         <img class="card-img" src="https://placehold.co/400x300?text=<?php echo urlencode($item['productName']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" />
                                         <?php if($item['salePrice'] != 0){ ?>
                                             <span class="card-tag">SALE</span>
                                         <?php } ?>
                                     </div>
-                                    <!-- Product details-->
                                     <div class="card-body">
                                         <h5 class="card-title"><?php echo htmlspecialchars($item['productName'])?></h5>
                                         <?php if($item['salePrice'] != 0){ ?>
@@ -187,12 +185,7 @@
             </div>
         </section>    
        
-    
-        <!-- NoUI Slider JS (Load before initialization) -->
-        <script src="https://cdn.jsdelivr.net/npm/nouislider@14.6.3/distribute/nouislider.min.js"></script>
-        
         <style>
-            /* noUiSlider */
             .noUi-target {
                 height: 8px; 
                 border: none;
@@ -238,22 +231,19 @@
             }
         </style>
         
-        <!-- NoUI Slider JS (Load before initialization) -->
+        <!-- NoUI Slider JS -->
         <script src="https://cdn.jsdelivr.net/npm/nouislider@14.6.3/distribute/nouislider.min.js"></script>
         
         <!-- Footer-->
         <?php require 'includes/footer.php' ?>
         
-        <!-- Add slider initialization directly in the page -->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Initialize price range slider
                 const priceSlider = document.getElementById('price-range-slider');
-                console.log('Price slider element:', priceSlider); // Debug log
                 if (priceSlider) {
                     const minPrice = parseInt(document.getElementById('minPrice').value);
                     const maxPrice = parseInt(document.getElementById('maxPrice').value);
-                    console.log('Price range:', minPrice, maxPrice); // Debug log
                     
                     noUiSlider.create(priceSlider, {
                         start: [minPrice, maxPrice],
@@ -377,9 +367,9 @@
                     }
                     
                     // Reset filters button click handler
-                    const resetFilterBtn = document.querySelector('.filter-reset');
-                    if (resetFilterBtn) {
-                        resetFilterBtn.addEventListener('click', function() {
+                    const resetFilterBtn = document.querySelectorAll('.filter-reset');
+                    resetFilterBtn.forEach(function(button) {
+                        button.addEventListener('click', function() {
                             // Reset price slider
                             priceSlider.noUiSlider.set([minPrice, maxPrice]);
                             
@@ -398,35 +388,27 @@
                             document.getElementById('onSale').checked = false;
                             
                             // Show all products
-                            document.querySelectorAll('.card').forEach(function(card) {
+                            const cards = document.querySelectorAll('.card');
+                            cards.forEach(function(card) {
                                 card.closest('.col').style.display = 'block';
                             });
                             
-                            // Hide no results message if it exists
+                            // Hide no results message
                             const noResultsMessage = document.getElementById('noResultsMessage');
                             if (noResultsMessage) {
                                 noResultsMessage.style.display = 'none';
                             }
                             
-                            // Get the product row container and restore center alignment
+                            // Remove center alignment
                             const productRow = document.querySelector('.row.gx-4.gx-lg-5');
                             if (productRow) {
-                                productRow.classList.add('justify-content-center');
+                                productRow.classList.remove('justify-content-center');
                             }
                         });
-                    }
+                    });
                 }
             });
         </script>
-        
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="static/js/scripts.js"></script>
-        <!-- Cart JS -->
-        <script src="static/js/cart.js"></script>
-        <!-- Product Options Modal JS -->
-        <script src="static/js/product-options-modal.js"></script>
     </body>
 </html>
         

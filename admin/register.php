@@ -43,8 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (mysqli_stmt_execute($stmt_insert)) {
                 $success_message = "Registration successful! You can now <a href='login.php'>login</a>.";
-                // Optionally redirect to login page after a delay or upon success message click
-                // header("refresh:5;url=login.php"); 
             } else {
                 $error = "Error during registration: " . mysqli_error($conn);
             }
@@ -76,10 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="../public/static/css/styles.css" rel="stylesheet" />
     <!-- Admin Dashboard Styles -->
     <link href="static/css/admin-dashboard.css" rel="stylesheet" />
-    <!-- Login Page Styles -->
-    <link href="static/css/login.css" rel="stylesheet" />
 </head>
-<body>
+<body class="login-page">
     <div class="login-container">
         <div class="login-header">
             <span class="login-brand">Timeless Elegance</span>

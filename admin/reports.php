@@ -2,11 +2,7 @@
 // Set page title
 $page_title = "Sales Reports";
 
-// Add custom CSS and JS for this page
-$extra_css = '<link href="static/css/reports.css" rel="stylesheet" />';
 
-$extra_js = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Reports chart functionality is now included in main.js -->';
 
 // Include header
 require_once 'includes/header.php'; // This should include db_connect.php which defines $conn
@@ -27,7 +23,10 @@ if (isset($_GET['status']) && !empty($_GET['status'])) {
 }
 
 // Define possible order statuses (adjust if needed based on your system)
-$possible_statuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Refunded'];
+$possible_statuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'];
+
+// Display versions of statuses (for UI display)
+$display_statuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Refunded'];
 
 // Get sales data
 $sales_sql = "SELECT DATE(order_date) as date, COUNT(*) as order_count, SUM(total_amount) as total_sales 
@@ -97,16 +96,15 @@ try {
     mysqli_stmt_close($total_stmt);
 } catch (Exception $e) {
     error_log("Database error fetching total sales: " . $e->getMessage());
-    $total_data = ['order_count' => 0, 'total_sales' => 0]; // Default values on error
+    $total_data = ['order_count' => 0, 'total_sales' => 0]; 
     $error_message = "Error fetching total sales data.";
 }
 
 // Get top selling products
-$products_sql = "SELECT p.id, p.productName, p.category, SUM(oi.quantity) as total_quantity, SUM(oi.quantity * oi.price) as total_sales 
+$products_sql = "SELECT oi.product_name as productName, SUM(oi.quantity) as total_quantity, SUM(oi.quantity * oi.price) as total_sales 
                 FROM order_items oi 
-                JOIN product p ON oi.product_id = p.id 
                 JOIN orders o ON oi.order_id = o.id 
-                WHERE o.order_date BETWEEN ? AND ?";
+                WHERE o.order_date BETWEEN ? AND ? ";
 $params_prod = [$start_date, $end_date_adj];
 $types_prod = "ss";
 
@@ -119,7 +117,7 @@ if ($status_filter !== 'all') {
     // $products_sql .= " AND o.status != 'Cancelled'"; 
 }
 
-$products_sql .= " GROUP BY p.id ORDER BY total_quantity DESC LIMIT 10";
+$products_sql .= " GROUP BY oi.product_name ORDER BY total_quantity DESC LIMIT 10";
 
 try {
     $products_stmt = mysqli_prepare($conn, $products_sql);
@@ -249,15 +247,15 @@ $orders_json = json_encode($orders);
                             <label for="status" class="form-label">Order Status</label>
                             <select class="form-select" id="status" name="status">
                                 <option value="all" <?php echo ($status_filter == 'all') ? 'selected' : ''; ?>>All Statuses</option>
-                                <?php foreach ($possible_statuses as $status): ?>
+                                <?php foreach ($possible_statuses as $key => $status): ?>
                                     <option value="<?php echo htmlspecialchars($status); ?>" <?php echo ($status_filter == $status) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($status); ?>
+                                        <?php echo htmlspecialchars($display_statuses[$key]); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <button type="submit" class="btn-admin w-100">Apply Filters</button>
+                            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
                         </div>
                     </form>
                 </div>
@@ -325,7 +323,6 @@ $orders_json = json_encode($orders);
                                     <thead>
                                         <tr>
                                             <th>Product</th>
-                                            <th>Category</th>
                                             <th>Quantity</th>
                                             <th>Sales</th>
                                         </tr>
@@ -335,14 +332,13 @@ $orders_json = json_encode($orders);
                                             <?php foreach ($top_products as $product): ?>
                                                 <tr>
                                                     <td><?php echo $product['productName']; ?></td>
-                                                    <td><?php echo $product['category']; ?></td>
                                                     <td><?php echo $product['total_quantity']; ?></td>
                                                     <td>$<?php echo number_format($product['total_sales'], 2); ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         <?php else: ?>
                                             <tr>
-                                                <td colspan="4" class="text-center">No data available</td>
+                                                <td colspan="3" class="text-center">No data available</td>
                                             </tr>
                                         <?php endif; ?>
                                     </tbody>
@@ -407,8 +403,12 @@ $orders_json = json_encode($orders);
                                             <td><?php echo $order['firstName'] . ' ' . $order['lastName']; ?></td>
                                             <td>$<?php echo number_format($order['total_amount'] ?? 0, 2); ?></td>
                                             <td>
-                                                <div class="order-status status-<?php echo strtolower($order['status']); ?>">
-                                                    <?php echo $order['status']; ?>
+                                                <div class="order-status status-<?php echo $order['status']; ?>">
+                                                    <?php 
+                                                    // Find the display version of the status
+                                                    $status_key = array_search($order['status'], $possible_statuses);
+                                                    echo $display_statuses[$status_key]; 
+                                                    ?>
                                                 </div>
                                             </td>
                                             <td>
@@ -427,17 +427,84 @@ $orders_json = json_encode($orders);
                         </table>
                     </div>
                     <div class="mt-3 text-end">
-                        <!-- Applied btn-admin class and text-end for right alignment -->
-                        <a href="orders.php" class="btn-admin">View All Orders</a> 
+                        <!-- Updated to match CHANGE PASSWORD button style -->
+                        <a href="orders.php" class="btn btn-primary">View All Orders</a> 
                     </div>
                 </div>
             <?php
-// Add chart initialization scripts
-$sales_chart_init = "<script>document.addEventListener('DOMContentLoaded', function() { if(typeof initSalesChart === 'function') { initSalesChart($dates_json, $sales_json); } });</script>";
-$orders_chart_init = "<script>document.addEventListener('DOMContentLoaded', function() { if(typeof initOrdersChart === 'function') { initOrdersChart($dates_json, $orders_json); } });</script>";
+// Add Chart.js library
+echo "<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>";
 
-// Include footer with extra JS
-$extra_js .= $sales_chart_init;
-$extra_js .= $orders_chart_init;
+// Define chart initialization functions
+echo "<script>
+function initSalesChart(dates, salesData) {
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Sales ($)',
+                data: salesData,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function initOrdersChart(dates, ordersData) {
+    const ctx = document.getElementById('ordersChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Orders',
+                data: ordersData,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+}
+</script>";
+
+// Add chart initialization scripts and output them
+$sales_chart_init = "<script>document.addEventListener('DOMContentLoaded', function() { initSalesChart($dates_json, $sales_json); });</script>";
+$orders_chart_init = "<script>document.addEventListener('DOMContentLoaded', function() { initOrdersChart($dates_json, $orders_json); });</script>";
+
+echo $sales_chart_init;
+echo $orders_chart_init;
+
 require_once 'includes/footer.php';
 ?>

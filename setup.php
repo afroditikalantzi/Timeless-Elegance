@@ -9,8 +9,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Start output buffering to capture all messages
-ob_start();
+
 
 // Database connection parameters
 $dbserver = "localhost";
@@ -27,9 +26,9 @@ if (!$conn) {
 // Create database if it doesn't exist
 $sql = "CREATE DATABASE IF NOT EXISTS eshop";
 if (mysqli_query($conn, $sql)) {
-    echo "Database created successfully<br>";
+    echo "<div class='setup-success'>✓ Database created successfully</div>";
 } else {
-    echo "Error creating database: " . mysqli_error($conn) . "<br>";
+    echo "<div class='setup-error'>❌ Error creating database: " . mysqli_error($conn) . "</div>";
 }
 
 // Select the database
@@ -48,9 +47,9 @@ $sql = "CREATE TABLE IF NOT EXISTS product (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "Table product created successfully<br>";
+    echo "<div class='setup-success'>✓ Table product created successfully</div>";
 } else {
-    echo "Error creating table: " . mysqli_error($conn) . "<br>";
+    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create category table
@@ -61,9 +60,9 @@ $sql = "CREATE TABLE IF NOT EXISTS category (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "Table category created successfully<br>";
+    echo "<div class='setup-success'>✓ Table category created successfully</div>";
 } else {
-    echo "Error creating table: " . mysqli_error($conn) . "<br>";
+    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create customer table
@@ -81,9 +80,9 @@ $sql = "CREATE TABLE IF NOT EXISTS customer (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "Table customer created successfully<br>";
+    echo "<div class='setup-success'>✓ Table customer created successfully</div>";
 } else {
-    echo "Error creating table: " . mysqli_error($conn) . "<br>";
+    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create orders table
@@ -103,9 +102,9 @@ $sql = "CREATE TABLE IF NOT EXISTS orders (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "Table orders created successfully<br>";
+    echo "<div class='setup-success'>✓ Table orders created successfully</div>";
 } else {
-    echo "Error creating table: " . mysqli_error($conn) . "<br>";
+    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create admin table
@@ -118,9 +117,9 @@ $sql = "CREATE TABLE IF NOT EXISTS admin (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "Table admin created successfully<br>";
+    echo "<div class='setup-success'>✓ Table admin created successfully</div>";
 } else {
-    echo "Error creating table: " . mysqli_error($conn) . "<br>";
+    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create settings table
@@ -132,9 +131,9 @@ $sql = "CREATE TABLE IF NOT EXISTS settings (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "Table settings created successfully<br>";
+    echo "<div class='setup-success'>✓ Table settings created successfully</div>";
 } else {
-    echo "Error creating table: " . mysqli_error($conn) . "<br>";
+    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create order_items table for order details
@@ -152,9 +151,9 @@ $sql = "CREATE TABLE IF NOT EXISTS order_items (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "Table order_items created successfully<br>";
+    echo "<div class='setup-success'>✓ Table order_items created successfully</div>";
 } else {
-    echo "Error creating table: " . mysqli_error($conn) . "<br>";
+    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 
@@ -185,9 +184,9 @@ if (mysqli_num_rows($check) == 0) {
        ";
     
     if (mysqli_query($conn, $sql)) {
-        echo "Data inside the product table inserted successfully<br>";
+        echo "<div class='setup-success'>✓ Sample products added successfully</div>";
     } else {
-        echo "Error inserting sample products: " . mysqli_error($conn) . "<br>";
+        echo "<div class='setup-error'>❌ Error adding sample products: " . mysqli_error($conn) . "</div>";
     }
 }
 
@@ -203,9 +202,10 @@ if (mysqli_num_rows($check) == 0) {
             ('$admin_username', '$hashed_password', '$admin_email')";
     
     if (mysqli_query($conn, $sql)) {
-        echo "Admin created successfully with this credentials (username: $admin_username, password: $admin_password)<br>";
+        echo "<div class='setup-success'>✓ Admin account created successfully</div>";
+        echo "<div class='setup-credentials'><strong>Login credentials:</strong> Username: <code>$admin_username</code>, Password: <code>$admin_password</code></div>";
     } else {
-        echo "Error creating admin: " . mysqli_error($conn) . "<br>";
+        echo "<div class='setup-error'>❌ Error creating admin account: " . mysqli_error($conn) . "</div>";
     }
 }
 
@@ -218,9 +218,9 @@ if (mysqli_num_rows($check) == 0) {
             ('items_per_page', '10')";
     
     if (mysqli_query($conn, $sql)) {
-        echo "Default settings created successfully<br>";
+        echo "<div class='setup-success'>✓ Default settings created successfully</div>";
     } else {
-        echo "Error creating default settings: " . mysqli_error($conn) . "<br>";
+        echo "<div class='setup-error'>❌ Error creating default settings: " . mysqli_error($conn) . "</div>";
     }
 }
 
@@ -235,9 +235,9 @@ if (mysqli_num_rows($check) == 0) {
             ('Seasonal', 'Limited edition seasonal collections')";
     
     if (mysqli_query($conn, $sql)) {
-        echo "Data inside the category table inserted successfully<br>";
+        echo "<div class='setup-success'>✓ Sample categories added successfully</div>";
     } else {
-        echo "Error inserting sample categories: " . mysqli_error($conn) . "<br>";
+        echo "<div class='setup-error'>❌ Error adding sample categories: " . mysqli_error($conn) . "</div>";
     }
 }
 
@@ -277,55 +277,107 @@ mysqli_close($conn);
         .setup-container {
             flex: 1;
             padding: 3rem 0;
+            background-color: #f9f7f5;
         }
 
         .setup-card {
             background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
             margin-bottom: 2rem;
-            border: 1px solid var(--border-color);
+            border: 1px solid #e8e4e0;
         }
 
         .setup-title {
-            font-family: var(--heading-font);
-            color: var(--primary-color);
-            font-size: 1.8rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: #333f4d;
+            font-size: 2.2rem;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             position: relative;
             padding-bottom: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             text-align: center;
         }
 
         .setup-title::after {
             content: '';
             position: absolute;
-            width: 60px;
-            height: 2px;
-            background-color: var(--secondary-color);
+            width: 80px;
+            height: 3px;
+            background-color: #c19a6b;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
         }
 
         .setup-messages {
-            background-color: var(--light-color);
-            border-radius: 5px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            max-height: 400px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            max-height: 450px;
             overflow-y: auto;
-            border: 1px solid var(--border-color);
+            border: 1px solid #e8e4e0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
         }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        
+        .setup-success {
+            color: #2e7d32;
+            background-color: #e8f5e9;
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            font-weight: 500;
         }
+        
+        .setup-error {
+            color: #c62828;
+            background-color: #ffebee;
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .setup-credentials {
+            background-color: #fff8e1;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .setup-credentials code {
+            background-color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #d81b60;
+            font-weight: bold;
+        }
+        
+        .setup-messages br {
+            display: block;
+            margin: 8px 0;
+            content: "";
+        }
+        
+        .setup-card h1 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .setup-card .btn {
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 10px 25px;
+            transition: all 0.3s ease;
+        }
+   
     </style>
 </head>
 <body>
@@ -344,13 +396,18 @@ mysqli_close($conn);
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="setup-card">
-                        <h1 class="setup-title">Eshop Setup</h1>
+                        <h1 class="setup-title">Timeless Elegance Shop Setup</h1>
+                        <p class="text-center mb-4" style="color: #666; font-family: 'Montserrat', sans-serif;">The database and required tables have been created successfully.</p>
                         <div class="setup-messages">
                             <?php echo $setup_messages; ?>
                         </div>
                         <div class="text-center mt-4">
-                            <a href="public/index.php" class="btn-primary me-3">Go to Store</a>
-                            <a href="admin/login.php" class="btn-primary">Admin Dashboard</a>
+                            <a href="public/index.php" class="btn btn-primary me-3" style="background-color: #c19a6b; border-color: #c19a6b; font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: 0.5px; padding: 12px 25px;">
+                                <i class="bi bi-shop me-2"></i>Go to Store
+                            </a>
+                            <a href="admin/login.php" class="btn btn-outline-secondary" style="color: #333f4d; border-color: #e8e4e0; font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: 0.5px; padding: 12px 25px;">
+                                <i class="bi bi-gear me-2"></i>Admin Dashboard
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -361,57 +418,16 @@ mysqli_close($conn);
     <!-- Footer-->
     <footer class="py-4">
         <div class="container">
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <h6 class="text-white mb-2">Timeless Elegance</h6>
-                    <p class="text-white-50 small mb-0">Crafting premium menswear with exceptional attention to detail since 2010.</p>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h6 class="text-white mb-2">Collections</h6>
-                    <ul class="list-unstyled text-white-50 small mb-0">
-                        <li class="mb-1"><a href="public/category.php?categ=Shirts" class="text-white-50 text-decoration-none">Designer Shirts</a></li>
-                        <li class="mb-1"><a href="public/category.php?categ=Blazers" class="text-white-50 text-decoration-none">Premium Blazers</a></li>
-                        <li class="mb-1"><a href="public/category.php?categ=Trousers" class="text-white-50 text-decoration-none">Tailored Trousers</a></li>
-                        <li class="mb-1"><a href="public/category.php?categ=Seasonal" class="text-white-50 text-decoration-none">Limited Edition</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h6 class="text-white mb-2">Client Services</h6>
-                    <ul class="list-unstyled text-white-50 small mb-0">
-                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none">Shipping & Returns</a></li>
-                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none">Store Policy</a></li>
-                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none">Payment Methods</a></li>
-                        <li class="mb-1"><a href="#" class="text-white-50 text-decoration-none">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h6 class="text-white mb-2">Connect With Us</h6>
-                    <p class="text-white-50 small mb-1">15 Avenue des Champs-Élysées, Paris</p>
-                    <p class="text-white-50 small mb-2">Email: <a class="text-white-50 text-decoration-none" href="mailto:contact@timelesselegance.com">contact@timelesselegance.com</a></p>
-                    <div class="d-flex">
-                        <a href="#" class="text-white-50 me-3 social-icon"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white-50 me-3 social-icon"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white-50 me-3 social-icon"><i class="bi bi-pinterest"></i></a>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="m-0 text-white-50 small copyright">© <?php echo date('Y'); ?> Timeless Elegance. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="m-0 text-white-50 small copyright">
-                        <a href="#" class="text-white-50 text-decoration-none me-3">Privacy Policy</a>
-                        <a href="#" class="text-white-50 text-decoration-none">Terms of Service</a>
-                    </p>
+            <div class="row justify-content-center">
+                <div class="col-12 text-center">
+                    <p class="m-0 text-white-50 small copyright">© 2025 Timeless Elegance. All rights reserved.</p>
                 </div>
             </div>
         </div>
-        <!-- Bootstrap JS Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <!-- Custom JS -->
-        <script src="public/static/js/main.js"></script>
     </footer>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script src="public/static/js/main.js"></script>
 </body>
 </html>

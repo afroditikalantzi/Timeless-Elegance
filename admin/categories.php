@@ -105,28 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Handle edit request (from GET parameter)
-if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
-    $edit_id = intval($_GET['edit']);
-    try {
-        $edit_sql = "SELECT * FROM category WHERE id = ?";
-        $edit_stmt = mysqli_prepare($conn, $edit_sql);
-        mysqli_stmt_bind_param($edit_stmt, "i", $edit_id);
-        mysqli_stmt_execute($edit_stmt);
-        $edit_result = mysqli_stmt_get_result($edit_stmt);
-
-        if (mysqli_num_rows($edit_result) == 1) {
-            $edit_category = mysqli_fetch_assoc($edit_result);
-        } else {
-            $error_message = "Category not found.";
-        }
-        
-        mysqli_stmt_close($edit_stmt);
-    } catch (Exception $e) {
-        $error_message = "Database error fetching category details: " . $e->getMessage();
-    }
-}
-
 // Get all categories for display using mysqli
 try {
     // Get items per page setting
@@ -175,7 +153,7 @@ try {
 
                 <div class="row">
                     <div class="col-12 mb-4">
-                        <button type="button" class="btn-admin" data-bs-toggle="modal" data-bs-target="#categoryModal">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoryModal">
                             <i class="bi bi-plus-circle"></i> Add New Category
                         </button>
                     </div>

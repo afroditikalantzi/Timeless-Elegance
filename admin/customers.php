@@ -5,11 +5,6 @@ $page_title = 'Customer Management';
 // Include header file
 require_once 'includes/header.php'; // This includes db_connect.php which defines $conn
 
-// Initialize variables
-$edit_customer = null;
-$error_message = '';
-$success_message = '';
-
 // Process form submission for adding/editing a customer
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_customer'])) {
     // Get form data
@@ -74,10 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_customer'])) {
         }
     }
 }
-
-// Edit request is now handled by JavaScript via modal data attributes.
-// The $edit_customer variable is no longer needed for modal pre-population.
-// The form submission logic still handles updates based on $_POST['customer_id'].
 
 // Handle delete request
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
@@ -151,11 +142,6 @@ try {
 
 ?>
 
-<?php
-// No custom CSS needed, styles are in main styles.css
-$extra_css = '';
-?>
-
 <!-- Customers Content -->
             <div class="admin-content">
                 <?php if (!empty($success_message)): ?>
@@ -168,7 +154,7 @@ $extra_css = '';
 
                 <div class="row">
                     <div class="col-12 mb-4">
-                        <button type="button" class="btn-admin" data-bs-toggle="modal" data-bs-target="#customerModal">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerModal">
                             <i class="bi bi-plus-circle"></i> Add New Customer
                         </button>
                     </div>

@@ -1,8 +1,6 @@
-/* ===== MEDIA QUERIES ===== */
-
-/* Mobile and Tablet Styles */
+ 
 @media (max-width: 992px) {
-    /* Navbar styles */
+
     .navbar-collapse {
         background-color: white;
         padding: 1rem;
@@ -28,17 +26,14 @@
         box-shadow: none;
     }
     
-    /* Dropdown menu styles */
     .dropdown:hover .dropdown-menu {
         display: none !important;
     }
     
-    /* Fix for dropdown toggle icon */
     .dropdown:hover .toggle-icon::before {
         content: "+" !important;
     }
     
-    /* Ensure dropdown menu appears when clicked */
     .dropdown-toggle[aria-expanded="true"] + .dropdown-menu {
         display: block !important;
         position: static;
@@ -51,7 +46,6 @@
         margin-right: auto;
     }
     
-    /* Ensure toggle icon changes correctly when clicked */
     .dropdown-toggle[aria-expanded="true"] .toggle-icon::before {
         content: "−" !important;
     }
@@ -79,7 +73,8 @@
         opacity: 0.2;
     }
     
-    /* Card styles */
+ 
+
     .card {
         max-width: 100%;
         margin-bottom: 20px;
@@ -198,10 +193,15 @@
     .product-meta {
         margin-top: 1.5rem;
         padding-top: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
     }
     
     .meta-item {
         font-size: 0.85rem;
+        justify-content: flex-start;
+        padding: 0.5rem 0;
+        width: 100%;
     }
 }
 

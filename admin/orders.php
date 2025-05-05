@@ -2,28 +2,8 @@
 // Set page title
 $page_title = "Order Management";
 
-// Add custom CSS for order page
-$extra_css = '<style>
-    .customer-detail {
-        margin-bottom: 5px;
-    }
-    .customer-label {
-        width: 60px;
-    }
-    .order-items {
-        margin-top: 15px;
-    }
-</style>';
-
 // Include header
 require_once 'includes/header.php'; // This should include db_connect.php which defines $conn
-
-// Variables are already set in header.php
-// $success_message and $error_message
-
-// No longer need these variables since view functionality is moved to order_details.php
-
-// Update functionality has been moved to order_details.php
 
 // Handle delete request
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
@@ -101,9 +81,7 @@ try {
     mysqli_stmt_close($count_stmt);
 } catch (Exception $e) {
     $error_message = "Database error fetching orders: " . $e->getMessage();
-    // Optionally display an error message or log the error
 }
-
 ?>
 
 <!-- Content -->
@@ -116,7 +94,6 @@ try {
                     <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
                 <?php endif; ?>
 
-                <?php // The view functionality has been moved to order_details.php ?>
                     <div class="row">
                         <div class="col-12">
                             <div class="admin-card">
@@ -141,7 +118,7 @@ try {
                                                         <td>#<?php echo htmlspecialchars($order['id']); ?></td>
                                                         <td><?php echo date('M j, Y', strtotime($order['order_date'])); ?></td>
                                                         <td><?php echo htmlspecialchars($order['firstName'] . ' ' . $order['lastName']); ?></td>
-                                                        <td><?php echo htmlspecialchars($order['total_items']); ?> (<?php echo htmlspecialchars($order['item_count']); ?> products)</td>
+                                                        <td><?php echo htmlspecialchars($order['total_items']); ?></td>
                                                         <td>$<?php echo number_format($order['total'], 2); ?></td>
                                                         <td>
                                                             <div class="order-status status-<?php echo strtolower(htmlspecialchars($order['status'])); ?>">
@@ -169,7 +146,6 @@ try {
                             </div>
                         </div>
                     </div>
-                <?php // Removed extra endif here to fix parse error ?>
                 
                 <!-- Pagination Controls -->
                 <?php if ($total_pages > 1): ?>

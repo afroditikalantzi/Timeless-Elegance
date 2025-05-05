@@ -3,7 +3,7 @@
 <head>
     <?php require 'includes/header.php' ?>
     <style>
-        /* Checkout specific styles */
+        /* Essential checkout styles */
         .checkout-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -56,12 +56,6 @@
             color: white;
         }
         
-        .step.completed .step-number {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            color: white;
-        }
-        
         .step-title {
             font-family: var(--heading-font);
             color: var(--text-color);
@@ -81,7 +75,6 @@
         
         .checkout-section.active {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
         
         .checkout-card {
@@ -116,11 +109,6 @@
             transition: all 0.3s ease;
         }
         
-        .form-control:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 0.2rem rgba(var(--secondary-color-rgb), 0.25);
-        }
-        
         .payment-method {
             border: 1px solid var(--border-color);
             border-radius: 5px;
@@ -128,10 +116,6 @@
             margin-bottom: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-        }
-        
-        .payment-method:hover {
-            border-color: var(--secondary-color);
         }
         
         .payment-method.selected {
@@ -160,7 +144,6 @@
         
         .payment-method.selected .payment-method-details {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
         
         .order-item {
@@ -168,10 +151,6 @@
             align-items: center;
             padding: 1rem 0;
             border-bottom: 1px solid var(--border-color);
-        }
-        
-        .order-item:last-child {
-            border-bottom: none;
         }
         
         .order-item-details {
@@ -210,10 +189,6 @@
             transition: all 0.3s ease;
         }
         
-        .back-btn:hover {
-            background-color: var(--border-color);
-        }
-        
         .next-btn, .place-order-btn {
             background-color: var(--secondary-color);
             color: white;
@@ -222,16 +197,6 @@
             padding: 0.75rem 1.5rem;
             font-weight: 500;
             transition: all 0.3s ease;
-        }
-        
-        .next-btn:hover, .place-order-btn:hover {
-            background-color: var(--accent-color);
-            transform: translateY(-2px);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
         
         /* Order completion popup styles */
@@ -246,7 +211,6 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            backdrop-filter: blur(5px);
         }
         
         .order-completion-popup {
@@ -257,27 +221,12 @@
             max-width: 550px;
             width: 90%;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-            transform: translateY(50px) scale(0.95);
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .order-completion-popup.show {
-            transform: translateY(0) scale(1);
-            opacity: 1;
         }
         
         .success-icon {
             font-size: 5rem;
             color: #4CAF50;
             margin-bottom: 2rem;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
         }
         
         .order-completion-popup h3 {
@@ -305,13 +254,6 @@
             font-weight: 600;
             transition: all 0.3s ease;
             font-size: 1.2rem;
-            box-shadow: 0 4px 15px rgba(var(--secondary-color-rgb), 0.3);
-        }
-        
-        .order-completion-popup .main-btn:hover {
-            background-color: var(--accent-color);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(var(--accent-color-rgb), 0.4);
         }
     </style>
 </head>
@@ -405,9 +347,6 @@
                                         <option value="UK">United Kingdom</option>
                                         <option value="FR">France</option>
                                         <option value="DE">Germany</option>
-                                        <option value="IT">Italy</option>
-                                        <option value="ES">Spain</option>
-                                        <option value="AU">Australia</option>
                                     </select>
                                 </div>
                             </form>
@@ -455,32 +394,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="payment-method" data-method="paypal">
-                                    <div class="payment-method-header">
-                                        <div class="payment-method-title">
-                                            <i class="bi bi-paypal"></i> PayPal
-                                        </div>
-                                        <input type="radio" name="payment-method" value="paypal">
-                                    </div>
-                                    <div class="payment-method-details">
-                                        <p>You will be redirected to PayPal to complete your payment.</p>
-                                    </div>
-                                </div>
-                                <div class="payment-method" data-method="bank-transfer">
-                                    <div class="payment-method-header">
-                                        <div class="payment-method-title">
-                                            <i class="bi bi-bank"></i> Bank Transfer
-                                        </div>
-                                        <input type="radio" name="payment-method" value="bank-transfer">
-                                    </div>
-                                    <div class="payment-method-details">
-                                        <p>Please use the following information to make a bank transfer:</p>
-                                        <p><strong>Bank:</strong> Example Bank<br>
-                                        <strong>Account Name:</strong> Timeless Elegance<br>
-                                        <strong>Account Number:</strong> 1234567890<br>
-                                        <strong>Sort Code:</strong> 12-34-56</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="navigation-buttons">
@@ -506,7 +419,7 @@
                         <div class="checkout-card">
                             <h4>Payment Method</h4>
                             <div id="payment-summary">
-                                <!-- Payment method will be dynamically loaded here -->
+                                <!-- Payment information will be dynamically loaded here -->
                             </div>
                         </div>
                         <div class="navigation-buttons">
@@ -515,38 +428,42 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-lg-4">
-                    <div class="order-summary-card">
-                        <h5 class="order-summary-title">Order Summary</h5>
-                        <div id="order-summary-items">
-                            <!-- Order summary items will be dynamically loaded here -->
-                        </div>
-                        <hr>
-                        <div class="order-summary-row">
+                    <div class="checkout-card">
+                        <h4>Order Summary</h4>
+                        <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal</span>
-                            <span id="subtotal">0.00€</span>
+                            <span id="checkout-subtotal">0.00€</span>
                         </div>
-                        <div class="order-summary-row">
+                        <div class="d-flex justify-content-between mb-2">
                             <span>Shipping</span>
-                            <span id="shipping">0.00€</span>
+                            <span id="checkout-shipping">0.00€</span>
                         </div>
                         <hr>
-                        <div class="order-summary-row order-total">
+                        <div class="d-flex justify-content-between mb-0">
                             <strong>Total</strong>
-                            <strong id="total">0.00€</strong>
+                            <strong id="checkout-total">0.00€</strong>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
+    <!-- Order Completion Popup -->
+    <div class="order-completion-overlay" style="display: none;">
+        <div class="order-completion-popup">
+            <i class="bi bi-check-circle-fill success-icon"></i>
+            <h3>Thank You for Your Order!</h3>
+            <p>Your order has been successfully placed. You will receive a confirmation email shortly.</p>
+            <a href="index.php" class="main-btn">Continue Shopping</a>
+        </div>
+    </div>
 
     <!-- Footer-->
     <?php require 'includes/footer.php' ?>
-
-    <!-- Include form validation script -->
-    <script src="static/js/form-validation.js"></script>
-    <script src="static/js/checkout.js"></script>    
     
+    <script src="static/js/checkout.js"></script>
 </body>
 </html>

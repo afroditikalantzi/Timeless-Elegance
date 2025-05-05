@@ -2,10 +2,8 @@
 // Set page title
 $page_title = "Order Details";
 
-
-
 // Include header
-require_once 'includes/header.php'; // This includes db_connect.php which defines $conn
+require_once 'includes/header.php';
 
 // Initialize variables
 $order = null;
@@ -116,7 +114,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             <div class="col-md-4 mb-4">
                 <div class="admin-card">
                     <h3 class="admin-card-title">Update Order</h3>
-                    <form method="post" action="order_details.php?id=<?php echo $order['id']; ?>"> <!-- Keep order ID in URL after update -->
+                    <form method="post" action="order_details.php?id=<?php echo $order['id']; ?>">
                         <input type="hidden" name="order_id" value="<?php echo htmlspecialchars($order['id']); ?>">
                         
                         <div class="mb-3">
@@ -197,7 +195,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     <?php else: ?>
         <div class="alert alert-warning">Order not found or no order ID provided. <a href="orders.php">Return to order list</a>.</div>
     <?php endif; ?>
-</div> <!-- Closing admin-content -->
+</div>
 
 <?php
 // Include footer
