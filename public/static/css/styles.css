@@ -1223,11 +1223,6 @@ section.py-5 {
     flex-shrink: 0;
 }
 
-/* Related products section styling */
-.relProd {
-    background-color: var(--light-color);
-    padding: 3rem 0;
-}
 
 
 /* Cart Modal */

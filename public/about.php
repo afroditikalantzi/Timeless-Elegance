@@ -17,9 +17,9 @@
                 <h2 class="text-center section-title mb-5">ABOUT US</h2>
                 
                 <!-- You could reduce the number of sections if desired -->
-                <div class="row gx-5 mb-5 align-items-center">
+                <div class="row gx-2 mb-5 align-items-center">
                     <div class="col-lg-6">
-                        <img class="img-fluid rounded mb-5 mb-lg-0" src="https://placehold.co/600x400?text=Our+Story" alt="Our Story" />
+                    <img class="img-fluid rounded mb-5 mb-lg-0 w-50 mx-auto mx-lg-0"  src="static/images/about_page/story.png" alt="Our Story" />
                     </div>
                     <div class="col-lg-6">
                         <h3 class="mb-3">Our Story</h3>
@@ -28,9 +28,9 @@
                     </div>
                 </div>
                 
-                <div class="row gx-5 mb-5 align-items-center flex-lg-row-reverse">
+                <div class="row gx-2 mb-5 align-items-center flex-lg-row-reverse">
                     <div class="col-lg-6">
-                        <img class="img-fluid rounded mb-5 mb-lg-0" src="https://placehold.co/600x400?text=Our+Philosophy" alt="Our Philosophy" />
+                    <img class="img-fluid rounded mb-5 mb-lg-0 w-50 mx-auto mx-lg-0 ms-lg-auto d-block" src="static/images/about_page/philosophy.png" alt="Our Philosophy" />
                     </div>
                     <div class="col-lg-6">
                         <h3 class="mb-3">Our Philosophy</h3>
@@ -39,9 +39,9 @@
                     </div>
                 </div>
                 
-                <div class="row gx-5 mb-5 align-items-center">
+                <div class="row gx-2 mb-5 align-items-center">
                     <div class="col-lg-6">
-                        <img class="img-fluid rounded mb-5 mb-lg-0" src="https://placehold.co/600x400?text=Our+Craftsmanship" alt="Our Craftsmanship" />
+                    <img class="img-fluid rounded mb-5 mb-lg-0 w-50 mx-auto mx-lg-0" src="static/images/about_page/craftsmanship.png" alt="Our Craftsmanship" />
                     </div>
                     <div class="col-lg-6">
                         <h3 class="mb-3">Our Craftsmanship</h3>

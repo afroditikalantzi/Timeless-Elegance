@@ -9,8 +9,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-
 // Database connection parameters
 $dbserver = "localhost";
 $mysql_username = "root";
@@ -26,9 +24,9 @@ if (!$conn) {
 // Create database if it doesn't exist
 $sql = "CREATE DATABASE IF NOT EXISTS eshop";
 if (mysqli_query($conn, $sql)) {
-    echo "<div class='setup-success'>✓ Database created successfully</div>";
+    echo "<div class='setup-success'>Database created successfully</div>";
 } else {
-    echo "<div class='setup-error'>❌ Error creating database: " . mysqli_error($conn) . "</div>";
+    echo "<div class='setup-error'>Error creating database: " . mysqli_error($conn) . "</div>";
 }
 
 // Select the database
@@ -42,14 +40,14 @@ $sql = "CREATE TABLE IF NOT EXISTS product (
     price DECIMAL(10,2) NOT NULL,
     salePrice DECIMAL(10,2) DEFAULT 0,
     category VARCHAR(50),
-    thumbnail VARCHAR(255),
+    image VARCHAR(255),
     feature TINYINT(1) DEFAULT 0
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "<div class='setup-success'>✓ Table product created successfully</div>";
+    echo "<div class='setup-success'>Table product created successfully</div>";
 } else {
-    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
+    echo "<div class='setup-error'>Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create category table
@@ -60,9 +58,9 @@ $sql = "CREATE TABLE IF NOT EXISTS category (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "<div class='setup-success'>✓ Table category created successfully</div>";
+    echo "<div class='setup-success'>Table category created successfully</div>";
 } else {
-    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
+    echo "<div class='setup-error'>Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create customer table
@@ -80,9 +78,9 @@ $sql = "CREATE TABLE IF NOT EXISTS customer (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "<div class='setup-success'>✓ Table customer created successfully</div>";
+    echo "<div class='setup-success'>Table customer created successfully</div>";
 } else {
-    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
+    echo "<div class='setup-error'>Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create orders table
@@ -102,9 +100,9 @@ $sql = "CREATE TABLE IF NOT EXISTS orders (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "<div class='setup-success'>✓ Table orders created successfully</div>";
+    echo "<div class='setup-success'>Table orders created successfully</div>";
 } else {
-    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
+    echo "<div class='setup-error'>Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create admin table
@@ -117,9 +115,9 @@ $sql = "CREATE TABLE IF NOT EXISTS admin (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "<div class='setup-success'>✓ Table admin created successfully</div>";
+    echo "<div class='setup-success'>Table admin created successfully</div>";
 } else {
-    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
+    echo "<div class='setup-error'>Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create settings table
@@ -131,9 +129,9 @@ $sql = "CREATE TABLE IF NOT EXISTS settings (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "<div class='setup-success'>✓ Table settings created successfully</div>";
+    echo "<div class='setup-success'>Table settings created successfully</div>";
 } else {
-    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
+    echo "<div class='setup-error'>Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 // Create order_items table for order details
@@ -151,9 +149,9 @@ $sql = "CREATE TABLE IF NOT EXISTS order_items (
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "<div class='setup-success'>✓ Table order_items created successfully</div>";
+    echo "<div class='setup-success'>Table order_items created successfully</div>";
 } else {
-    echo "<div class='setup-error'>❌ Error creating table: " . mysqli_error($conn) . "</div>";
+    echo "<div class='setup-error'>Error creating table: " . mysqli_error($conn) . "</div>";
 }
 
 
@@ -163,30 +161,30 @@ if (mysqli_query($conn, $sql)) {
 // Check if product data already exists
 $check = mysqli_query($conn, "SELECT * FROM product LIMIT 1");
 if (mysqli_num_rows($check) == 0) {
-    $sql = "INSERT INTO product (productName, description, price, salePrice, category, thumbnail, feature) 
+    $sql = "INSERT INTO product (productName, description, price, salePrice, category, image, feature) 
         VALUES 
-        ('Tailored Oxford Shirt', 'Crafted from premium Egyptian cotton with mother-of-pearl buttons. A timeless addition to any gentleman\'s wardrobe.', 120.00, 0, 'Shirts', 'assets/Placeholder-Image.jpg', 1),
-        ('Italian Linen Shirt', 'Lightweight and breathable Italian linen, perfect for warm weather occasions. Features a modern slim fit with subtle texture.', 95.00, 85.00, 'Shirts', 'assets/Placeholder-Image.jpg', 0),
-        ('French Cuff Dress Shirt', 'Elegant dress shirt with French cuffs, ideal for formal events. Made from 120-thread count cotton with a subtle herringbone pattern.', 110.00, 0, 'Shirts', 'assets/Placeholder-Image.jpg', 0),
+        ('Tailored Oxford Shirt', 'Crafted from premium Egyptian cotton with mother-of-pearl buttons. A timeless addition to any gentleman\'s wardrobe.', 120.00, 0, 'Shirts', 'static/images/products/tailored-oxford-shirt.png', 1),
+        ('Italian Linen Shirt', 'Lightweight and breathable Italian linen, perfect for warm weather occasions. Features a modern slim fit with subtle texture.', 95.00, 85.00, 'Shirts', 'static/images/products/italian-linen-shirt.png', 0),
+        ('French Cuff Dress Shirt', 'Elegant dress shirt with French cuffs, ideal for formal events. Made from 120-thread count cotton with a subtle herringbone pattern.', 110.00, 0, 'Shirts', 'static/images/products/french-cuff-dress-shirt.png', 0),
         
-        ('Cashmere Wool Blazer', 'Luxurious cashmere-wool blend blazer with hand-stitched details and horn buttons. Perfect for both formal and smart-casual occasions.', 450.00, 0, 'Blazers', 'assets/Placeholder-Image.jpg', 1),
-        ('Italian Silk Blazer', 'Lightweight summer blazer crafted from the finest Italian silk. Features a half-canvas construction and mother-of-pearl buttons.', 380.00, 320.00, 'Blazers', 'assets/Placeholder-Image.jpg', 0),
-        ('Herringbone Tweed Blazer', 'Classic herringbone pattern in premium British tweed. Fully lined with custom paisley print and genuine leather elbow patches.', 395.00, 0, 'Blazers', 'assets/Placeholder-Image.jpg', 0),
+        ('Cashmere Wool Blazer', 'Luxurious cashmere-wool blend blazer with hand-stitched details and horn buttons. Perfect for both formal and smart-casual occasions.', 450.00, 0, 'Blazers', 'static/images/products/cashmere-wool-blazer.png', 1),
+        ('Italian Silk Blazer', 'Lightweight summer blazer crafted from the finest Italian silk. Features a half-canvas construction and mother-of-pearl buttons.', 380.00, 320.00, 'Blazers', 'static/images/products/italian-silk-blazer.png', 0),
+        ('Herringbone Tweed Blazer', 'Classic herringbone pattern in premium British tweed. Fully lined with custom paisley print and genuine leather elbow patches.', 395.00, 0, 'Blazers', 'static/images/products/herringbone-tweed-blazer.png', 0),
         
-        ('Merino Wool Trousers', 'Tailored from superfine merino wool with a natural stretch for comfort. Features side adjusters and a clean, flat front design.', 180.00, 0, 'Trousers', 'assets/Placeholder-Image.jpg', 1),
-        ('Italian Cotton Chinos', 'Premium cotton chinos with a subtle texture. Garment-dyed for rich color and pre-washed for a comfortable feel from the first wear.', 140.00, 120.00, 'Trousers', 'assets/Placeholder-Image.jpg', 0),
-        ('Tailored Flannel Trousers', 'Luxurious flannel trousers with a classic fit. Perfect for cooler weather with a soft hand feel and elegant drape.', 165.00, 0, 'Trousers', 'assets/Placeholder-Image.jpg', 0),
+        ('Merino Wool Trousers', 'Tailored from superfine merino wool with a natural stretch for comfort. Features side adjusters and a clean, flat front design.', 180.00, 0, 'Trousers', 'static/images/products/merino-wool-trousers.png', 1),
+        ('Italian Cotton Chinos', 'Premium cotton chinos with a subtle texture. Garment-dyed for rich color and pre-washed for a comfortable feel from the first wear.', 140.00, 120.00, 'Trousers', 'static/images/products/italian-cotton-chinos.png', 0),
+        ('Tailored Flannel Trousers', 'Luxurious flannel trousers with a classic fit. Perfect for cooler weather with a soft hand feel and elegant drape.', 165.00, 0, 'Trousers', 'static/images/products/tailored-flannel-trousers.png', 0),
         
-        ('Limited Edition Linen Suit', 'Exclusive summer collection featuring a lightweight linen suit in a distinctive sand tone. Limited quantities available.', 580.00, 0, 'Seasonal', 'assets/Placeholder-Image.jpg', 1),
-        ('Autumn Cashmere Sweater', 'Seasonal pure cashmere sweater with a contemporary fit. Perfect layering piece for the autumn months.', 220.00, 190.00, 'Seasonal', 'assets/Placeholder-Image.jpg', 0),
-        ('Winter Collection Overcoat', 'Premium wool-blend overcoat from our winter collection. Features a tailored silhouette and luxurious satin lining.', 495.00, 0, 'Seasonal', 'assets/Placeholder-Image.jpg', 0)
+        ('Limited Edition Linen Suit', 'Exclusive summer collection featuring a lightweight linen suit in a distinctive sand tone. Limited quantities available.', 580.00, 0, 'Seasonal', 'static/images/products/limited-edition-linen-suit.png', 1),
+        ('Autumn Cashmere Sweater', 'Seasonal pure cashmere sweater with a contemporary fit. Perfect layering piece for the autumn months.', 220.00, 190.00, 'Seasonal', 'static/images/products/autumn-cashmere-sweater.png', 0),
+        ('Winter Collection Overcoat', 'Premium wool-blend overcoat from our winter collection. Features a tailored silhouette and luxurious satin lining.', 495.00, 0, 'Seasonal', 'static/images/products/winter-collection-overcoat.png', 0)
 
        ";
     
     if (mysqli_query($conn, $sql)) {
-        echo "<div class='setup-success'>✓ Sample products added successfully</div>";
+        echo "<div class='setup-success'>Sample products added successfully</div>";
     } else {
-        echo "<div class='setup-error'>❌ Error adding sample products: " . mysqli_error($conn) . "</div>";
+        echo "<div class='setup-error'>Error adding sample products: " . mysqli_error($conn) . "</div>";
     }
 }
 
@@ -202,10 +200,10 @@ if (mysqli_num_rows($check) == 0) {
             ('$admin_username', '$hashed_password', '$admin_email')";
     
     if (mysqli_query($conn, $sql)) {
-        echo "<div class='setup-success'>✓ Admin account created successfully</div>";
+        echo "<div class='setup-success'>Admin account created successfully</div>";
         echo "<div class='setup-credentials'><strong>Login credentials:</strong> Username: <code>$admin_username</code>, Password: <code>$admin_password</code></div>";
     } else {
-        echo "<div class='setup-error'>❌ Error creating admin account: " . mysqli_error($conn) . "</div>";
+        echo "<div class='setup-error'>Error creating admin account: " . mysqli_error($conn) . "</div>";
     }
 }
 
@@ -218,9 +216,9 @@ if (mysqli_num_rows($check) == 0) {
             ('items_per_page', '10')";
     
     if (mysqli_query($conn, $sql)) {
-        echo "<div class='setup-success'>✓ Default settings created successfully</div>";
+        echo "<div class='setup-success'>Default settings created successfully</div>";
     } else {
-        echo "<div class='setup-error'>❌ Error creating default settings: " . mysqli_error($conn) . "</div>";
+        echo "<div class='setup-error'>Error creating default settings: " . mysqli_error($conn) . "</div>";
     }
 }
 
@@ -235,9 +233,9 @@ if (mysqli_num_rows($check) == 0) {
             ('Seasonal', 'Limited edition seasonal collections')";
     
     if (mysqli_query($conn, $sql)) {
-        echo "<div class='setup-success'>✓ Sample categories added successfully</div>";
+        echo "<div class='setup-success'>Sample categories added successfully</div>";
     } else {
-        echo "<div class='setup-error'>❌ Error adding sample categories: " . mysqli_error($conn) . "</div>";
+        echo "<div class='setup-error'>Error adding sample categories: " . mysqli_error($conn) . "</div>";
     }
 }
 
@@ -258,7 +256,7 @@ mysqli_close($conn);
     <meta name="description" content="Timeless Elegance - Premium Men's Clothing" />
     <meta name="author" content="Timeless Elegance" />
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="public/static/assets/favicon.png" />
+    <link rel="icon" type="image/x-icon" href="public/static/static/images/products//favicon.png" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Bootstrap icons-->

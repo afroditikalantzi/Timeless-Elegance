@@ -146,7 +146,7 @@
                                      data-sale-price="<?php echo htmlspecialchars($item['salePrice']); ?>" 
                                      data-display-price="<?php echo htmlspecialchars($displayPrice); ?>">
                                     <div class="card-img-container">
-                                        <img class="card-img" src="https://placehold.co/400x300?text=<?php echo urlencode($item['productName']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" />
+                                        <img class="card-img" src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" />
                                         <?php if($item['salePrice'] != 0){ ?>
                                             <span class="card-tag">SALE</span>
                                         <?php } ?>

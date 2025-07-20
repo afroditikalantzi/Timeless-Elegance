@@ -26,15 +26,15 @@
         <section class="py-5 product-details-section">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6">
+                <div class="col-md-5 col-lg-4">
                         <div class="product-image-container">
-                            <img class="product-detail-img" src="https://placehold.co/600x700?text=<?php echo urlencode($item['productName']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" />
+                            <img class="product-detail-img" src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" />
                             <?php if($item['salePrice'] != 0){ ?>
                                 <span class="card-tag">SALE</span>
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-lg-8">
                         <div class="product-info">
                             <h1 class="product-title"><?php echo htmlspecialchars($item['productName']) ?></h1>
                             
@@ -158,7 +158,7 @@
                     <div class="col mb-5">
                         <div class="card" data-color="" data-size="" data-display-price="<?php echo htmlspecialchars($displayPrice); ?>" data-sale-price="<?php echo htmlspecialchars($item['salePrice']); ?>">
                             <div class="card-img-container">
-                                <img class="card-img" src="https://placehold.co/400x300?text=<?php echo urlencode($item['productName']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" />
+                                <img class="card-img" src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" />
                                 <?php if($item['salePrice'] != 0){ ?>
                                     <span class="card-tag">SALE</span>
                                 <?php } ?>

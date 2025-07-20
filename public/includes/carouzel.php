@@ -7,13 +7,13 @@
   <div class="carousel-inner">
 
     <div class="carousel-item active">
-      <img src="https://placehold.co/1200x400?text=TIMELESS+ELEGANCE" class="d-block w-100" alt="Welcome">
+      <img src="./static/images/carouzel/the-art-of-craftsmanship.png" class="d-block w-100" alt="The Art of Craftsmanship">
     </div>
     <div class="carousel-item">
-      <a href="../category.php?categ=Seasonal"><img src="https://placehold.co/1200x400?text=SUMMER+COLLECTION" class="d-block w-100" alt="Summer Collection"></a>
+      <a href="../category.php?categ=Seasonal"><img src="./static/images/carouzel/summer-collection.png" class="d-block w-100" alt="Summer Collection"></a>
     </div>
     <div class="carousel-item">
-      <a href="../category.php?categ=Trousers"><img src="https://placehold.co/1200x400?text=SPECIAL+OFFERS" class="d-block w-100" alt="Special Offers"></a>
+      <a href="../category.php?categ=Trousers"><img src="./static/images/carouzel/limited-edition-capsule.png" class="d-block w-100" alt="Limited-Edition Capsule"></a>
     </div>
     
   </div>
