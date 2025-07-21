@@ -10,6 +10,8 @@
     <!-- Navigation-->
     <?php require 'includes/navbar.php' ?>
 
+    
+
     <!-- Cart section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5">
@@ -42,7 +44,7 @@
                             <strong>Total</strong>
                             <strong id="total">0.00€</strong>
                         </div>
-                        <a href="checkout.php" id="checkoutBtn" class="checkout-btn w-100 d-inline-block text-center text-decoration-none" style="line-height: 2.5rem;" disabled>Proceed to Checkout</a>
+                        <a href="checkout.php" id="checkoutBtn" class="checkout-btn btn" style="line-height: 2.5rem; font-size: 1rem; " disabled>Proceed to Checkout</a>
                     </div>
                 </div>
             </div>

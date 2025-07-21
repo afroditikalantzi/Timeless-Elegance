@@ -5,7 +5,7 @@
         </a>
 
         <button class="navbar-toggler second-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <div class="animated-icon2">
+            <div class="animated-icon">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -31,7 +31,7 @@
             <div class="d-flex align-items-center mobile-icons">
                 <a href="/Timeless-Elegance/public/cart.php" class="icon-link position-relative">
                     <i class="bi-cart-fill"></i>
-                    <span class="cart-badge badge-circle" id="cartBadge"></span>
+                    <span class="cart-badge" id="cartBadge"></span>
                 </a>
             </div>
         </div>

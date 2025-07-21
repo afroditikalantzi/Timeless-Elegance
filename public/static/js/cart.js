@@ -6,27 +6,33 @@
 
 // Add to cart function
 function addToCart() {
-    const productName = document.querySelector('.product-title').textContent;
-    
-    // Get the selected product attributes
-    const color = document.querySelector('input[name="productColor"]:checked').value;
-    const size = document.querySelector('input[name="productSize"]:checked').value;
-    const quantity = parseInt(document.getElementById('inputQuantity').value);
-    
-    // Get the product URL to identify which product variation we're looking at
     const productUrl = window.location.href;
     const urlParams = new URLSearchParams(window.location.search);
     const productParam = urlParams.get('prod');
+    const productId = urlParams.get('prod');
+    // (Optional debug)
+    console.log("👀 URL params:", window.location.search);
+    console.log("👀 productId =", productId);
+
+
+    const productName = document.querySelector('.product-title').textContent;
     
-    // Create a unique key for this product variation
-    const productVariationKey = `${productParam}-${size}-${color}`;
+    // Get the selected product attributes
+    const rawColor = document.querySelector('input[name="productColor"]:checked').value;
+    const color    = rawColor.charAt(0).toUpperCase() + rawColor.slice(1).toLowerCase();
+    
+    const rawSize = document.querySelector('input[name="productSize"]:checked').value;
+    const size    = rawSize.toUpperCase();
+    
+    const quantity = parseInt(document.getElementById('inputQuantity').value);
+    
     
     // Get the price from the product details page
     let priceText = '';
     const priceContainer = document.querySelector('.product-price');
     
     if (priceContainer) {
-        // First check for sale price (highest priority)
+        // First check for sale price 
         const salePriceElement = priceContainer.querySelector('.sale-price');
         if (salePriceElement && salePriceElement.textContent.trim()) {
             priceText = salePriceElement.textContent;
@@ -100,6 +106,7 @@ function addToCart() {
     
     // Create cart item object
     const item = {
+        id: parseInt(productId, 10),
         name: productName,
         price: price,
         color: color,
@@ -129,7 +136,10 @@ function addToCart() {
     } else {
         // Add new item if it doesn't exist
         cart.push(item);
+        console.log("🛒 cart about to be saved:", cart);
     }
+
+
     
     // Save updated cart
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -242,7 +252,7 @@ function loadCart() {
     let cartHTML = '<div class="cart-items-container">';
     let subtotal = 0;
 
-    cart.forEach((item, index) => {
+    cart.forEach((item, index) => {        
         const itemTotal = item.price * item.quantity;
         subtotal += itemTotal;
         
@@ -314,16 +324,7 @@ function getColorCode(colorName) {
     const colorMap = {
         'Black': '#000000',
         'White': '#FFFFFF',
-        'Red': '#FF0000',
         'Blue': '#0000FF',
-        'Green': '#008000',
-        'Yellow': '#FFFF00',
-        'Purple': '#800080',
-        'Pink': '#FFC0CB',
-        'Orange': '#FFA500',
-        'Brown': '#A52A2A',
-        'Gray': '#808080',
-        'Beige': '#F5F5DC'
     };
     
     return colorMap[colorName] || '#CCCCCC'; // Default to gray if color not found

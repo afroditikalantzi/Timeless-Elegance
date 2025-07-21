@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadCartData() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    console.log("🛒 cart loaded in checkout:", cart);
     
 
     
@@ -25,8 +26,7 @@ function loadCartData() {
         
         orderSummaryHTML += `
             <div class="order-summary-row">
-                <span>${item.name} x ${item.quantity}</span>
-                <span>${itemTotal.toFixed(2)}€</span>
+                <span>${item.quantity} x ${item.name} </span>
             </div>
         `;
     });
@@ -37,9 +37,9 @@ function loadCartData() {
     const shipping = subtotal >= 50 ? 0 : 4.99;
     const total = subtotal + shipping;
     
-    document.getElementById('subtotal').textContent = subtotal.toFixed(2) + '€';
-    document.getElementById('shipping').textContent = shipping.toFixed(2) + '€';
-    document.getElementById('total').textContent = total.toFixed(2) + '€';
+    document.getElementById('checkout-subtotal').textContent = subtotal.toFixed(2) + '€';
+    document.getElementById('checkout-shipping').textContent = shipping.toFixed(2) + '€';
+    document.getElementById('checkout-total').textContent = total.toFixed(2) + '€';
     
     // Load order items for review section
     let orderItemsHTML = '';
@@ -65,25 +65,15 @@ function loadCartData() {
 }
 
 function initPaymentMethods() {
-    const paymentMethods = document.querySelectorAll('.payment-method');
-    
-    paymentMethods.forEach(method => {
-        method.addEventListener('click', function() {
-            // Remove selected class from all methods
-            paymentMethods.forEach(m => m.classList.remove('selected'));
-            
-            // Add selected class to clicked method
-            this.classList.add('selected');
-            
-            // Check the radio button
-            const radio = this.querySelector('input[type="radio"]');
-            radio.checked = true;
-        });
-    });
-    
-    // Select the first payment method by default
-    paymentMethods[0].click();
-}
+    const methods = document.querySelectorAll('.payment-method');
+    methods.forEach(m => m.addEventListener('click', () => {
+      methods.forEach(x => x.classList.remove('selected'));
+      m.classList.add('selected');
+      m.querySelector('input[type="radio"]').checked = true;
+    }));
+    // pick the first one by default
+    methods[0].click();
+  }
 
 function initNavigation() {
     // Shipping section navigation
@@ -98,12 +88,12 @@ function initNavigation() {
         goToSection('shipping-section');
     });
     
-    document.getElementById('payment-next').addEventListener('click', function() {
-        if (validatePaymentForm()) {
-            updateReviewSection();
-            goToSection('review-section');
-        }
-    });
+    // document.getElementById('payment-next').addEventListener('click', function() {
+    //     if (validatePaymentForm()) {
+    //         updateReviewSection();
+    //         goToSection('review-section');
+    //     }
+    // });
     
     // Review section navigation
     document.getElementById('review-back').addEventListener('click', function() {
@@ -324,6 +314,8 @@ function placeOrder() {
     // Disable place order button to prevent multiple submissions
     document.getElementById('place-order').disabled = true;
     document.getElementById('place-order').textContent = 'Processing...';
+
+    console.log("🛒 orderData about to be sent:", JSON.stringify(orderData, null, 2));
     
     // Send order data to server
     fetch('process_order.php', {

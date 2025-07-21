@@ -1,8 +1,4 @@
 <?php
-/**
- * Master Setup File for eShop
- * This file creates all database tables and inserts sample data
- */
 
 // Display all errors for debugging during setup
 ini_set('display_errors', 1);
@@ -180,7 +176,7 @@ if (mysqli_num_rows($check) == 0) {
         ('Winter Collection Overcoat', 'Premium wool-blend overcoat from our winter collection. Features a tailored silhouette and luxurious satin lining.', 495.00, 0, 'Seasonal', 'static/images/products/winter-collection-overcoat.png', 0)
 
        ";
-    
+
     if (mysqli_query($conn, $sql)) {
         echo "<div class='setup-success'>Sample products added successfully</div>";
     } else {
@@ -192,13 +188,13 @@ if (mysqli_num_rows($check) == 0) {
 $check = mysqli_query($conn, "SELECT * FROM admin LIMIT 1");
 if (mysqli_num_rows($check) == 0) {
     $admin_username = 'admin';
-    $admin_password = 'password123'; 
+    $admin_password = 'password123';
     $admin_email = 'admin@example.com';
     $hashed_password = password_hash($admin_password, PASSWORD_DEFAULT);
 
     $sql = "INSERT INTO admin (username, password, email) VALUES 
             ('$admin_username', '$hashed_password', '$admin_email')";
-    
+
     if (mysqli_query($conn, $sql)) {
         echo "<div class='setup-success'>Admin account created successfully</div>";
         echo "<div class='setup-credentials'><strong>Login credentials:</strong> Username: <code>$admin_username</code>, Password: <code>$admin_password</code></div>";
@@ -214,7 +210,7 @@ if (mysqli_num_rows($check) == 0) {
     $sql = "INSERT INTO settings (setting_name, setting_value) VALUES 
             ('maintenance_mode', '0'),
             ('items_per_page', '10')";
-    
+
     if (mysqli_query($conn, $sql)) {
         echo "<div class='setup-success'>Default settings created successfully</div>";
     } else {
@@ -231,7 +227,7 @@ if (mysqli_num_rows($check) == 0) {
             ('Blazers', 'Premium blazers and suit jackets for all occasions'),
             ('Trousers', 'Formal and casual trousers including chinos and dress pants'),
             ('Seasonal', 'Limited edition seasonal collections')";
-    
+
     if (mysqli_query($conn, $sql)) {
         echo "<div class='setup-success'>Sample categories added successfully</div>";
     } else {
@@ -248,6 +244,7 @@ mysqli_close($conn);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Timeless Elegance - Setup</title>
@@ -269,115 +266,9 @@ mysqli_close($conn);
     <!-- Custom Styles -->
     <link href="public/static/css/styles.css" rel="stylesheet" />
     <link href="public/static/css/responsive.css" rel="stylesheet" />
-    
-    <!-- Additional setup-specific styles -->
-    <style>
-        .setup-container {
-            flex: 1;
-            padding: 3rem 0;
-            background-color: #f9f7f5;
-        }
 
-        .setup-card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid #e8e4e0;
-        }
-
-        .setup-title {
-            font-family: 'Cormorant Garamond', serif;
-            color: #333f4d;
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            position: relative;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .setup-title::after {
-            content: '';
-            position: absolute;
-            width: 80px;
-            height: 3px;
-            background-color: #c19a6b;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .setup-messages {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            max-height: 450px;
-            overflow-y: auto;
-            border: 1px solid #e8e4e0;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 15px;
-            line-height: 1.8;
-            color: #333;
-        }
-        
-        .setup-success {
-            color: #2e7d32;
-            background-color: #e8f5e9;
-            border-radius: 6px;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-        
-        .setup-error {
-            color: #c62828;
-            background-color: #ffebee;
-            border-radius: 6px;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-        
-        .setup-credentials {
-            background-color: #fff8e1;
-            border-radius: 6px;
-            padding: 12px 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid #ffc107;
-        }
-        
-        .setup-credentials code {
-            background-color: #fff;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #d81b60;
-            font-weight: bold;
-        }
-        
-        .setup-messages br {
-            display: block;
-            margin: 8px 0;
-            content: "";
-        }
-        
-        .setup-card h1 {
-            margin-bottom: 1.5rem;
-        }
-        
-        .setup-card .btn {
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            padding: 10px 25px;
-            transition: all 0.3s ease;
-        }
-   
-    </style>
 </head>
+
 <body>
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg">
@@ -400,10 +291,10 @@ mysqli_close($conn);
                             <?php echo $setup_messages; ?>
                         </div>
                         <div class="text-center mt-4">
-                            <a href="public/index.php" class="btn btn-primary me-3" style="background-color: #c19a6b; border-color: #c19a6b; font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: 0.5px; padding: 12px 25px;">
+                            <a href="public/index.php" class="btn main-btn me-3" style="background-color: #c19a6b; border-color: #c19a6b; font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: 0.5px; padding: 12px 25px;">
                                 <i class="bi bi-shop me-2"></i>Go to Store
                             </a>
-                            <a href="admin/login.php" class="btn btn-outline-secondary" style="color: #333f4d; border-color: #e8e4e0; font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: 0.5px; padding: 12px 25px;">
+                            <a href="admin/login.php" class="btn secondary-btn" style="color: #333f4d; border-color: #e8e4e0; font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: 0.5px; padding: 12px 25px;">
                                 <i class="bi bi-gear me-2"></i>Admin Dashboard
                             </a>
                         </div>
@@ -428,4 +319,5 @@ mysqli_close($conn);
     <!-- Custom JS -->
     <script src="public/static/js/main.js"></script>
 </body>
+
 </html>

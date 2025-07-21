@@ -55,7 +55,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             // Get order items using mysqli
             $items_sql = "SELECT oi.*, 
                         COALESCE(p.productName, oi.product_name) as productName, 
-                        COALESCE(p.thumbnail, 'assets/Placeholder-Image.jpg') as thumbnail
+                        COALESCE( CONCAT('../public/', p.image), '../public/assets/Placeholder-Image.jpg' ) AS image
                         FROM order_items oi 
                         LEFT JOIN product p ON oi.product_id = p.id 
                         WHERE oi.order_id = ?";
@@ -155,7 +155,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                         <?php if (!empty($order_items)): ?>
                             <?php foreach ($order_items as $item): ?>
                                 <div class="order-item">
-                                    <img src="<?php echo htmlspecialchars($item['thumbnail']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" class="item-image">
+                                    <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['productName']); ?>" class="item-image">
                                     <div class="item-details">
                                         <div class="item-name"><?php echo htmlspecialchars($item['productName']); ?></div>
                                         <?php if (!empty($item['size']) || !empty($item['color'])): ?>

@@ -1,5 +1,5 @@
 <section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5" id="showcase" style="display:block">
+    <div class="container px-4 px-lg-5" id="showcase" style="display:block">
         <h2 class="text-center section-title" style="margin-bottom: 40px;">FEATURED COLLECTION</h2>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             
@@ -35,8 +35,11 @@
                                 <p class="card-price"><?php echo htmlspecialchars($item['price'])?>€</p>
                             <?php } ?>
                             <div class="card-actions">
-                                <a href="#" class="btn main-btn add-to-cart-category" data-product="<?php echo htmlspecialchars($item['productName']); ?>" data-price="<?php echo htmlspecialchars($item['salePrice'] != 0 ? $item['salePrice'] : $item['price']); ?>">Add to Cart</a>
-                                <a href="./product_details.php?prod=<?php echo htmlspecialchars($item['productName'])?>" class="btn secondary-btn">Details</a>
+                                <a href="#" class="btn main-btn add-to-cart-category" 
+                                data-product="<?php echo htmlspecialchars($item['productName']); ?>" 
+                                data-price="<?php echo htmlspecialchars($item['salePrice'] != 0 ? $item['salePrice'] : $item['price']); ?>" 
+                                data-product-id="<?= intval($item['id']) ?>" >Add to Cart</a>
+                                <a href="product_details.php?prod=<?= intval($item['id']) ?>" class="btn secondary-btn"> Details </a>
                             </div>
                         </div>
                     </div>

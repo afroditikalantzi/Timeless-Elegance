@@ -1,262 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <?php require 'includes/header.php' ?>
     <style>
-        /* Essential checkout styles */
-        .checkout-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .checkout-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        
-        .checkout-steps::before {
-            content: '';
-            position: absolute;
-            top: 24px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: var(--border-color);
-            z-index: 1;
-        }
-        
-        .step {
-            position: relative;
-            z-index: 2;
-            background-color: white;
-            padding: 0 10px;
-            text-align: center;
-        }
-        
-        .step-number {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--light-color);
-            border: 2px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-            font-weight: 600;
-            color: var(--text-color);
-            transition: all 0.3s ease;
-        }
-        
-        .step.active .step-number {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-            color: white;
-        }
-        
-        .step-title {
-            font-family: var(--heading-font);
-            color: var(--text-color);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        
-        .step.active .step-title {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-        
-        .checkout-section {
-            display: none;
-            margin-bottom: 2rem;
-        }
-        
-        .checkout-section.active {
-            display: block;
-        }
-        
-        .checkout-card {
-            background-color: var(--light-color);
-            border-radius: 5px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .checkout-card h4 {
-            font-family: var(--heading-font);
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.5px;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            font-weight: 500;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-control {
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            padding: 0.75rem;
-            transition: all 0.3s ease;
-        }
-        
-        .payment-method {
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .payment-method.selected {
-            border-color: var(--secondary-color);
-            background-color: rgba(var(--secondary-color-rgb), 0.05);
-        }
-        
-        .payment-method-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .payment-method-title {
-            font-weight: 500;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .payment-method-details {
-            margin-top: 1rem;
-            display: none;
-        }
-        
-        .payment-method.selected .payment-method-details {
-            display: block;
-        }
-        
-        .order-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .order-item-details {
-            flex: 1;
-        }
-        
-        .order-item-name {
-            font-weight: 500;
-            color: var(--primary-color);
-            margin-bottom: 0.25rem;
-        }
-        
-        .order-item-meta {
-            font-size: 0.9rem;
-            color: var(--text-color);
-        }
-        
-        .order-item-price {
-            font-weight: 500;
-            color: var(--primary-color);
-        }
-        
-        .navigation-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 2rem;
-        }
-        
-        .back-btn {
-            background-color: var(--light-color);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            padding: 0.75rem 1.5rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .next-btn, .place-order-btn {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 0.75rem 1.5rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        /* Order completion popup styles */
-        .order-completion-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        
-        .order-completion-popup {
-            background-color: white;
-            border-radius: 15px;
-            padding: 3rem;
-            text-align: center;
-            max-width: 550px;
-            width: 90%;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-        }
-        
-        .success-icon {
-            font-size: 5rem;
-            color: #4CAF50;
-            margin-bottom: 2rem;
-        }
-        
-        .order-completion-popup h3 {
-            font-family: var(--heading-font);
-            color: var(--primary-color);
-            margin-bottom: 1.2rem;
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        .order-completion-popup p {
-            color: var(--text-color);
-            margin-bottom: 2.5rem;
-            font-size: 1.2rem;
-            line-height: 1.7;
-            padding: 0 1rem;
-        }
-        
-        .order-completion-popup .main-btn {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 1rem 2rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-        }
+
     </style>
 </head>
+
 <body>
     <!-- Connection to the database -->
     <?php require_once 'includes/db_connect.php'; ?>
@@ -268,7 +19,7 @@
     <section class="py-5">
         <div class="container px-4 px-lg-5 checkout-container">
             <h2 class="mb-4" style="font-family: var(--heading-font); color: var(--primary-color); letter-spacing: 0.5px;">Checkout</h2>
-            
+
             <!-- Checkout Steps -->
             <div class="checkout-steps">
                 <div class="step active" id="step1">
@@ -284,7 +35,7 @@
                     <div class="step-title">Review</div>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-lg-8">
                     <!-- Shipping Information Section -->
@@ -356,12 +107,14 @@
                             <button class="next-btn" id="shipping-next">Continue to Payment</button>
                         </div>
                     </div>
-                    
+
                     <!-- Payment Method Section -->
                     <div class="checkout-section" id="payment-section">
                         <div class="checkout-card">
                             <h4>Payment Method</h4>
                             <div class="payment-methods">
+
+                                <!-- Credit Card -->
                                 <div class="payment-method" data-method="credit-card">
                                     <div class="payment-method-header">
                                         <div class="payment-method-title">
@@ -394,6 +147,32 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Paypal -->
+                                <div class="payment-method" data-method="paypal">
+                                    <div class="payment-method-header">
+                                        <div class="payment-method-title">
+                                            <i class="bi bi-paypal"></i> PayPal
+                                        </div>
+                                        <input type="radio" name="payment-method" value="paypal">
+                                    </div>
+                                    <div class="payment-method-details">
+                                        <p>You’ll be redirected to PayPal to complete your purchase securely.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Bank Transfer -->
+                                <div class="payment-method" data-method="bank-transfer">
+                                    <div class="payment-method-header">
+                                        <div class="payment-method-title">
+                                            <i class="bi bi-bank"></i> Bank Transfer
+                                        </div>
+                                        <input type="radio" name="payment-method" value="bank-transfer">
+                                    </div>
+                                    <div class="payment-method-details">
+                                        <p>Instructions for bank transfer will be provided on the confirmation page.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="navigation-buttons">
@@ -401,7 +180,7 @@
                             <button class="next-btn" id="payment-next">Continue to Review</button>
                         </div>
                     </div>
-                    
+
                     <!-- Order Review Section -->
                     <div class="checkout-section" id="review-section">
                         <div class="checkout-card">
@@ -428,10 +207,12 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-lg-4">
-                    <div class="checkout-card">
-                        <h4>Order Summary</h4>
+                <div class="checkout-card order-summary-card">
+                    <div id="order-summary-items"></div>   
+                    <br><br>                 
+                        <h5>Order Summary</h5>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal</span>
                             <span id="checkout-subtotal">0.00€</span>
@@ -450,7 +231,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Order Completion Popup -->
     <div class="order-completion-overlay" style="display: none;">
         <div class="order-completion-popup">
@@ -463,7 +244,6 @@
 
     <!-- Footer-->
     <?php require 'includes/footer.php' ?>
-    
-    <script src="static/js/checkout.js"></script>
 </body>
+
 </html>
