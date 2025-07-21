@@ -1,12 +1,4 @@
-// Main JavaScript file
-// This file serves as the entry point for all JavaScript functionality
-
 document.addEventListener('DOMContentLoaded', function () {
-    // Check if we're on the maintenance page
-    if (document.querySelector('.maintenance-body')) {
-        console.log('Maintenance page loaded');
-        // Any specific maintenance page functionality can be added here
-    }
     // Initialize cart badge on page load if the function exists
     if (typeof window.updateCartBadge === 'function') {
         window.updateCartBadge();
@@ -678,7 +670,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <h3 class="mt-4 animate-fade-in" style="font-family: var(--heading-font); color: var(--primary-color); letter-spacing: 0.5px; font-weight: 600;">Item Added to Cart</h3>
                         </div>
                         <div class="d-flex justify-content-between gap-3 animate-fade-in mt-4">
-                            <button type="button" class="btn continue-btn" style="background-color: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem 1.5rem; transition: all 0.3s ease; font-weight: 500; flex: 1;" data-bs-dismiss="modal">
+                            <button type="button" class="btn secondary-btn" style="background-color: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem 1.5rem; transition: all 0.3s ease; font-weight: 500; flex: 1;" data-bs-dismiss="modal">
                                 Continue Shopping
                             </button>
                             <a href="cart.php" class="btn view-cart-btn" style="background-color: var(--secondary-color); color: white; border: none; border-radius: 8px; padding: 0.8rem 1.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: all 0.3s ease; flex: 1; text-align: center;">

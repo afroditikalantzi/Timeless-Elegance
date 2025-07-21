@@ -11,10 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadCartData() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    console.log("🛒 cart loaded in checkout:", cart);
-    
-
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];   
     
     // Load order summary
     let orderSummaryHTML = '';
@@ -225,27 +222,24 @@ function goToSection(sectionId) {
     });
 }
 
-// Function to show the styled order confirmation modal
+// Function to show the styled order confirmation modal 
 function showOrderConfirmationModal() {
     const modalHTML = `
         <div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="orderConfirmationModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                    <div class="modal-header border-0" style="background-color: var(--light-color);">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
                     <div class="modal-body py-4" style="background-color: var(--light-color);">
                         <div class="text-center mb-4 success-animation">
-                            <div class="checkmark-circle" style="background-color: var(--secondary-color); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 4px 12px rgba(193, 154, 107, 0.3);">
+                            <div class="checkmark-circle" >
                                 <i class="bi bi-check-lg" style="font-size: 2.2rem; color: white;"></i>
                             </div>
-                            <h3 class="mt-4 animate-fade-in" style="font-family: var(--heading-font); color: var(--primary-color); letter-spacing: 0.5px; font-weight: 600;">Thank You! Your Order Has Been Placed Successfully</h3>
+                            <h3 class="mt-4 animate-fade-in" style="font-family: var(--heading-font);">Thank You! Your Order Has Been Placed Successfully</h3>
                         </div>
                         <div class="d-flex justify-content-between gap-3 animate-fade-in mt-4">
-                            <button type="button" class="btn continue-btn" style="background-color: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem 1.5rem; transition: all 0.3s ease; font-weight: 500; flex: 1;" data-bs-dismiss="modal">
+                            <button type="button" class="btn secondary-btn" style="background-color: white; padding: 0.8rem 1.5rem; transition: all 0.3s ease; font-size: 0.9rem;" data-bs-dismiss="modal">
                                 CONTINUE SHOPPING
                             </button>
-                            <a href="cart.php" class="btn view-cart-btn" style="background-color: var(--secondary-color); color: white; border: none; border-radius: 8px; padding: 0.8rem 1.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: all 0.3s ease; flex: 1; text-align: center;">
+                            <a href="cart.php" class="btn view-cart-btn" style="font-size: 0.9rem">
                                 VIEW CART
                             </a>
                         </div>
@@ -314,8 +308,6 @@ function placeOrder() {
     // Disable place order button to prevent multiple submissions
     document.getElementById('place-order').disabled = true;
     document.getElementById('place-order').textContent = 'Processing...';
-
-    console.log("🛒 orderData about to be sent:", JSON.stringify(orderData, null, 2));
     
     // Send order data to server
     fetch('process_order.php', {
@@ -340,12 +332,5 @@ function placeOrder() {
             document.getElementById('place-order').disabled = false;
             document.getElementById('place-order').textContent = 'Place Order';
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while processing your order. Please try again.');
-        // Re-enable place order button
-        document.getElementById('place-order').disabled = false;
-        document.getElementById('place-order').textContent = 'Place Order';
     });
 }

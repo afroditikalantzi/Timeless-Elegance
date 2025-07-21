@@ -1,21 +1,8 @@
-/**
- * Cart functionality
- * Handles all cart-related operations including adding items, updating quantities,
- * removing items, and displaying cart information.
- */
-
 // Add to cart function
 function addToCart() {
-    const productUrl = window.location.href;
     const urlParams = new URLSearchParams(window.location.search);
-    const productParam = urlParams.get('prod');
     const productId = urlParams.get('prod');
-    // (Optional debug)
-    console.log("👀 URL params:", window.location.search);
-    console.log("👀 productId =", productId);
-
-
-    const productName = document.querySelector('.product-title').textContent;
+      const productName = document.querySelector('.product-title').textContent;
     
     // Get the selected product attributes
     const rawColor = document.querySelector('input[name="productColor"]:checked').value;
@@ -136,11 +123,8 @@ function addToCart() {
     } else {
         // Add new item if it doesn't exist
         cart.push(item);
-        console.log("🛒 cart about to be saved:", cart);
     }
 
-
-    
     // Save updated cart
     localStorage.setItem('cart', JSON.stringify(cart));
     
@@ -466,49 +450,33 @@ function updateQuantity(index, value) {
 
 // Remove item
 function removeItem(index) {
-    console.log('Removing item at index:', index);
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.splice(index, 1);
     localStorage.setItem('cart', JSON.stringify(cart));
-    
-    console.log('Cart after removal:', cart);
-    console.log('Cart length:', cart.length);
     
     // Update cart badge
     updateCartBadge();
     
     if (cart.length === 0) {
-        console.log('Cart is empty, showing empty cart message');
         // Show empty cart message if cart is empty
         const cartItems = document.getElementById('cartItems');
         const checkoutBtn = document.getElementById('checkoutBtn');
         
-        // Simplified approach: Instead of trying to manipulate the existing empty cart message,
         // we'll just recreate it directly in the cart items container
         if (cartItems) {
-            console.log('Recreating empty cart message');
             // Clear the cart items container completely
             cartItems.innerHTML = `
                 <div id="emptyCartMessage" class="empty-cart-message" style="display: block !important; background-color: var(--light-color); border-radius: 5px; padding: 3rem;">
-                    <i class="bi bi-cart" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 1.5rem;"></i>
-                    <h4 style="font-family: var(--heading-font); color: var(--primary-color); letter-spacing: 0.5px;">Your cart is empty</h4>
-                    <p style="color: var(--text-color); margin-bottom: 2rem;">Looks like you haven't added any items to your cart yet.</p>
-                    <a href="index.php" class="continue-shopping-btn">Continue Shopping</a>
+                    <i class="bi bi-cart" style="font-size: 3rem; color: var(--secondary-color); "></i>
+                    <h4>Your cart is empty</h4>
+                    <p>Looks like you haven't added any items to your cart yet.</p>
+                    <a href="index.php" class="btn continue-shopping-btn" style="font-size: 0.9rem">Continue Shopping</a>
                 </div>
             `;
             
             // Force a repaint to ensure the message is displayed
             cartItems.offsetHeight;
-            
-            // Verify the message is now in the DOM
-            const emptyCartMessage = document.getElementById('emptyCartMessage');
-            console.log('Empty cart message recreated:', emptyCartMessage ? 'Yes' : 'No');
-            if (emptyCartMessage) {
-                console.log('Empty cart message display style:', window.getComputedStyle(emptyCartMessage).display);
-            }
-        } else {
-            console.error('Cart items container not found!');
-        }
+        } 
         
         // Disable checkout button
         if (checkoutBtn) {

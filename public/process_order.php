@@ -1,10 +1,4 @@
 <?php
-
-// Display errors during development
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 // Include database connection
 require_once 'includes/db_connect.php';
 
@@ -115,12 +109,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $price = floatval($item['price']);
             $product_id = isset($item['id']) ? intval($item['id']) : 'NULL';
 
-            file_put_contents(
-                __DIR__ . '/order_debug.log',
-                "ITEM DEBUG: " . print_r($item, true)
-                    . " -> parsed product_id = {$product_id}" . PHP_EOL,
-                FILE_APPEND
-            );
             $size = isset($item['size']) ? sanitize_input($item['size']) : NULL;
             $color = isset($item['color']) ? sanitize_input($item['color']) : NULL;
 
