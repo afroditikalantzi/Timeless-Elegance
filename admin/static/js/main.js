@@ -66,6 +66,7 @@ function setupEventListeners() {
             // Save the new state to localStorage
             const currentState = document.body.classList.contains('sidebar-active') ? 'open' : 'closed';
             localStorage.setItem('eshopAdminSidebarState', currentState);
+            document.cookie = 'eshopAdminSidebarState=' + currentState + '; path=/';
         });
     }
 }

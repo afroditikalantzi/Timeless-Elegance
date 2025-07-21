@@ -169,11 +169,11 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
 try {
     // Get items per page setting
     $items_per_page = get_items_per_page($conn);
-    
+
     // Set up pagination
     $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
     $offset = ($current_page - 1) * $items_per_page;
-    
+
     // Get total product count for pagination
     $count_sql = "SELECT COUNT(*) as total FROM product";
     $count_result = mysqli_query($conn, $count_sql);
@@ -181,7 +181,7 @@ try {
     $total_products = $count_row['total'];
     $total_pages = ceil($total_products / $items_per_page);
     mysqli_free_result($count_result);
-    
+
     // Get products for current page
     $sql = "SELECT * FROM product ORDER BY id DESC LIMIT ?, ?";
     $stmt = mysqli_prepare($conn, $sql);
@@ -197,7 +197,6 @@ try {
     $cat_result = mysqli_query($conn, $category_sql);
     $categories = mysqli_fetch_all($cat_result, MYSQLI_ASSOC);
     mysqli_free_result($cat_result);
-
 } catch (Exception $e) {
     $error_message = "Database error fetching products or categories: " . $e->getMessage();
     $products = []; // Ensure products is an array even on error
@@ -206,99 +205,111 @@ try {
 ?>
 
 <!-- Content -->
-            <div class="admin-content">
-                <?php if (!empty($success_message)): ?>
-                    <div class="alert alert-success"><?php echo htmlspecialchars($success_message); ?></div>
-                <?php endif; ?>
-                
-                <?php if (!empty($error_message)): ?>
-                    <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
-                <?php endif; ?>
-                
-                <div class="row">
-                    <div class="col-12 mb-4">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
-                            <i class="bi bi-plus-circle"></i> Add New Product
-                        </button>
-                    </div>
-                </div>
+<div class="admin-content">
+    <?php if (!empty($success_message)): ?>
+        <div class="alert alert-success"><?php echo htmlspecialchars($success_message); ?></div>
+    <?php endif; ?>
 
-                <!-- Product List -->
-                <div class="admin-card">
-                    <h2 class="admin-card-title">Product List</h2>
-                    <div class="table-responsive">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Price</th>
-                                    <th>Sale Price</th>
-                                    <th>Featured</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (count($products) > 0): ?>
-                                    <?php foreach ($products as $product): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($product['id']); ?></td>
-                                            <td>
-                                                <img src="<?php echo htmlspecialchars($product['thumbnail'] ?: '../public/static/assets/Placeholder-Image.jpg'); ?>" alt="<?php echo htmlspecialchars($product['productName']); ?>" class="product-thumbnail-small">
-                                            </td>
-                                            <td><?php echo htmlspecialchars($product['productName']); ?></td>
-                                            <td><?php echo htmlspecialchars($product['category']); ?></td>
-                                            <td>$<?php echo number_format($product['price'], 2); ?></td>
-                                            <td>
-                                                <?php if ($product['salePrice'] > 0): ?>
-                                                    $<?php echo number_format($product['salePrice'], 2); ?>
-                                                <?php else: ?>
-                                                    -
-                                                <?php endif; ?>
-                                            </td>
-                                            <td><?php echo $product['feature'] ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-x-circle-fill text-danger"></i>'; ?></td>
-                                            <td>
-                                                <button type="button" class="btn-edit btn-sm me-1" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#productModal" 
-                                                        data-product-id="<?php echo $product['id']; ?>" 
-                                                        data-product-name="<?php echo htmlspecialchars($product['productName']); ?>" 
-                                                        data-product-description="<?php echo htmlspecialchars($product['description']); ?>" 
-                                                        data-product-price="<?php echo htmlspecialchars($product['price']); ?>" 
-                                                        data-product-saleprice="<?php echo htmlspecialchars($product['salePrice']); ?>" 
-                                                        data-product-category="<?php echo htmlspecialchars($product['category']); ?>" 
-                                                        data-product-thumbnail="<?php echo htmlspecialchars($product['thumbnail']); ?>" 
-                                                        data-product-feature="<?php echo htmlspecialchars($product['feature']); ?>">
-                                                    <i class="bi bi-pencil"></i> Edit
-                                                </button>
-                                                <form method="post" action="products.php" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
-                                                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
-                                                    <button type="submit" name="delete_product" class="btn-delete btn-sm">
-                                                        <i class="bi bi-trash"></i> Delete
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="8" class="text-center">No products found</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Pagination Controls -->
-                <?php if ($total_pages > 1): ?>
-                <div class="pagination-container mt-4">
-                    <?php echo generate_pagination($current_page, $total_pages, 'products.php?'); ?>
-                </div>
-                <?php endif; ?>
-            </div> <!-- Closing admin-content -->
+    <?php if (!empty($error_message)): ?>
+        <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
+    <?php endif; ?>
+
+    <div class="row">
+        <div class="col-12 mb-4">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
+                <i class="bi bi-plus-circle"></i> Add New Product
+            </button>
+        </div>
+    </div>
+
+    <!-- Product List -->
+    <div class="admin-card">
+        <h2 class="admin-card-title">Product List</h2>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Sale Price</th>
+                        <th>Featured</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (count($products) > 0): ?>
+                        <?php foreach ($products as $product): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($product['id']); ?></td>
+                                <td>
+                                    <img
+                                        src="<?php
+                                                // pick DB value or placeholder, strip any leading ./ or /, then prepend ../public/
+                                                echo htmlspecialchars(
+                                                    '../public/' .
+                                                        ltrim(
+                                                            $product['image'] ?: 'static/assets/Placeholder-Image.jpg',
+                                                            '/.'
+                                                        )
+                                                );
+                                                ?>"
+                                        alt="<?php echo htmlspecialchars($product['productName']); ?>"
+                                        class="product-image-small" />
+                                </td>
+                                <td><?php echo htmlspecialchars($product['productName']); ?></td>
+                                <td><?php echo htmlspecialchars($product['category']); ?></td>
+                                <td>$<?php echo number_format($product['price'], 2); ?></td>
+                                <td>
+                                    <?php if ($product['salePrice'] > 0): ?>
+                                        $<?php echo number_format($product['salePrice'], 2); ?>
+                                    <?php else: ?>
+                                        -
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo $product['feature'] ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-x-circle-fill text-danger"></i>'; ?></td>
+                                <td>
+                                    <button type="button" class="btn-edit btn-sm me-1"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#productModal"
+                                        data-product-id="<?php echo $product['id']; ?>"
+                                        data-product-name="<?php echo htmlspecialchars($product['productName']); ?>"
+                                        data-product-description="<?php echo htmlspecialchars($product['description']); ?>"
+                                        data-product-price="<?php echo htmlspecialchars($product['price']); ?>"
+                                        data-product-saleprice="<?php echo htmlspecialchars($product['salePrice']); ?>"
+                                        data-product-category="<?php echo htmlspecialchars($product['category']); ?>"
+                                        data-product-image="<?php echo htmlspecialchars($product['image']); ?>"
+                                        data-product-feature="<?php echo htmlspecialchars($product['feature']); ?>">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </button>
+                                    <form method="post" action="products.php" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+                                        <button type="submit" name="delete_product" class="btn-delete btn-sm">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="8" class="text-center">No products found</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <?php if ($total_pages > 1): ?>
+        <div class="pagination-container mt-4">
+            <?php echo generate_pagination($current_page, $total_pages, 'products.php?'); ?>
+        </div>
+    <?php endif; ?>
+</div> <!-- Closing admin-content -->
 
 <?php
 // Include footer
@@ -316,7 +327,7 @@ require_once 'includes/footer.php';
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="product_id" id="productId">
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="productName" class="form-label">Product Name</label>
@@ -377,63 +388,63 @@ require_once 'includes/footer.php';
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    var productModal = document.getElementById('productModal');
-    productModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget; // Button that triggered the modal
-        var modalTitle = productModal.querySelector('.modal-title');
-        var productForm = document.getElementById('productForm');
-        var productIdInput = document.getElementById('productId');
-        var saveButton = document.getElementById('saveProductBtn');
-        var currentThumbnail = document.getElementById('currentThumbnail');
-        var thumbnailPreview = document.getElementById('thumbnailPreview');
-        
-        // Check if the button has product data (meaning it's an edit)
-        var productId = button.getAttribute('data-product-id');
+    document.addEventListener('DOMContentLoaded', function() {
+        var productModal = document.getElementById('productModal');
+        productModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget; // Button that triggered the modal
+            var modalTitle = productModal.querySelector('.modal-title');
+            var productForm = document.getElementById('productForm');
+            var productIdInput = document.getElementById('productId');
+            var saveButton = document.getElementById('saveProductBtn');
+            var currentThumbnail = document.getElementById('currentThumbnail');
+            var thumbnailPreview = document.getElementById('thumbnailPreview');
 
-        if (productId) {
-            // Edit mode
-            modalTitle.textContent = 'Edit Product';
-            productIdInput.value = productId;
-            document.getElementById('productName').value = button.getAttribute('data-product-name');
-            document.getElementById('description').value = button.getAttribute('data-product-description');
-            document.getElementById('price').value = button.getAttribute('data-product-price');
-            document.getElementById('salePrice').value = button.getAttribute('data-product-saleprice') || '';
-            
-            // Set category
-            var categorySelect = document.getElementById('category');
-            var categoryValue = button.getAttribute('data-product-category');
-            for (var i = 0; i < categorySelect.options.length; i++) {
-                if (categorySelect.options[i].value === categoryValue) {
-                    categorySelect.selectedIndex = i;
-                    break;
+            // Check if the button has product data (meaning it's an edit)
+            var productId = button.getAttribute('data-product-id');
+
+            if (productId) {
+                // Edit mode
+                modalTitle.textContent = 'Edit Product';
+                productIdInput.value = productId;
+                document.getElementById('productName').value = button.getAttribute('data-product-name');
+                document.getElementById('description').value = button.getAttribute('data-product-description');
+                document.getElementById('price').value = button.getAttribute('data-product-price');
+                document.getElementById('salePrice').value = button.getAttribute('data-product-saleprice') || '';
+
+                // Set category
+                var categorySelect = document.getElementById('category');
+                var categoryValue = button.getAttribute('data-product-category');
+                for (var i = 0; i < categorySelect.options.length; i++) {
+                    if (categorySelect.options[i].value === categoryValue) {
+                        categorySelect.selectedIndex = i;
+                        break;
+                    }
                 }
-            }
-            
-            // Set featured checkbox
-            document.getElementById('feature').checked = button.getAttribute('data-product-feature') === '1';
-            
-            // Show current thumbnail if exists
-            var thumbnailPath = button.getAttribute('data-product-thumbnail');
-            if (thumbnailPath && thumbnailPath !== '') {
-                currentThumbnail.style.display = 'block';
-                thumbnailPreview.src = thumbnailPath;
+
+                // Set featured checkbox
+                document.getElementById('feature').checked = button.getAttribute('data-product-feature') === '1';
+
+                // Show current thumbnail if exists
+                var thumbnailPath = button.getAttribute('data-product-thumbnail');
+                if (thumbnailPath && thumbnailPath !== '') {
+                    currentThumbnail.style.display = 'block';
+                    thumbnailPreview.src = thumbnailPath;
+                } else {
+                    currentThumbnail.style.display = 'none';
+                }
+
+                // Change button text
+                saveButton.textContent = 'Update Product';
+                saveButton.name = 'update_product';
             } else {
+                // Add mode
+                modalTitle.textContent = 'Add New Product';
+                productForm.reset(); // Clear the form
+                productIdInput.value = ''; // Ensure product ID is empty
                 currentThumbnail.style.display = 'none';
+                saveButton.textContent = 'Add Product';
+                saveButton.name = 'add_product';
             }
-            
-            // Change button text
-            saveButton.textContent = 'Update Product';
-            saveButton.name = 'update_product';
-        } else {
-            // Add mode
-            modalTitle.textContent = 'Add New Product';
-            productForm.reset(); // Clear the form
-            productIdInput.value = ''; // Ensure product ID is empty
-            currentThumbnail.style.display = 'none';
-            saveButton.textContent = 'Add Product';
-            saveButton.name = 'add_product';
-        }
+        });
     });
-});
 </script>

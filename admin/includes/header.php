@@ -17,6 +17,13 @@ $success_message = '';
 $error_message = '';
 ?>
 
+<?php
+  $sidebarState = (isset($_COOKIE['eshopAdminSidebarState']) && $_COOKIE['eshopAdminSidebarState']==='open')
+                  ? ' sidebar-active'
+                  : '';
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,9 +73,11 @@ $error_message = '';
             });
         }
     });
+
+    
     </script>
 </head>
-<body class="admin-body"> <!-- Add sidebar-active class dynamically -->
+<body class="admin-body<?php echo $sidebarState; ?>">
     <!-- Sidebar Toggle Button (Styled with CSS) -->
     <button class="sidebar-toggle" id="sidebarToggle">
     </button>
