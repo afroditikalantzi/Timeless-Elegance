@@ -1,212 +1,152 @@
-/* ===== ADMIN RESPONSIVE STYLES ===== */
+/* ---------------- Small Mobiles ---------------- */
 
-/* Tablet Styles (768px to 991px) */
-@media (max-width: 991px) {
-    /* Admin wrapper and sidebar */
-    .admin-wrapper {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .admin-sidebar {
-        width: 100% !important;
-        height: auto;
-        position: relative;
-        min-height: auto;
-    }
-    
-    .admin-sidebar.collapsed {
-        width: 100% !important;
-    }
-    
-    .admin-main {
-        margin-left: 0 !important;
-        width: 100%;
-    }
-    
-    .sidebar-toggle {
-        display: none;
-    }
-    
-    /* Sidebar menu */
-    .sidebar-menu {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 0.5rem;
-    }
-    
-    .sidebar-menu li {
-        margin: 0.25rem;
-    }
-    
-    .sidebar-menu a {
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-    }
-    
-    .sidebar-footer {
-        text-align: center;
-        margin-top: 1rem;
-    }
-    
-    /* Admin cards and stats */
-    .admin-stat-card {
-        margin-bottom: 1rem;
-    }
-    
-    .admin-card {
-        margin-bottom: 1.5rem;
-    }
-    
-    /* Tables */
-    .table-responsive {
-        overflow-x: auto;
-    }
-    
-    .admin-table th, .admin-table td {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.9rem;
-    }
-}
-
-/* Mobile Styles (up to 767px) */
-@media (max-width: 767px) {
-    /* Header */
-    .admin-header {
-        flex-direction: column;
-        height: auto;
-        padding: 1rem;
-    }
-    
-    .admin-header-title h1 {
-        margin-bottom: 1rem;
-    }
-    
-    .header-title {
-        text-align: center;
-        font-size: 1.25rem;
-    }
-    
-    /* Admin content */
-    .admin-content {
-        padding: 1rem;
-    }
-    
-    /* Admin cards */
-    .admin-card {
-        padding: 1rem;
-    }
-    
-    .admin-card-title {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-    }
-    
-    /* Forms */
-    .form-group {
-        margin-bottom: 1rem;
-    }
-    
-    .form-control {
-        font-size: 0.9rem;
-    }
-    
-    /* Buttons */
-    .btn-admin, .btn-admin-sm {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-    }
-    
-    /* Tables */
-    .admin-table {
-        font-size: 0.85rem;
-    }
-    
-    .admin-table th, .admin-table td {
-        padding: 0.5rem 0.25rem;
-        font-size: 0.8rem;
-    }
-    
-    /* Stack buttons on mobile */
-    .btn-edit, .btn-delete, .btn-view {
-        display: block;
-        width: 100%;
-        margin-bottom: 0.5rem;
-        text-align: center;
-    }
-    
-    /* Form controls */
-    .admin-form-control {
-        padding: 0.5rem;
-    }
-    
-    /* Product thumbnails */
-    .product-thumbnail {
-        width: 40px;
-        height: 40px;
-    }
-    
-    /* Action buttons in tables */
-    .btn-edit, .btn-delete, .btn-view {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.8rem;
-    }
-    
-    /* Stats cards */
-    .admin-stat-card {
-        padding: 0.75rem;
-    }
-    
-    .stat-icon i {
-        font-size: 1.5rem;
-    }
-    
-    .stat-details h3 {
-        font-size: 1.25rem;
-    }
-    
-    .stat-details p {
-        font-size: 0.8rem;
-    }
-}
-
-/* Small Mobile Styles (up to 575px) */
 @media (max-width: 575px) {
+    .sidebar-menu { flex-direction: column; }
+  
+    .sidebar-menu li {
+      width: 100%;
+      margin: 0.15rem 0;
+    }
+  
+    .admin-card-title { font-size: 1.1rem; }
+  
+    .admin-table { font-size: 0.75rem; }
+  
+    .admin-table .mobile-hide { display: none; }
+  
+    .form-label { font-size: 0.9rem; }
+  
+    .btn-admin,
+    .btn-admin-sm {
+      width: 100%;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+  }
+  
+  
+  /* ---------------- Medium Mobiles ---------------- */
+  
+  @media (max-width: 767px) {
+    .admin-header {
+      flex-direction: column;
+      height: auto;
+      padding: 1rem;
+    }
+  
+    .admin-header-title h1 { margin-bottom: 1rem; }
+  
+    .header-title {
+      text-align: center;
+      font-size: 1.25rem;
+    }
+  
+    .admin-content { padding: 1rem; }
+  
+    .admin-card { padding: 1rem; }
+  
+    .admin-card-title {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group { margin-bottom: 1rem; }
+  
+    .form-control { font-size: 0.9rem; }
+  
+    .btn-admin,
+    .btn-admin-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+  
+    .admin-table { font-size: 0.85rem; }
+  
+    .admin-table th,
+    .admin-table td {
+      padding: 0.5rem 0.25rem;
+      font-size: 0.8rem;
+    }
+  
+    .btn-edit,
+    .btn-delete,
+    .btn-view {
+      display: block;
+      width: 100%;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+    }
+  
+    .admin-form-control { padding: 0.5rem; }
+  
+    .admin-stat-card { padding: 0.75rem; }
+  
+    .stat-icon i { font-size: 1.5rem; }
+  
+    .stat-details h3 { font-size: 1.25rem; }
+  
+    .stat-details p { font-size: 0.8rem; }
+  }
+  
+  
+  /* ---------------- Tablets & Small Desktops ---------------- */
+  
+  @media (max-width: 991px) {
+    .admin-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .admin-sidebar {
+      width: 100% !important;
+      height: auto;
+      position: relative;
+      min-height: auto;
+    }
+  
+    .admin-sidebar.collapsed { width: 100% !important; }
+  
+    .admin-main {
+      margin-left: 0 !important;
+      width: 100%;
+    }
+  
+    .sidebar-toggle { display: none; }
+  
     /* Sidebar menu */
     .sidebar-menu {
-        flex-direction: column;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0.5rem;
     }
-    
-    .sidebar-menu li {
-        width: 100%;
-        margin: 0.15rem 0;
+  
+    .sidebar-menu li { margin: 0.25rem; }
+  
+    .sidebar-menu a {
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
     }
-    
-    /* Admin cards */
-    .admin-card-title {
-        font-size: 1.1rem;
+  
+    .sidebar-footer {
+      text-align: center;
+      margin-top: 1rem;
     }
-    
-    /* Tables */
-    .admin-table {
-        font-size: 0.75rem;
+  
+    .admin-stat-card { margin-bottom: 1rem; }
+  
+    .admin-card { margin-bottom: 1.5rem; }
+  
+    .table-responsive {
+      overflow-x: auto;
     }
-    
-    /* Hide less important columns on very small screens */
-    .admin-table .mobile-hide {
-        display: none;
+  
+    .admin-table th,
+    .admin-table td {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.9rem;
     }
-    
-    /* Forms */
-    .form-label {
-        font-size: 0.9rem;
-    }
-    
-    /* Buttons */
-    .btn-admin, .btn-admin-sm {
-        width: 100%;
-        margin-bottom: 0.5rem;
-        text-align: center;
-    }
-}
+  }
+  

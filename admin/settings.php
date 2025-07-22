@@ -1,6 +1,6 @@
 <?php
 $page_title = 'Admin Settings';
-require_once __DIR__ . '/includes/header.php';
+require_once 'includes/header.php';
 
 // Initialize variables
 $current_password = '';
@@ -14,7 +14,6 @@ $settings_error_message = '';
 $settings_success_message = '';
 
 // Get current settings
-try {
     $settings_sql = "SELECT * FROM settings";
     $settings_result = mysqli_query($conn, $settings_sql);
     $settings = [];
@@ -29,13 +28,8 @@ try {
     $items_per_page = $settings['items_per_page'] ?? '10';
     
     mysqli_free_result($settings_result);
-} catch (Exception $e) {
-    // If settings table doesn't exist yet, use defaults
-    $maintenance_mode = '0';
-    $items_per_page = '10';
-}
 
-// Handle form submission
+// Form for updating settings
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check which form was submitted
     if (isset($_POST['update_password'])) {
@@ -111,9 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-/**
- * Process password change request
- */
 function processPasswordChange($conn, $current_password, $new_password, $confirm_password, $admin_id) {
     global $error_message, $success_message, $current_password, $new_password, $confirm_password;
     
@@ -124,7 +115,6 @@ function processPasswordChange($conn, $current_password, $new_password, $confirm
         $error_message = 'New password and confirmation password do not match.';
     } else {
         // Fetch current password hash from database
-        try {
             $stmt = mysqli_prepare($conn, "SELECT password FROM admin WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $admin_id);
             mysqli_stmt_execute($stmt);
@@ -154,14 +144,11 @@ function processPasswordChange($conn, $current_password, $new_password, $confirm
             } else {
                 $error_message = 'Incorrect current password.';
             }
-        } catch (Exception $e) {
-            $error_message = 'Database error: ' . $e->getMessage();
-        }
+
     }
 }
 ?>
 
-<div class="admin-content">
     
     <div class="row">
         <!-- Site Settings Card -->
@@ -235,4 +222,4 @@ function processPasswordChange($conn, $current_password, $new_password, $confirm
     </div>
 </div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once 'includes/footer.php'; ?>

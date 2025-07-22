@@ -54,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -73,39 +74,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="static/css/styles.css" rel="stylesheet" />
     <!-- Admin Dashboard Styles -->
 </head>
+
 <body class="login-page">
     <div class="login-container">
         <div class="login-header">
             <span class="login-brand">Timeless Elegance</span>
             <span class="login-subtitle">Admin Registration</span>
         </div>
-        
+
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php endif; ?>
         <?php if (!empty($success_message)): ?>
             <div class="alert alert-success"><?php echo $success_message; ?></div>
         <?php endif; ?>
-        
-        <?php if (empty($success_message)): ?>
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
 
-            <div class="form-group">
-                <label for="confirm_password" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-            </div>
-            
-            <button type="submit" class="btn primary-btn mt-2" style="width: 100%;">Register</button> 
-        </form>
+        <?php if (empty($success_message)): ?>
+            <form method="post" action="">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                </div>
+
+                <button type="submit" class="btn primary-btn mt-2" style="width: 100%;">Register</button>
+            </form>
         <?php endif; ?>
 
         <div class="login-footer">
@@ -113,4 +115,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </body>
+
 </html>

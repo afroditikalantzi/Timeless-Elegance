@@ -9,23 +9,22 @@ require_once 'includes/functions.php';
 
 // Redirect if not logged in
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: login.php"); // Corrected path to admin login
+    header("Location: login.php");
     exit;
 }
 
 $success_message = '';
 $error_message = '';
-?>
 
-<?php
-  $sidebarState = (isset($_COOKIE['eshopAdminSidebarState']) && $_COOKIE['eshopAdminSidebarState']==='open')
-                  ? ' sidebar-active'
-                  : '';
+// Cookie for sidebar state
+$sidebarState = (isset($_COOKIE['eshopAdminSidebarState']) && $_COOKIE['eshopAdminSidebarState'] === 'open')
+    ? ' sidebar-active'
+    : '';
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -44,43 +43,39 @@ $error_message = '';
     <!-- Custom Styles -->
     <link href="static/css/styles.css" rel="stylesheet" />
     <link href="static/css/responsive.css" rel="stylesheet" />
-    <style>
-    /* Animation for flash messages */
-    .alert {
-        transition: opacity 0.5s ease-out;
-    }
-    .fade-out {
-        opacity: 0;
-    }
-    </style>
-    <?php if(isset($extra_css)) echo $extra_css; ?>
-    <!-- Admin Scripts -->
-    
-    <script>
-    // Auto-dismiss flash messages after 5 seconds
-    document.addEventListener('DOMContentLoaded', function() {
-        const alerts = document.querySelectorAll('.alert');
-        if (alerts.length > 0) {
-            alerts.forEach(function(alert) {
-                setTimeout(function() {
-                    // Add fade-out class for smooth transition
-                    alert.classList.add('fade-out');
-                    // Remove the element after animation completes
-                    setTimeout(function() {
-                        alert.remove();
-                    }, 500); // 500ms for fade animation
-                }, 5000); // 5 seconds
-            });
-        }
-    });
 
-    
+    <style>
+        /* Animation for flash messages */
+        .alert {
+            transition: opacity 0.5s ease-out;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+    </style>
+
+    <script>
+        // Auto-dismiss flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            if (alerts.length > 0) {
+                alerts.forEach(function(alert) {
+                    setTimeout(function() {
+                        // Add fade-out class for smooth transition
+                        alert.classList.add('fade-out');
+                        setTimeout(function() {
+                            alert.remove();
+                        }, 500); 
+                    }, 5000); 
+                });
+            }
+        });
     </script>
 </head>
+
 <body class="admin-body<?php echo $sidebarState; ?>">
-    <!-- Sidebar Toggle Button (Styled with CSS) -->
-    <button class="sidebar-toggle" id="sidebarToggle">
-    </button>
+    <button class="sidebar-toggle" id="sidebarToggle"></button>
 
     <!-- Sidebar -->
     <aside class="admin-sidebar" id="adminSidebar">
@@ -97,7 +92,7 @@ $error_message = '';
                 <li><a href="reports.php"><i class="bi bi-bar-chart-line"></i> Reports</a></li>
                 <li><a href="settings.php"><i class="bi bi-gear"></i> Settings</a></li>
             </ul>
-            <ul style="margin-top: auto; padding-bottom: 20px;"> 
+            <ul style="margin-top: auto; padding-bottom: 20px;">
                 <li><a href="../public/index.php" target="_blank"><i class="bi bi-shop"></i> Visit Store</a></li>
                 <li><a href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
             </ul>
@@ -106,13 +101,15 @@ $error_message = '';
     <div class="admin-wrapper">
 
         <!-- Main Content -->
-        <main class="admin-main" id="adminMain"> <!-- Add sidebar-active class dynamically -->
+        <main class="admin-main" id="adminMain">
             <!-- Header -->
-            <header class="admin-header"> <!-- Add sidebar-active class dynamically -->
+            <header class="admin-header"> 
                 <div class="admin-header-title">
                     <h1><?php echo isset($page_title) ? $page_title : 'Admin Dashboard'; ?></h1>
                 </div>
-               
+                <div class="admin-user-menu">
+                   
+                </div>
             </header>
 
             <!-- Content -->
@@ -120,7 +117,7 @@ $error_message = '';
                 <?php if (!empty($success_message)): ?>
                     <div class="alert alert-success"><?php echo $success_message; ?></div>
                 <?php endif; ?>
-                
+
                 <?php if (!empty($error_message)): ?>
                     <div class="alert alert-danger"><?php echo $error_message; ?></div>
                 <?php endif; ?>
