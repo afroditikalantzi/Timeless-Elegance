@@ -184,25 +184,6 @@ if (mysqli_num_rows($check) == 0) {
     }
 }
 
-// Check if admin data already exists
-$check = mysqli_query($conn, "SELECT * FROM admin LIMIT 1");
-if (mysqli_num_rows($check) == 0) {
-    $admin_username = 'admin';
-    $admin_password = 'password123';
-    $admin_email = 'admin@example.com';
-    $hashed_password = password_hash($admin_password, PASSWORD_DEFAULT);
-
-    $sql = "INSERT INTO admin (username, password, email) VALUES 
-            ('$admin_username', '$hashed_password', '$admin_email')";
-
-    if (mysqli_query($conn, $sql)) {
-        echo "<div class='setup-success'>Admin account created successfully</div>";
-        echo "<div class='setup-credentials'><strong>Login credentials:</strong> Username: <code>$admin_username</code>, Password: <code>$admin_password</code></div>";
-    } else {
-        echo "<div class='setup-error'>Error creating admin account: " . mysqli_error($conn) . "</div>";
-    }
-}
-
 // Check if default settings exist
 $check = mysqli_query($conn, "SELECT * FROM settings LIMIT 1");
 if (mysqli_num_rows($check) == 0) {
