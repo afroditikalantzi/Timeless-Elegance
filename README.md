@@ -6,13 +6,15 @@ Timeless Elegance is a sophisticated e-commerce platform for premium men's cloth
 
 ## Screenshots
 
-### Store Frontend
-![Store Frontend](images/store-page.png)
-*Store frontend showcasing the elegant design and product display*
+<div align="center">
+  <img src="images/store-page.png" alt="Store Page" width="45%" />
+  <img src="images/Gameplay.png" alt="Admin Dashboard" width="45%" />
+</div>
 
-### Admin Dashboard
-![Admin Dashboard](images/admin-page.png)
-*Admin dashboard with product management interface*
+<p align="center">
+  <em>Left: E-Shop Homepage | Right: Admin Dashboard</em>
+</p>
+
 
 ## Features
 
