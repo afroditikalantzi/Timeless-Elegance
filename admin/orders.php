@@ -5,32 +5,35 @@ $page_title = "Order Management";
 // Include header
 require_once 'includes/header.php'; // This should include db_connect.php which defines $conn
 
-// Handle delete request
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $delete_id = intval($_GET['delete']);
+// Handle delete via POST
+if ($_SERVER['REQUEST_METHOD']==='POST'
+    && isset($_POST['delete_order'], $_POST['order_id'])
+    && filter_var($_POST['order_id'], FILTER_VALIDATE_INT)
+) {
+    $delete_id = (int)$_POST['order_id'];
     try {
-        // First delete order items
-        $delete_items_sql = "DELETE FROM order_items WHERE order_id = ?";
-        $delete_items_stmt = mysqli_prepare($conn, $delete_items_sql);
-        mysqli_stmt_bind_param($delete_items_stmt, "i", $delete_id);
-        mysqli_stmt_execute($delete_items_stmt);
-        mysqli_stmt_close($delete_items_stmt);
-        
-        // Then delete the order
-        $delete_order_sql = "DELETE FROM orders WHERE id = ?";
-        $delete_order_stmt = mysqli_prepare($conn, $delete_order_sql);
-        mysqli_stmt_bind_param($delete_order_stmt, "i", $delete_id);
-        
-        if (mysqli_stmt_execute($delete_order_stmt)) {
-            $success_message = "Order #" . $delete_id . " deleted successfully!";
+        // first delete items
+        $sql1 = "DELETE FROM order_items WHERE order_id = ?";
+        $st1  = mysqli_prepare($conn, $sql1);
+        mysqli_stmt_bind_param($st1, "i", $delete_id);
+        mysqli_stmt_execute($st1);
+        mysqli_stmt_close($st1);
+
+        // then delete order
+        $sql2 = "DELETE FROM orders WHERE id = ?";
+        $st2  = mysqli_prepare($conn, $sql2);
+        mysqli_stmt_bind_param($st2, "i", $delete_id);
+        if (mysqli_stmt_execute($st2)) {
+            $success_message = "Order #{$delete_id} deleted successfully!";
         } else {
             $error_message = "Error deleting order.";
         }
-        mysqli_stmt_close($delete_order_stmt);
+        mysqli_stmt_close($st2);
     } catch (Exception $e) {
         $error_message = "Database error deleting order: " . $e->getMessage();
     }
 }
+
 
 // Get all orders for display using mysqli
 $orders = [];
@@ -94,7 +97,7 @@ try {
                     <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
                 <?php endif; ?>
 
-                    <div class="row">
+                    <div class="row mt-4">
                         <div class="col-12">
                             <div class="admin-card">
                                 <h2 class="admin-card-title">Order List</h2>
@@ -126,12 +129,22 @@ try {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <a href="order_details.php?id=<?php echo htmlspecialchars($order['id']); ?>" class="btn-edit me-2">
-                                                                <i class="bi bi-eye"></i> View
+                                                            <a href="order_details.php?id=<?php echo htmlspecialchars($order['id']); ?>" class="edit-btn me-1">
+                                                                <i class="bi bi-eye me-1"></i> View
                                                             </a>
-                                                            <a href="orders.php?delete=<?php echo htmlspecialchars($order['id']); ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this order? This action cannot be undone.')">
-                                                                <i class="bi bi-trash"></i> Delete
-                                                            </a>
+                                                            <form method="post" action="orders.php" class="delete-order-form" style="display:inline;">
+  <!-- hidden flag + order ID -->
+  <input type="hidden" name="order_id" value="<?= htmlspecialchars($order['id']) ?>">
+  <input type="hidden" name="delete_order" value="1">
+  <button
+    type="button"
+    class="delete-btn btn-sm me-1"
+    data-order-id="<?= htmlspecialchars($order['id']) ?>"
+  >
+    <i class="bi bi-trash me-1"></i> Delete
+  </button>
+</form>
+
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -154,6 +167,60 @@ try {
                 </div>
                 <?php endif; ?>
             </div> <!-- Closing admin-content -->
+
+ <!-- Delete Order Confirmation Modal -->
+<div class="modal fade" id="deleteOrderModal" tabindex="-1" aria-labelledby="deleteOrderLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteOrderLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete order
+        <strong>#<span id="deleteOrderId"></span></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn secondary-btn" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn primary-btn" id="confirmDeleteOrderBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // grab modal elements
+  const modalEl    = document.getElementById('deleteOrderModal');
+  const modal      = new bootstrap.Modal(modalEl);
+  const idSpan     = document.getElementById('deleteOrderId');
+  const confirmBtn = document.getElementById('confirmDeleteOrderBtn');
+
+  let formToDelete = null;
+
+  // bind to the correct class
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      // remember the form this button lives in
+      formToDelete = this.closest('form');
+      // show the ID in the modal
+      idSpan.textContent = this.dataset.orderId;
+      // pop the modal
+      modal.show();
+    });
+  });
+
+  // on confirm, submit that form
+  confirmBtn.addEventListener('click', function() {
+    if (!formToDelete) return;
+    modal.hide();
+    formToDelete.submit();
+  });
+});
+</script>
+
+
 <?php
 // Include footer
 require_once 'includes/footer.php';

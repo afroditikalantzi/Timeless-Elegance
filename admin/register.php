@@ -33,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_stmt_num_rows($stmt_check) > 0) {
             $error = "Username already exists";
         } else {
-            // Hash the password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
             // Insert new admin user
@@ -71,9 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom Styles -->
-    <link href="../public/static/css/styles.css" rel="stylesheet" />
+    <link href="static/css/styles.css" rel="stylesheet" />
     <!-- Admin Dashboard Styles -->
-    <link href="static/css/admin-dashboard.css" rel="stylesheet" />
 </head>
 <body class="login-page">
     <div class="login-container">
@@ -89,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="alert alert-success"><?php echo $success_message; ?></div>
         <?php endif; ?>
         
-        <?php if (empty($success_message)): // Hide form on success ?>
+        <?php if (empty($success_message)): ?>
         <form method="post" action="">
             <div class="form-group">
                 <label for="username" class="form-label">Username</label>
@@ -106,13 +104,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
             </div>
             
-            <button type="submit" class="btn-login">Register</button> 
+            <button type="submit" class="btn primary-btn mt-2" style="width: 100%;">Register</button> 
         </form>
         <?php endif; ?>
 
         <div class="login-footer">
             <p>Already have an account? <a href="login.php">Login here</a></p>
-            <p>Return to <a href="../index.php">Store Front</a></p>
         </div>
     </div>
 </body>

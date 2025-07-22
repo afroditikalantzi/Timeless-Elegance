@@ -2,205 +2,239 @@
 // Set page title for header
 $page_title = 'Product Management';
 
-// Include header file
-require_once 'includes/header.php'; // This should include db_connect.php which defines $conn
+// Include header file (defines $conn)
+require_once 'includes/header.php';
 
-// Initialize variables
+// Initialize
 $edit_product = null;
-$products = [];
-$categories = [];
+$products     = [];
+$categories   = [];
 
-// Process form submission for adding/editing a product
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['add_product']) || isset($_POST['update_product'])) {
-        // Get form data
-        $productName = $_POST['productName'];
-        $description = $_POST['description'];
-        $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
-        $salePrice = filter_input(INPUT_POST, 'salePrice', FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE) ?? 0.0;
-        $category = $_POST['category'];
-        $feature = isset($_POST['feature']) ? 1 : 0;
-        $product_id = isset($_POST['product_id']) ? filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT) : null;
+// -- ADD / UPDATE PRODUCT --
+if ($_SERVER["REQUEST_METHOD"] === "POST" && (isset($_POST['add_product']) || isset($_POST['update_product']))) {
+    // Gather inputs
+    $productName = trim($_POST['productName']);
+    $description = trim($_POST['description']);
+    $price       = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
+    $salePrice   = filter_input(INPUT_POST, 'salePrice', FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE) ?? 0.0;
+    $category    = $_POST['category'];
+    $feature     = isset($_POST['feature']) ? 1 : 0;
+    $product_id  = isset($_POST['product_id']) ? filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT) : null;
 
-        // Basic Validation
-        if (empty($productName) || empty($description) || $price === false || $price <= 0 || empty($category)) {
-            $error_message = "Please fill in all required fields correctly (Product Name, Description, Price > 0, Category).";
-        } else {
-            try {
-                // Check if product name already exists (excluding the current product if editing)
-                $check_sql = "SELECT id FROM product WHERE productName = ?";
-                if ($product_id) {
-                    $check_sql .= " AND id != ?";
-                    $check_stmt = mysqli_prepare($conn, $check_sql);
-                    mysqli_stmt_bind_param($check_stmt, "si", $productName, $product_id);
-                } else {
-                    $check_stmt = mysqli_prepare($conn, $check_sql);
-                    mysqli_stmt_bind_param($check_stmt, "s", $productName);
-                }
-                mysqli_stmt_execute($check_stmt);
+    // If editing: fetch existing image path
+    $existing_image = null;
+    if ($product_id) {
+        $img_sql  = "SELECT image FROM product WHERE id = ?";
+        $img_stmt = mysqli_prepare($conn, $img_sql);
+        mysqli_stmt_bind_param($img_stmt, "i", $product_id);
+        mysqli_stmt_execute($img_stmt);
+        $res = mysqli_stmt_get_result($img_stmt);
+        if ($row = mysqli_fetch_assoc($res)) {
+            $existing_image = $row['image'];
+        }
+        mysqli_free_result($res);
+        mysqli_stmt_close($img_stmt);
+    }
 
-                $check_result = mysqli_stmt_get_result($check_stmt);
-                if (mysqli_fetch_assoc($check_result)) {
-                    mysqli_free_result($check_result);
-                    mysqli_stmt_close($check_stmt);
-                    $error_message = "A product with this name already exists.";
-                } else {
-                    // Handle file upload (thumbnail)
-                    $thumbnail_path = $edit_product['thumbnail'] ?? '../public/static/assets/Placeholder-Image.jpg'; // Keep existing or use placeholder
-                    if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] == UPLOAD_ERR_OK) {
-                        $upload_dir = '../public/static/assets/products/';
-                        if (!is_dir($upload_dir)) {
-                            mkdir($upload_dir, 0777, true);
-                        }
-                        $file_ext = strtolower(pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION));
-                        $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
-                        if (in_array($file_ext, $allowed_ext)) {
-                            $new_filename = uniqid('prod_', true) . '.' . $file_ext;
-                            $target_file = $upload_dir . $new_filename;
-                            if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], $target_file)) {
-                                // Optionally delete old thumbnail if updating and new one uploaded
-                                if ($product_id && $thumbnail_path !== '../public/static/assets/Placeholder-Image.jpg' && file_exists($thumbnail_path)) {
-                                    // Be careful with file deletion - ensure path is correct
-                                    // unlink($thumbnail_path);
-                                }
-                                $thumbnail_path = $target_file; // Update path to new file
-                            } else {
-                                $error_message = "Error uploading thumbnail.";
+    // Basic validation
+    if (empty($productName) || empty($description) || $price === false || $price <= 0 || empty($category)) {
+        $error_message = "Please fill in all required fields correctly.";
+    } else {
+        try {
+            // Check for duplicate name
+            $check_sql = "SELECT id FROM product WHERE productName = ?";
+            if ($product_id) {
+                $check_sql .= " AND id != ?";
+                $chk = mysqli_prepare($conn, $check_sql);
+                mysqli_stmt_bind_param($chk, "si", $productName, $product_id);
+            } else {
+                $chk = mysqli_prepare($conn, $check_sql);
+                mysqli_stmt_bind_param($chk, "s", $productName);
+            }
+            mysqli_stmt_execute($chk);
+            $dup = mysqli_stmt_get_result($chk);
+            if (mysqli_fetch_assoc($dup)) {
+                $error_message = "A product with this name already exists.";
+            }
+            mysqli_free_result($dup);
+            mysqli_stmt_close($chk);
+
+            if (empty($error_message)) {
+                // Default or existing image
+                $image_path = $existing_image ?: 'static/assets/Placeholder-Image.jpg';
+
+                // Handle upload
+                if (!empty($_FILES['image']['tmp_name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                    $upload_dir = __DIR__ . '/../public/static/images/products/';
+                    if (!is_dir($upload_dir)) {
+                        mkdir($upload_dir, 0777, true);
+                    }
+                    $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+                    $allowed = ['jpg', 'jpeg', 'png', 'gif'];
+                    if (in_array($ext, $allowed, true)) {
+                        // Random filename
+                        $newfile     = uniqid('prod_', true) . '.' . $ext;
+                        $target_file = $upload_dir . $newfile;
+                        if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+                            // Delete old image if editing
+                            if (
+                                $product_id
+                                && $existing_image
+                                && $existing_image !== 'static/assets/Placeholder-Image.jpg'
+                            ) {
+                                $old = __DIR__ . '/../public/' . ltrim($existing_image, '/.');
+                                if (file_exists($old)) unlink($old);
                             }
+                            $image_path = 'static/images/products/' . $newfile;
                         } else {
-                            $error_message = "Invalid file type for thumbnail. Allowed types: jpg, jpeg, png, gif.";
+                            $error_message = "Error uploading image.";
                         }
-                    }
-
-                    // Proceed only if no upload error occurred
-                    if (empty($error_message)) {
-                        if ($product_id) {
-                            // Update existing product
-                            $sql = "UPDATE product SET productName = ?, description = ?, price = ?, salePrice = ?, category = ?, thumbnail = ?, feature = ? WHERE id = ?";
-                            $stmt = mysqli_prepare($conn, $sql);
-                            mysqli_stmt_bind_param($stmt, "ssddssis", $productName, $description, $price, $salePrice, $category, $thumbnail_path, $feature, $product_id);
-                        } else {
-                            // Insert new product
-                            $sql = "INSERT INTO product (productName, description, price, salePrice, category, thumbnail, feature) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                            $stmt = mysqli_prepare($conn, $sql);
-                            mysqli_stmt_bind_param($stmt, "ssddssi", $productName, $description, $price, $salePrice, $category, $thumbnail_path, $feature);
-                        }
-
-                        if (mysqli_stmt_execute($stmt)) {
-                            mysqli_stmt_close($stmt);
-                            $success_message = $product_id ? "Product updated successfully!" : "Product added successfully!";
-                            $edit_product = null; // Clear edit form after successful operation
-                            // Redirect or clear form state here if desired
-                        } else {
-                            $error_message = $product_id ? "Error updating product." : "Error adding product.";
-                        }
-                    }
-                }
-            } catch (Exception $e) {
-                $error_message = "Database error: " . $e->getMessage();
-            }
-        }
-    }
-    // Handle delete request
-    elseif (isset($_POST['delete_product']) && isset($_POST['product_id'])) {
-        $delete_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
-        if ($delete_id) {
-            try {
-                // Optional: Check if product exists before deleting
-                $check_sql = "SELECT thumbnail FROM product WHERE id = ?";
-                $check_stmt = mysqli_prepare($conn, $check_sql);
-                mysqli_stmt_bind_param($check_stmt, "i", $delete_id);
-                mysqli_stmt_execute($check_stmt);
-                $check_result = mysqli_stmt_get_result($check_stmt);
-                $product_to_delete = mysqli_fetch_assoc($check_result);
-                mysqli_free_result($check_result);
-                mysqli_stmt_close($check_stmt);
-
-                if ($product_to_delete) {
-                    // Delete product from database
-                    $delete_sql = "DELETE FROM product WHERE id = ?";
-                    $delete_stmt = mysqli_prepare($conn, $delete_sql);
-                    mysqli_stmt_bind_param($delete_stmt, "i", $delete_id);
-
-                    if (mysqli_stmt_execute($delete_stmt)) {
-                        mysqli_stmt_close($delete_stmt);
-                        // Optionally delete the thumbnail file
-                        $thumbnail_to_delete = $product_to_delete['thumbnail'];
-                        if ($thumbnail_to_delete && $thumbnail_to_delete !== '../public/static/assets/Placeholder-Image.jpg' && file_exists($thumbnail_to_delete)) {
-                            // unlink($thumbnail_to_delete); // Uncomment carefully
-                        }
-                        $success_message = "Product deleted successfully!";
                     } else {
-                        $error_message = "Error deleting product.";
+                        $error_message = "Invalid image type.";
                     }
-                } else {
-                    $error_message = "Product not found for deletion.";
                 }
-            } catch (Exception $e) {
-                $error_message = "Database error deleting product: " . $e->getMessage();
+
+                // INSERT or UPDATE
+                if (empty($error_message)) {
+                    if ($product_id) {
+                        // UPDATE
+                        $sql = "UPDATE product
+                                   SET productName = ?, description = ?, price = ?, salePrice = ?,
+                                       category = ?, image = ?, feature = ?
+                                 WHERE id = ?";
+                        $stmt = mysqli_prepare($conn, $sql);
+                        mysqli_stmt_bind_param(
+                            $stmt,
+                            "ssddssii",
+                            $productName,
+                            $description,
+                            $price,
+                            $salePrice,
+                            $category,
+                            $image_path,
+                            $feature,
+                            $product_id
+                        );
+                    } else {
+                        // INSERT
+                        $sql = "INSERT INTO product
+                                    (productName, description, price, salePrice, category, image, feature)
+                                VALUES (?, ?, ?, ?, ?, ?, ?)";
+                        $stmt = mysqli_prepare($conn, $sql);
+                        mysqli_stmt_bind_param(
+                            $stmt,
+                            "ssddssi",
+                            $productName,
+                            $description,
+                            $price,
+                            $salePrice,
+                            $category,
+                            $image_path,
+                            $feature
+                        );
+                    }
+
+                    if (mysqli_stmt_execute($stmt)) {
+                        $success_message = $product_id
+                            ? "Product updated successfully!"
+                            : "Product added successfully!";
+                        $edit_product = null;
+                    } else {
+                        $error_message = $product_id
+                            ? "Error updating product."
+                            : "Error adding product.";
+                    }
+                    mysqli_stmt_close($stmt);
+                }
             }
+        } catch (Exception $e) {
+            $error_message = "DB error: " . $e->getMessage();
         }
     }
 }
 
-// Handle view/edit request
+// -- DELETE PRODUCT --
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['delete_product'], $_POST['product_id'])) {
+    $del_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
+    if ($del_id) {
+        try {
+            // Fetch image to delete
+            $chk = mysqli_prepare($conn, "SELECT image FROM product WHERE id = ?");
+            mysqli_stmt_bind_param($chk, "i", $del_id);
+            mysqli_stmt_execute($chk);
+            $res = mysqli_stmt_get_result($chk);
+            $prd = mysqli_fetch_assoc($res);
+            mysqli_free_result($res);
+            mysqli_stmt_close($chk);
+
+            if ($prd) {
+                // Delete row
+                $del = mysqli_prepare($conn, "DELETE FROM product WHERE id = ?");
+                mysqli_stmt_bind_param($del, "i", $del_id);
+                if (mysqli_stmt_execute($del)) {
+                    // Delete file
+                    $img = $prd['image'];
+                    if ($img && $img !== 'static/assets/Placeholder-Image.jpg') {
+                        $path = __DIR__ . '/../public/' . ltrim($img, '/.');
+                        if (file_exists($path)) unlink($path);
+                    }
+                    $success_message = "Product deleted successfully!";
+                } else {
+                    $error_message = "Error deleting product.";
+                }
+                mysqli_stmt_close($del);
+            } else {
+                $error_message = "Product not found.";
+            }
+        } catch (Exception $e) {
+            $error_message = "DB error deleting product: " . $e->getMessage();
+        }
+    }
+}
+
+// -- FETCH FOR EDIT / LISTING BELOW --
 if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
-    $edit_id = intval($_GET['edit']);
-    try {
-        $edit_sql = "SELECT * FROM product WHERE id = ?";
-        $edit_stmt = mysqli_prepare($conn, $edit_sql);
-        mysqli_stmt_bind_param($edit_stmt, "i", $edit_id);
-        mysqli_stmt_execute($edit_stmt);
-        $edit_result = mysqli_stmt_get_result($edit_stmt);
-
-        if (mysqli_num_rows($edit_result) == 1) {
-            $edit_product = mysqli_fetch_assoc($edit_result);
-        } else {
-            $error_message = "Product not found.";
-        }
-        mysqli_free_result($edit_result);
-        mysqli_stmt_close($edit_stmt);
-    } catch (Exception $e) {
-        $error_message = "Database error fetching product details: " . $e->getMessage();
+    $eid  = intval($_GET['edit']);
+    $stmt = mysqli_prepare($conn, "SELECT * FROM product WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $eid);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if (mysqli_num_rows($res) === 1) {
+        $edit_product = mysqli_fetch_assoc($res);
+    } else {
+        $error_message = "Product not found.";
     }
+    mysqli_free_result($res);
+    mysqli_stmt_close($stmt);
 }
 
-// Get all products and categories for display
+// -- PAGINATION + FETCH ALL PRODUCTS & CATEGORIES --
 try {
-    // Get items per page setting
     $items_per_page = get_items_per_page($conn);
+    $current_page   = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+    $offset         = ($current_page - 1) * $items_per_page;
 
-    // Set up pagination
-    $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-    $offset = ($current_page - 1) * $items_per_page;
+    // Count
+    $cnt_res = mysqli_query($conn, "SELECT COUNT(*) AS total FROM product");
+    $total   = mysqli_fetch_assoc($cnt_res)['total'];
+    mysqli_free_result($cnt_res);
+    $total_pages = ceil($total / $items_per_page);
 
-    // Get total product count for pagination
-    $count_sql = "SELECT COUNT(*) as total FROM product";
-    $count_result = mysqli_query($conn, $count_sql);
-    $count_row = mysqli_fetch_assoc($count_result);
-    $total_products = $count_row['total'];
-    $total_pages = ceil($total_products / $items_per_page);
-    mysqli_free_result($count_result);
-
-    // Get products for current page
-    $sql = "SELECT * FROM product ORDER BY id DESC LIMIT ?, ?";
-    $stmt = mysqli_prepare($conn, $sql);
+    // Page data
+    $stmt = mysqli_prepare($conn, "SELECT * FROM product ORDER BY id DESC LIMIT ?, ?");
     mysqli_stmt_bind_param($stmt, "ii", $offset, $items_per_page);
     mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    mysqli_free_result($result);
+    $res = mysqli_stmt_get_result($stmt);
+    $products = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    mysqli_free_result($res);
     mysqli_stmt_close($stmt);
 
-    // Get all categories for dropdown
-    $category_sql = "SELECT categoryName FROM category ORDER BY categoryName ASC";
-    $cat_result = mysqli_query($conn, $category_sql);
-    $categories = mysqli_fetch_all($cat_result, MYSQLI_ASSOC);
-    mysqli_free_result($cat_result);
+    // Categories
+    $cat_res   = mysqli_query($conn, "SELECT categoryName FROM category ORDER BY categoryName ASC");
+    $categories = mysqli_fetch_all($cat_res, MYSQLI_ASSOC);
+    mysqli_free_result($cat_res);
 } catch (Exception $e) {
-    $error_message = "Database error fetching products or categories: " . $e->getMessage();
-    $products = []; // Ensure products is an array even on error
-    $categories = []; // Ensure categories is an array even on error
+    $error_message = "DB error fetching lists: " . $e->getMessage();
 }
 ?>
 
@@ -209,15 +243,14 @@ try {
     <?php if (!empty($success_message)): ?>
         <div class="alert alert-success"><?php echo htmlspecialchars($success_message); ?></div>
     <?php endif; ?>
-
     <?php if (!empty($error_message)): ?>
         <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
     <?php endif; ?>
 
-    <div class="row">
-        <div class="col-12 mb-4">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
-                <i class="bi bi-plus-circle"></i> Add New Product
+    <div class="row mb-4">
+        <div class="col-12">
+            <button type="button" class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#productModal">
+                <i class="bi bi-plus-circle me-2"></i> Add New Product
             </button>
         </div>
     </div>
@@ -246,16 +279,10 @@ try {
                                 <td><?php echo htmlspecialchars($product['id']); ?></td>
                                 <td>
                                     <img
-                                        src="<?php
-                                                // pick DB value or placeholder, strip any leading ./ or /, then prepend ../public/
-                                                echo htmlspecialchars(
+                                        src="<?php echo htmlspecialchars(
                                                     '../public/' .
-                                                        ltrim(
-                                                            $product['image'] ?: 'static/assets/Placeholder-Image.jpg',
-                                                            '/.'
-                                                        )
-                                                );
-                                                ?>"
+                                                        ltrim($product['image'] ?: 'static/assets/Placeholder-Image.jpg', '/.')
+                                                ); ?>"
                                         alt="<?php echo htmlspecialchars($product['productName']); ?>"
                                         class="product-image-small" />
                                 </td>
@@ -269,9 +296,13 @@ try {
                                         -
                                     <?php endif; ?>
                                 </td>
-                                <td><?php echo $product['feature'] ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-x-circle-fill text-danger"></i>'; ?></td>
                                 <td>
-                                    <button type="button" class="btn-edit btn-sm me-1"
+                                    <?php echo $product['feature']
+                                        ? '<i class="bi bi-check-circle-fill text-success"></i>'
+                                        : '<i class="bi bi-x-circle-fill text-danger"></i>'; ?>
+                                </td>
+                                <td>
+                                    <button type="button" class="edit-btn btn-sm me-1"
                                         data-bs-toggle="modal"
                                         data-bs-target="#productModal"
                                         data-product-id="<?php echo $product['id']; ?>"
@@ -280,14 +311,21 @@ try {
                                         data-product-price="<?php echo htmlspecialchars($product['price']); ?>"
                                         data-product-saleprice="<?php echo htmlspecialchars($product['salePrice']); ?>"
                                         data-product-category="<?php echo htmlspecialchars($product['category']); ?>"
-                                        data-product-image="<?php echo htmlspecialchars($product['image']); ?>"
+                                        data-product-image="<?php echo htmlspecialchars('../public/' . ltrim($product['image'], '/.')); ?>"
                                         data-product-feature="<?php echo htmlspecialchars($product['feature']); ?>">
-                                        <i class="bi bi-pencil"></i> Edit
+                                        <i class="bi bi-pencil me-1"></i> Edit
                                     </button>
-                                    <form method="post" action="products.php" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                    <form method="post" action="products.php" class="delete-form" style="display:inline;">
+                                        <!-- keep the id -->
                                         <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
-                                        <button type="submit" name="delete_product" class="btn-delete btn-sm">
-                                            <i class="bi bi-trash"></i> Delete
+                                        <!-- ensure this is sent even when we call form.submit() -->
+                                        <input type="hidden" name="delete_product" value="1">
+                                        <!-- note: type="button" so it doesn’t auto-submit -->
+                                        <button
+                                            type="button"
+                                            class="delete-btn btn-sm me-1"
+                                            data-product-name="<?php echo htmlspecialchars($product['productName']); ?>">
+                                            <i class="bi bi-trash me-1"></i> Delete
                                         </button>
                                     </form>
                                 </td>
@@ -336,7 +374,7 @@ require_once 'includes/footer.php';
                         <div class="col-md-6 mb-3">
                             <label for="category" class="form-label">Category</label>
                             <select class="form-select" id="category" name="category" required>
-                                <option value="">Select Category</option>
+                                <option value="" disabled selected hidden>Select Category</option>
                                 <?php foreach ($categories as $cat): ?>
                                     <option value="<?php echo htmlspecialchars($cat['categoryName']); ?>">
                                         <?php echo htmlspecialchars($cat['categoryName']); ?>
@@ -364,10 +402,14 @@ require_once 'includes/footer.php';
 
                     <div class="row align-items-center">
                         <div class="col-md-6 mb-3">
-                            <label for="thumbnail" class="form-label">Thumbnail Image</label>
-                            <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/png, image/jpeg, image/gif">
-                            <div id="currentThumbnail" class="mt-2" style="display: none;">
-                                <small class="form-text text-muted">Current: <img id="thumbnailPreview" src="" alt="Thumbnail" style="max-height: 30px; vertical-align: middle;"> - Leave blank to keep.</small>
+                            <label for="image" class="form-label">Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpeg, image/gif">
+                            <div id="currentImage" class="mt-2" style="display: none;">
+                                <small class="form-text text-muted">
+                                    Current:
+                                    <img id="imagePreview" src="" alt="Image" style="max-height: 30px; vertical-align: middle;">
+                                    - Leave blank to keep.
+                                </small>
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -379,10 +421,30 @@ require_once 'includes/footer.php';
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="add_product" id="saveProductBtn" class="btn-admin">Add Product</button>
+                    <button type="button" class="btn secondary-btn" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="add_product" id="saveProductBtn" class="btn primary-btn">Add Product</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete
+                <strong id="deleteItemName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn secondary-btn" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn primary-btn" id="confirmDeleteBtn">Delete</button>
+            </div>
         </div>
     </div>
 </div>
@@ -391,17 +453,15 @@ require_once 'includes/footer.php';
     document.addEventListener('DOMContentLoaded', function() {
         var productModal = document.getElementById('productModal');
         productModal.addEventListener('show.bs.modal', function(event) {
-            var button = event.relatedTarget; // Button that triggered the modal
+            var button = event.relatedTarget;
             var modalTitle = productModal.querySelector('.modal-title');
             var productForm = document.getElementById('productForm');
             var productIdInput = document.getElementById('productId');
             var saveButton = document.getElementById('saveProductBtn');
-            var currentThumbnail = document.getElementById('currentThumbnail');
-            var thumbnailPreview = document.getElementById('thumbnailPreview');
+            var currentImage = document.getElementById('currentImage');
+            var imagePreview = document.getElementById('imagePreview');
 
-            // Check if the button has product data (meaning it's an edit)
             var productId = button.getAttribute('data-product-id');
-
             if (productId) {
                 // Edit mode
                 modalTitle.textContent = 'Edit Product';
@@ -411,7 +471,6 @@ require_once 'includes/footer.php';
                 document.getElementById('price').value = button.getAttribute('data-product-price');
                 document.getElementById('salePrice').value = button.getAttribute('data-product-saleprice') || '';
 
-                // Set category
                 var categorySelect = document.getElementById('category');
                 var categoryValue = button.getAttribute('data-product-category');
                 for (var i = 0; i < categorySelect.options.length; i++) {
@@ -421,29 +480,52 @@ require_once 'includes/footer.php';
                     }
                 }
 
-                // Set featured checkbox
                 document.getElementById('feature').checked = button.getAttribute('data-product-feature') === '1';
 
-                // Show current thumbnail if exists
-                var thumbnailPath = button.getAttribute('data-product-thumbnail');
-                if (thumbnailPath && thumbnailPath !== '') {
-                    currentThumbnail.style.display = 'block';
-                    thumbnailPreview.src = thumbnailPath;
+                var imagePath = button.getAttribute('data-product-image');
+                if (imagePath) {
+                    currentImage.style.display = 'block';
+                    imagePreview.src = imagePath;
                 } else {
-                    currentThumbnail.style.display = 'none';
+                    currentImage.style.display = 'none';
                 }
 
-                // Change button text
                 saveButton.textContent = 'Update Product';
                 saveButton.name = 'update_product';
             } else {
                 // Add mode
                 modalTitle.textContent = 'Add New Product';
-                productForm.reset(); // Clear the form
-                productIdInput.value = ''; // Ensure product ID is empty
-                currentThumbnail.style.display = 'none';
+                productForm.reset();
+                productIdInput.value = '';
+                currentImage.style.display = 'none';
                 saveButton.textContent = 'Add Product';
                 saveButton.name = 'add_product';
+            }
+        });
+
+        // NEW: Delete modal logic
+        var deleteModalEl = document.getElementById('deleteConfirmModal');
+        var deleteModal = new bootstrap.Modal(deleteModalEl);
+        var itemNameEl = document.getElementById('deleteItemName');
+        var confirmBtn = document.getElementById('confirmDeleteBtn');
+        var formToDelete = null;
+
+        // When any delete-btn is clicked…
+        document.querySelectorAll('.delete-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                // remember which form we’ll submit later
+                formToDelete = this.closest('form');
+                // set the product’s name in the modal
+                itemNameEl.textContent = this.getAttribute('data-product-name');
+                // show the modal
+                deleteModal.show();
+            });
+        });
+
+        // When the user confirms…
+        confirmBtn.addEventListener('click', function() {
+            if (formToDelete) {
+                formToDelete.submit();
             }
         });
     });

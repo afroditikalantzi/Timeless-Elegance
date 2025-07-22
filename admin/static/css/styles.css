@@ -94,6 +94,9 @@ body.admin-body {
     text-decoration: none;
     cursor: default;
 }
+.sidebar-brand:hover {
+    color: var(--color-secondary);
+}
 
 .sidebar-nav {
     flex-grow: 1;
@@ -299,16 +302,12 @@ body.admin-body {
 }
 
 /* ===== BUTTONS ===== */
-.btn-primary,
+.primary-btn,
 .btn-admin.btn-secondary,
 .btn-admin-sm.btn-secondary {
-    background-color: var(--color-secondary);
+    background-color: var(--color-primary);
     color: #fff;
     transition: var(--btn-transition);
-}
-
-.btn-primary {
-    background-color: var(--color-primary);
 }
 
 .btn-secondary {
@@ -322,7 +321,9 @@ body.admin-body {
 .btn-light   { background-color: var(--color-light);   }
 .btn-dark    { background-color: var(--color-dark);    }
 
-.btn-primary:hover   { background-color: var(--color-dark);     }
+.primary-btn:hover,.modal-update-btn:hover   {  transform: var(--btn-hover-transform); color: var(--color-secondary);  }
+
+
 .btn-secondary:hover { background-color: #a88559;               }
 .btn-accent:hover    { background-color: #2980b9;               }
 .btn-success:hover   { background-color: #27ae60;               }
@@ -331,9 +332,9 @@ body.admin-body {
 .btn-light:hover     { background-color: #e8e8e8; color: var(--color-text); }
 .btn-dark:hover      { background-color: #0f1a24;               }
 
-.btn-edit,
-.btn-view,
-.btn-delete,
+.edit-btn,
+.view-btn,
+.delete-btn,
 .btn-cancel-admin,
 .btn-login {
     border: none;
@@ -346,17 +347,30 @@ body.admin-body {
     padding: 5px 10px;
     font-size: 0.85rem;
     transition: var(--btn-transition);
+    text-decoration: none;
 }
 
-.btn-edit { background-color: var(--color-accent); }
-.btn-view { background-color: var(--color-success); }
-.btn-delete { background-color: var(--color-danger); }
+.secondary-btn{
+    background-color: var(--color-secondary);
+    color: var(--color-text);
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: auto;
+}
+
+.secondary-btn:hover {
+    transform: var(--btn-hover-transform);
+}
+
+.edit-btn,.view-btn { background-color: var(--color-accent); color: #fff; font-weight: 500; text-decoration: none; }
+.delete-btn { background-color: var(--color-danger); color: #fff; font-weight: 400;  }
 .btn-cancel-admin { background-color: #6c757d; }
 .btn-login { background-color: var(--color-primary); width: 100%; padding: 12px 25px; font-weight: 500; }
 
-.btn-edit:hover     { transform: var(--btn-hover-transform); box-shadow: var(--btn-hover-shadow); }
-.btn-view:hover     { transform: var(--btn-hover-transform); box-shadow: var(--btn-hover-shadow); }
-.btn-delete:hover   { transform: var(--btn-hover-transform); box-shadow: var(--btn-hover-shadow); }
+.edit-btn:hover,.view-btn:hover,.delete-btn:hover      { transform: var(--btn-hover-transform); box-shadow: var(--btn-hover-shadow); color: #fff; }
+
 .btn-cancel-admin:hover { background-color: #5a6268; transform: var(--btn-hover-transform); box-shadow: var(--btn-hover-shadow); }
 .btn-login:hover    { background-color: var(--color-dark); transform: var(--btn-hover-transform); box-shadow: var(--btn-hover-shadow); }
 .btn-login:active   { transform: var(--btn-active-transform); box-shadow: var(--btn-active-shadow); }
@@ -430,6 +444,20 @@ body.admin-body {
 }
 .modal-header .btn-close { color: #fff; filter: invert(1) brightness(200%); }
 
+
+/* Hide arrow in price entry box*/
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}      
+
 /* ===== PRODUCT ===== */
 .product-thumbnail { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; }
 
@@ -458,12 +486,15 @@ body.admin-body {
 
 .order-status,
 .status-badge { display: inline-block; padding: 4px 8px; border-radius: var(--border-radius); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
-.status-pending   { background-color: #fef3c7; color: #92400e; }
-.status-processing{ background-color: #e0f2fe; color: #075985; }
-.status-shipped   { background-color: #dcfce7; color: #166534; }
-.status-delivered { background-color: #d1fae5; color: #065f46; }
-.status-cancelled { background-color: #fee2e2; color: #991b1b; }
-.status-refunded  { background-color: #fef3c7; color: #92400e; }
+.status-pending   { background-color: #fef3c7; var(--color-dark); }
+.status-processing {
+    background-color: #ececec;  /* very light gray */
+    color: var(--color-dark);             /* medium gray */
+  }
+.status-shipped     { background-color: #cff4fc; color: var(--color-dark); } /* brighter cyan */
+.status-delivered   { background-color: #c3e6cb; color: var(--color-dark); } /* classic success green */
+
+.status-cancelled { background-color: #fee2e2; color: var(--color-dark); }
 
 .customer-info { background-color: var(--color-light); padding: 20px; border: 1px solid var(--color-border); border-radius: 5px; }
 .customer-info h3 { margin-bottom: 20px; font-size: 1.2rem; color: var(--color-primary); border-bottom: 1px solid var(--color-border); padding-bottom: 10px; }

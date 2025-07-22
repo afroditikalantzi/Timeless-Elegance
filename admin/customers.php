@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_customer'])) {
             // Check if email already exists (excluding the current customer if editing)
             $check_sql = "SELECT id FROM customer WHERE email = ?";
             $check_stmt = mysqli_prepare($conn, $check_sql);
-            
+
             if ($customer_id) {
                 $check_sql = "SELECT id FROM customer WHERE email = ? AND id != ?";
                 $check_stmt = mysqli_prepare($conn, $check_sql);
@@ -34,10 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_customer'])) {
             } else {
                 mysqli_stmt_bind_param($check_stmt, "s", $email);
             }
-            
+
             mysqli_stmt_execute($check_stmt);
             mysqli_stmt_store_result($check_stmt);
-            
+
             if (mysqli_stmt_num_rows($check_stmt) > 0) {
                 $error_message = "A customer with this email already exists";
             } else {
@@ -48,14 +48,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_customer'])) {
                     $stmt = mysqli_prepare($conn, $sql);
                     mysqli_stmt_bind_param($stmt, "ssssssssi", $firstName, $lastName, $email, $phone, $address, $city, $postalCode, $country, $customer_id);
                 } else {
-                    // For new customers, we need a password
-                    $password = password_hash('default123', PASSWORD_DEFAULT); // Default password that should be changed
-
                     // Insert new customer
-                    $sql = "INSERT INTO customer (firstName, lastName, email, phone, address, city, postalCode, country, password) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $sql = "INSERT INTO customer (firstName, lastName, email, phone, address, city, postalCode, country) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt = mysqli_prepare($conn, $sql);
-                    mysqli_stmt_bind_param($stmt, "sssssssss", $firstName, $lastName, $email, $phone, $address, $city, $postalCode, $country, $password);
+                    mysqli_stmt_bind_param($stmt, "ssssssss", $firstName, $lastName, $email, $phone, $address, $city, $postalCode, $country);
                 }
 
                 if (mysqli_stmt_execute($stmt)) {
@@ -110,11 +107,11 @@ $customers = [];
 try {
     // Get items per page setting
     $items_per_page = get_items_per_page($conn);
-    
+
     // Set up pagination
     $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
     $offset = ($current_page - 1) * $items_per_page;
-    
+
     // Get total customer count for pagination
     $count_sql = "SELECT COUNT(*) as total FROM customer";
     $count_result = mysqli_query($conn, $count_sql);
@@ -122,7 +119,7 @@ try {
     $total_customers = $count_row['total'];
     $total_pages = ceil($total_customers / $items_per_page);
     mysqli_free_result($count_result);
-    
+
     // Get customers for current page
     $sql = "SELECT c.*, COUNT(o.id) as order_count 
             FROM customer c 
@@ -143,87 +140,97 @@ try {
 ?>
 
 <!-- Customers Content -->
-            <div class="admin-content">
-                <?php if (!empty($success_message)): ?>
-                    <div class="alert alert-success"><?php echo htmlspecialchars($success_message); ?></div>
-                <?php endif; ?>
-                
-                <?php if (!empty($error_message)): ?>
-                    <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
-                <?php endif; ?>
+<div class="admin-content">
+    <?php if (!empty($success_message)): ?>
+        <div class="alert alert-success"><?php echo htmlspecialchars($success_message); ?></div>
+    <?php endif; ?>
 
-                <div class="row">
-                    <div class="col-12 mb-4">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerModal">
-                            <i class="bi bi-plus-circle"></i> Add New Customer
-                        </button>
-                    </div>
-                    <div class="col-12">
-                        <div class="admin-card">
-                            <h2 class="admin-card-title">Customer List</h2>
-                            <div class="table-responsive">
-                                <table class="admin-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Location</th>
-                                            <th>Orders</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (count($customers) > 0): ?>
-                                            <?php foreach ($customers as $customer): ?>
-                                                <tr>
-                                                    <td><?php echo htmlspecialchars($customer['id']); ?></td>
-                                                    <td><?php echo htmlspecialchars($customer['firstName'] . ' ' . $customer['lastName']); ?></td>
-                                                    <td><?php echo htmlspecialchars($customer['email']); ?></td>
-                                                    <td><?php echo htmlspecialchars($customer['phone'] ?? '-'); ?></td>
-                                                    <td><?php echo htmlspecialchars(($customer['city'] ?? '') . ', ' . ($customer['country'] ?? '')); ?></td>
-                                                    <td><?php echo htmlspecialchars($customer['order_count']); ?></td>
-                                                    <td>
-                                                        <button type="button" class="btn-edit btn-sm me-1" 
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#customerModal" 
-                                                                data-customer-id="<?php echo $customer['id']; ?>" 
-                                                                data-customer-firstname="<?php echo htmlspecialchars($customer['firstName']); ?>" 
-                                                                data-customer-lastname="<?php echo htmlspecialchars($customer['lastName']); ?>" 
-                                                                data-customer-email="<?php echo htmlspecialchars($customer['email']); ?>" 
-                                                                data-customer-phone="<?php echo htmlspecialchars($customer['phone'] ?? ''); ?>" 
-                                                                data-customer-address="<?php echo htmlspecialchars($customer['address'] ?? ''); ?>" 
-                                                                data-customer-city="<?php echo htmlspecialchars($customer['city'] ?? ''); ?>" 
-                                                                data-customer-postalcode="<?php echo htmlspecialchars($customer['postalCode'] ?? ''); ?>" 
-                                                                data-customer-country="<?php echo htmlspecialchars($customer['country'] ?? ''); ?>">
-                                                            <i class="bi bi-pencil"></i> Edit
-                                                        </button>
-                                                        <a href="customers.php?delete=<?php echo $customer['id']; ?>" class="btn-delete btn-sm" onclick="return confirm('Are you sure you want to delete this customer? This action cannot be undone.');">
-                                                            <i class="bi bi-trash"></i> Delete
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        <?php else: ?>
-                                            <tr>
-                                                <td colspan="7" class="text-center">No customers found</td>
-                                            </tr>
-                                        <?php endif; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+    <?php if (!empty($error_message)): ?>
+        <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
+    <?php endif; ?>
+
+    <div class="row">
+        <div class="col-12 mb-4">
+            <button type="button" class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#customerModal">
+                <i class="bi bi-plus-circle me-2"></i> Add New Customer
+            </button>
+        </div>
+        <div class="col-12">
+            <div class="admin-card">
+                <h2 class="admin-card-title">Customer List</h2>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Location</th>
+                                <th>Orders</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (count($customers) > 0): ?>
+                                <?php foreach ($customers as $customer): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($customer['id']); ?></td>
+                                        <td><?php echo htmlspecialchars($customer['firstName'] . ' ' . $customer['lastName']); ?></td>
+                                        <td><?php echo htmlspecialchars($customer['email']); ?></td>
+                                        <td><?php echo htmlspecialchars($customer['phone'] ?? '-'); ?></td>
+                                        <td><?php echo htmlspecialchars(($customer['city'] ?? '') . ', ' . ($customer['country'] ?? '')); ?></td>
+                                        <td><?php echo htmlspecialchars($customer['order_count']); ?></td>
+                                        <td>
+                                            <button type="button" class="edit-btn btn-sm me-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#customerModal"
+                                                data-customer-id="<?php echo $customer['id']; ?>"
+                                                data-customer-firstname="<?php echo htmlspecialchars($customer['firstName']); ?>"
+                                                data-customer-lastname="<?php echo htmlspecialchars($customer['lastName']); ?>"
+                                                data-customer-email="<?php echo htmlspecialchars($customer['email']); ?>"
+                                                data-customer-phone="<?php echo htmlspecialchars($customer['phone'] ?? ''); ?>"
+                                                data-customer-address="<?php echo htmlspecialchars($customer['address'] ?? ''); ?>"
+                                                data-customer-city="<?php echo htmlspecialchars($customer['city'] ?? ''); ?>"
+                                                data-customer-postalcode="<?php echo htmlspecialchars($customer['postalCode'] ?? ''); ?>"
+                                                data-customer-country="<?php echo htmlspecialchars($customer['country'] ?? ''); ?>">
+                                                <i class="bi bi-pencil me-1"></i> Edit
+                                            </button>
+                                            <form method="post" action="customers.php" class="delete-customer-form" style="display:inline;">
+  <input type="hidden" name="customer_id" value="<?= $customer['id'] ?>">
+  <input type="hidden" name="delete_customer" value="1">
+  <button
+    type="button"
+    class="delete-btn me-1"
+    data-customer-name="<?= htmlspecialchars($customer['firstName'].' '.$customer['lastName']) ?>"
+    data-order-count="<?= (int)$customer['order_count'] ?>"
+  >
+    <i class="bi bi-trash me-1"></i> Delete
+  </button>
+</form>
+
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="7" class="text-center">No customers found</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
-                
-                <!-- Pagination Controls -->
-                <?php if ($total_pages > 1): ?>
-                <div class="pagination-container mt-4">
-                    <?php echo generate_pagination($current_page, $total_pages, 'customers.php?'); ?>
-                </div>
-                <?php endif; ?>
-            </div> <!-- Closing admin-content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <?php if ($total_pages > 1): ?>
+        <div class="pagination-container mt-4">
+            <?php echo generate_pagination($current_page, $total_pages, 'customers.php?'); ?>
+        </div>
+    <?php endif; ?>
+</div> <!-- Closing admin-content -->
 
 <!-- Add/Edit Customer Modal -->
 <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
@@ -272,21 +279,56 @@ try {
                             <input type="text" class="form-control" id="country" name="country">
                         </div>
                     </div>
-                    <!-- Password field is only relevant for adding, not editing via admin panel -->
-                    <!-- <div class="mb-3" id="passwordField">
-                        <label for="password" class="form-label">Password (for new customers)</label>
-                        <input type="password" class="form-control" id="password" name="password">
-                        <small class="form-text text-muted">Leave blank if editing. New customers get a default password.</small>
-                    </div> -->
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="add_customer" class="btn-admin">Save Customer</button> 
+                    <button type="button" class="btn secondary-btn" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="add_customer" class="btn primary-btn">Save Customer</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<!-- Delete Customer Confirmation Modal -->
+<div class="modal fade" id="deleteCustomerModal" tabindex="-1" aria-labelledby="deleteCustomerLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><!-- vertically centered -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteCustomerLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete
+        <strong id="deleteCustomerName"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn secondary-btn" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn primary-btn" id="confirmDeleteCustomerBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cannot Delete Customer Modal -->
+<div class="modal fade" id="cannotDeleteCustomerModal" tabindex="-1" aria-labelledby="cannotDeleteCustomerLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cannotDeleteCustomerLabel">Cannot Delete Customer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="cannotDeleteCustomerBody">
+        <!-- Filled by JS -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn primary-btn" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <?php
 // Include footer
@@ -294,38 +336,70 @@ require_once 'includes/footer.php';
 ?>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    var customerModal = document.getElementById('customerModal');
-    customerModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget; // Button that triggered the modal
-        var modalTitle = customerModal.querySelector('.modal-title');
-        var customerForm = document.getElementById('customerForm');
-        var customerIdInput = document.getElementById('customerId');
-        // var passwordField = document.getElementById('passwordField');
+document.addEventListener('DOMContentLoaded', function() {
+  // — Customer Add/Edit Modal (you already have this) —
+  const customerModalEl = document.getElementById('customerModal');
+  customerModalEl.addEventListener('show.bs.modal', function(event) {
+    const btn          = event.relatedTarget;
+    const form         = document.getElementById('customerForm');
+    const idInput      = document.getElementById('customerId');
+    const titleEl      = customerModalEl.querySelector('.modal-title');
 
-        // Check if the button has customer data (meaning it's an edit)
-        var customerId = button.getAttribute('data-customer-id');
+    if (btn.getAttribute('data-customer-id')) {
+      titleEl.textContent = 'Edit Customer';
+      idInput.value       = btn.dataset.customerId;
+      form.firstName.value    = btn.dataset.customerFirstname;
+      form.lastName.value     = btn.dataset.customerLastname;
+      form.email.value        = btn.dataset.customerEmail;
+      form.phone.value        = btn.dataset.customerPhone;
+      form.address.value      = btn.dataset.customerAddress;
+      form.city.value         = btn.dataset.customerCity;
+      form.postalCode.value   = btn.dataset.customerPostalcode;
+      form.country.value      = btn.dataset.customerCountry;
+      form.add_customer.name  = 'update_customer';
+    } else {
+      titleEl.textContent     = 'Add New Customer';
+      form.reset();
+      idInput.value           = '';
+      form.add_customer.name  = 'add_customer';
+    }
+  });
 
-        if (customerId) {
-            // Edit mode
-            modalTitle.textContent = 'Edit Customer';
-            customerIdInput.value = customerId;
-            document.getElementById('firstName').value = button.getAttribute('data-customer-firstname');
-            document.getElementById('lastName').value = button.getAttribute('data-customer-lastname');
-            document.getElementById('email').value = button.getAttribute('data-customer-email');
-            document.getElementById('phone').value = button.getAttribute('data-customer-phone');
-            document.getElementById('address').value = button.getAttribute('data-customer-address');
-            document.getElementById('city').value = button.getAttribute('data-customer-city');
-            document.getElementById('postalCode').value = button.getAttribute('data-customer-postalcode');
-            document.getElementById('country').value = button.getAttribute('data-customer-country');
-            // passwordField.style.display = 'none'; // Hide password field when editing
-        } else {
-            // Add mode
-            modalTitle.textContent = 'Add New Customer';
-            customerForm.reset(); // Clear the form
-            customerIdInput.value = ''; // Ensure customer ID is empty
-            // passwordField.style.display = 'block'; // Show password field when adding (though we set default server-side)
-        }
+  // — Delete Confirmation & “Cannot Delete” Modals —
+  const confirmEl       = document.getElementById('deleteCustomerModal');
+  const confirmModal    = new bootstrap.Modal(confirmEl);
+  const nameEl          = document.getElementById('deleteCustomerName');
+  const okBtn           = document.getElementById('confirmDeleteCustomerBtn');
+  let   formToDelete    = null;
+
+  const cannotEl        = document.getElementById('cannotDeleteCustomerModal');
+  const cannotModal     = new bootstrap.Modal(cannotEl);
+  const cannotBodyEl    = document.getElementById('cannotDeleteCustomerBody');
+
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      const name  = this.dataset.customerName;
+      const count = parseInt(this.dataset.orderCount, 10);
+
+      if (count > 0) {
+        cannotBodyEl.textContent =
+          `Cannot delete "${name}" because they have ${count} order(s).`;
+        cannotModal.show();
+      } else {
+        formToDelete = this.closest('form');
+        nameEl.textContent = name;
+        confirmModal.show();
+      }
     });
+  });
+
+  okBtn.addEventListener('click', function() {
+    if (!formToDelete) return;
+    confirmModal.hide();
+    formToDelete.submit();
+  });
 });
 </script>

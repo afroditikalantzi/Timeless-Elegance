@@ -117,7 +117,7 @@ if ($status_filter !== 'all') {
     // $products_sql .= " AND o.status != 'Cancelled'"; 
 }
 
-$products_sql .= " GROUP BY oi.product_name ORDER BY total_quantity DESC LIMIT 10";
+$products_sql .= " GROUP BY oi.product_name ORDER BY total_quantity DESC LIMIT 5";
 
 try {
     $products_stmt = mysqli_prepare($conn, $products_sql);
@@ -153,7 +153,7 @@ if ($status_filter !== 'all') {
     // $customers_sql .= " AND o.status != 'Cancelled'"; 
 }
 
-$customers_sql .= " GROUP BY c.id ORDER BY total_spent DESC LIMIT 10";
+$customers_sql .= " GROUP BY c.id ORDER BY total_spent DESC LIMIT 5";
 
 try {
     $customers_stmt = mysqli_prepare($conn, $customers_sql);
@@ -186,7 +186,7 @@ if ($status_filter !== 'all') {
     $types_orders .= "s";
 }
 
-$orders_sql .= " ORDER BY o.order_date DESC LIMIT 10";
+$orders_sql .= " ORDER BY o.order_date DESC LIMIT 5";
 
 try {
     $orders_stmt = mysqli_prepare($conn, $orders_sql);
@@ -233,7 +233,7 @@ $orders_json = json_encode($orders);
                 <?php endif; ?>
 
                 <!-- Filters -->
-                <div class="filters-section mb-4">
+                <div class="filters-section mb-4 mt-3">
                     <form method="get" action="reports.php" class="row g-3 align-items-end">
                         <div class="col-md-3">
                             <label for="start_date" class="form-label">Start Date</label>
@@ -255,7 +255,7 @@ $orders_json = json_encode($orders);
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                            <button type="submit" class="btn secondary-btn w-100">Apply Filters</button>
                         </div>
                     </form>
                 </div>
@@ -398,7 +398,7 @@ $orders_json = json_encode($orders);
                                 <?php if (count($recent_orders) > 0): ?>
                                     <?php foreach ($recent_orders as $order): ?>
                                         <tr>
-                                            <td><a href="orders.php?view=<?php echo $order['id']; ?>">#<?php echo $order['id']; ?></a></td>
+                                            <td>#<?php echo $order['id']; ?></td>
                                             <td><?php echo date('M j, Y', strtotime($order['order_date'])); ?></td>
                                             <td><?php echo $order['firstName'] . ' ' . $order['lastName']; ?></td>
                                             <td>$<?php echo number_format($order['total_amount'] ?? 0, 2); ?></td>
@@ -412,8 +412,8 @@ $orders_json = json_encode($orders);
                                                 </div>
                                             </td>
                                             <td>
-                                                <a href="orders.php?view=<?php echo $order['id']; ?>" class="btn-edit">
-                                                    <i class="bi bi-eye"></i> View
+                                                <a href="orders.php?view=<?php echo $order['id']; ?>" class="edit-btn">
+                                                    <i class="bi bi-eye me-1"></i> View
                                                 </a>
                                             </td>
                                         </tr>
@@ -428,7 +428,7 @@ $orders_json = json_encode($orders);
                     </div>
                     <div class="mt-3 text-end">
                         <!-- Updated to match CHANGE PASSWORD button style -->
-                        <a href="orders.php" class="btn btn-primary">View All Orders</a> 
+                        <a href="orders.php" class="btn primary-btn">View All Orders</a> 
                     </div>
                 </div>
             <?php

@@ -46,15 +46,6 @@ function initializeAdminComponents() {
  * Setup event listeners for admin functionality
  */
 function setupEventListeners() {
-    // Confirm delete actions
-    const deleteButtons = document.querySelectorAll('.delete-btn');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            if (!confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
-                e.preventDefault();
-            }
-        });
-    });
 
     // Add sidebar toggle listener
     const sidebarToggleButton = document.getElementById('sidebarToggle');

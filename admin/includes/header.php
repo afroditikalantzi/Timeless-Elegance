@@ -112,9 +112,7 @@ $error_message = '';
                 <div class="admin-header-title">
                     <h1><?php echo isset($page_title) ? $page_title : 'Admin Dashboard'; ?></h1>
                 </div>
-                <div class="admin-user-menu">
-                    <!-- User menu items can go here if needed -->
-                </div>
+               
             </header>
 
             <!-- Content -->

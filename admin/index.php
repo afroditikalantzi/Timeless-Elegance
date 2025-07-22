@@ -79,7 +79,7 @@ try {
     <?php endif; ?>
 
     <!-- Dashboard Stats -->
-    <div class="row mb-4">
+    <div class="row mb-4 mt-3">
         <div class="col-md-3">
             <div class="admin-card report-card">
                 <h3 class="report-card-title">Total Products</h3>
@@ -141,8 +141,8 @@ try {
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="order_details.php?id=<?php echo htmlspecialchars($order['id']); ?>" class="btn-edit">
-                                                <i class="bi bi-eye"></i> View
+                                            <a href="order_details.php?id=<?php echo htmlspecialchars($order['id']); ?>" class="view-btn">
+                                                <i class="bi bi-eye me-1"></i> View
                                             </a>
                                         </td>
                                     </tr>

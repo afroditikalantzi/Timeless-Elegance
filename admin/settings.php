@@ -192,7 +192,7 @@ function processPasswordChange($conn, $current_password, $new_password, $confirm
                             <div class="settings-form-text">Number of items to display per page in admin listings (products, categories, customers, orders).</div>
                         </div>
                         
-                        <button type="submit" name="update_settings" class="btn btn-primary">Save Settings</button>
+                        <button type="submit" name="update_settings" class="btn primary-btn">Save Settings</button>
                     </form>
                 </div>
             </div>
@@ -227,7 +227,7 @@ function processPasswordChange($conn, $current_password, $new_password, $confirm
                             <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                         </div>
                         
-                        <button type="submit" name="update_password" class="btn btn-primary">Change Password</button>
+                        <button type="submit" name="update_password" class="btn primary-btn">Change Password</button>
                     </form>
                 </div>
             </div>

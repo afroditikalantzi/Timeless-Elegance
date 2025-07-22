@@ -69,7 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Custom Styles -->
     <link href="static/css/styles.css" rel="stylesheet" />
     <!-- Admin Dashboard Styles -->
-    <link href="static/css/admin-dashboard.css" rel="stylesheet" />
 </head>
 <body class="login-page">
     <div class="login-container">
@@ -93,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             
-            <button type="submit" class="btn-login">Login</button>
+            <button type="submit" class="btn primary-btn mt-2" style="width: 100%;">Login</button>
         </form>
 
         <div class="login-footer">

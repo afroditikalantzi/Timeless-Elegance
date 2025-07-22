@@ -89,8 +89,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
     <div class="row mb-4">
         <div class="col-12">
-            <a href="orders.php" class="btn-admin">
-                <i class="bi bi-arrow-left"></i> Back to Orders
+            <a href="orders.php" class="btn primary-btn">
+                <i class="bi bi-arrow-left me-1"></i> Back to Orders
             </a>
         </div>
     </div>
@@ -133,7 +133,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                             <textarea class="form-control" id="notes" name="notes" rows="4"><?php echo htmlspecialchars($order['notes']); ?></textarea>
                         </div>
                         
-                        <button type="submit" name="update_order" class="btn-admin w-100">
+                        <button type="submit" name="update_order" class="btn primary-btn w-100">
                             Update Order
                         </button>
                     </form>
@@ -141,7 +141,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             </div>
         </div>
         
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-lg-8">                            
                 <div class="admin-card">
                     <div class="d-flex justify-content-between align-items-center mb-3">
