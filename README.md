@@ -55,11 +55,8 @@ Timeless Elegance is a sophisticated e-commerce platform for premium men's cloth
    ```
 2. Start Apache and MySQL services in XAMPP control panel
 3. Run the setup script by visiting: http://localhost/Timeless-Elegance/setup.php
-4. Access the website: http://localhost/Timeless-Elegance/index.php
+4. Access the website: http://localhost/Timeless-Elegance/public/index.php
 5. Access the admin dashboard: http://localhost/Timeless-Elegance/admin/login.php
-   - Default admin credentials:
-     - Username: admin
-     - Password: password123
 
 
 ## Technologies Used
