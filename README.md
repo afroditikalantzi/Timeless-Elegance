@@ -7,12 +7,13 @@ Timeless Elegance is a sophisticated e-commerce platform for premium men's cloth
 ## Screenshots
 
 <div align="center">
-  <img src="images/store-page.png" alt="Store Page" width="45%" />
-  <img src="images/admin-page.png" alt="Admin Dashboard" width="45%" />
+  <!-- force both images to 250px tall, widths auto‑scaled -->
+  <img src="images/store-page.png" alt="Start Screen" height="250" />
+  <img src="images/admin-page.png"        alt="Gameplay"     height="250" />
 </div>
 
 <p align="center">
-  <em>Left: E-Shop Homepage | Right: Admin Dashboard</em>
+  <em>Start screen and gameplay preview</em>
 </p>
 
 
