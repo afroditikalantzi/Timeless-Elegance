@@ -69,10 +69,4 @@ To set up the platform locally, ensure the following are installed:
   - Bootstrap Icons
   - NoUI Slider (for price filtering)
 
-
-## Authors
-
-- Kalantzi Afroditi
-- Choumis Nickolaos
-
     
