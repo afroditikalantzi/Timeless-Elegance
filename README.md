@@ -6,7 +6,7 @@
 
 The system offers a responsive user interface for customers and a comprehensive admin dashboard for managing products, orders, and store configurations.
 
-**[Click here to watch the demo video](https://example.com)**
+**[Click here to watch the demo video](https://youtu.be/9eMKdVKOpF0)**
 
 <div align="center">
   <!-- force both images to 250px tall, widths auto‑scaled -->
