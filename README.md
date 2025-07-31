@@ -52,7 +52,7 @@ To set up the platform locally, ensure the following are installed:
 
 1. Clone the repository into your XAMPP `htdocs` directory:
    ```bash
-   git clone https://github.com/Nightdragon2000/Timeless-Elegance.git
+   git clone https://github.com/afroditikalantzi/Timeless-Elegance.git
    ```
 2. Start Apache and MySQL via the XAMPP control panel
 3. Run the setup script by visiting: http://localhost/Timeless-Elegance/setup.php
